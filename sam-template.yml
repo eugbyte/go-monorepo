@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion : '2010-09-09'
+
+Description: notify-api
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: bin/hello
+      Runtime: go1.x
+      Events:
+        Vote:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: post
+
+  MockErrorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: bin/mock_error
+      Runtime: go1.x
+      Events:
+        Vote:
+          Type: Api
+          Properties:
+            Path: /mock_error
+            Method: get
+      Timeout: 3
