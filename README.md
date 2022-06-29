@@ -4,7 +4,7 @@ serverless lambda in golang
 
 
 ## Installation
-install `aws-sam` [here](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+install `azure cloud functions` [here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cwindows%2Cpowershell%2Cazurecli%2Cbash&source=docs#install-the-azure-functions-core-tools)
 
 ```
 pip install https://github.com/joh/when-changed/archive/master.zip

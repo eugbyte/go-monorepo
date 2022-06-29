@@ -18,7 +18,6 @@ run:
 build:
 	export GO111MODULE=on
 	env GOOS=linux go build -o bin/hello -ldflags="-s -w" src/handlers/hello/main.go
-	env GOOS=linux go build -o bin/mock_error -ldflags="-s -w" src/handlers/mock_error/main.go
 
 watch:
 	when-changed -r "./src" make build

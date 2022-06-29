@@ -11,8 +11,11 @@ import (
 func main() {
 	var addr string = config.Config.LOCAL_PORT
 	log.Println(addr)
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/hello", hello.Handler)
-	log.Printf("server is listening at %s", addr)
+
+	log.Printf("server is listening at %s...", addr)
+
 	http.ListenAndServe(addr, mux)
 }
