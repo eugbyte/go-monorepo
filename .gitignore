@@ -1,4 +1,4 @@
 bin
-./main
-./main.exe
+main
+main.exe
 .vscode
