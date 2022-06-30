@@ -13,11 +13,11 @@ deploy: clean build
 #----DEVELOPMENT----
 
 run:
-	go run ./src/main.go
+	func start
 
 build:
 	export GO111MODULE=on
-	env GOOS=linux go build -o src/main -ldflags="-s -w" src/main.go
+	go build main.go
 
 watch:
 	when-changed -r "./src" make build

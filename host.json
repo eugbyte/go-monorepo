@@ -14,7 +14,7 @@
   },
   "customHandler": {
     "description": {
-      "defaultExecutablePath": "./src/handlers/hello/main",
+      "defaultExecutablePath": "main",
       "workingDirectory": "",
       "arguments": []
     },
