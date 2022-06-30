@@ -9,13 +9,13 @@ import (
 )
 
 func main() {
-	var addr string = config.Config.LOCAL_PORT
-	log.Println(addr)
+	var address string = config.Config.LOCAL_PORT
+	log.Println(address)
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/hello", hello.Handler)
+	mux.HandleFunc("/api/hello", hello.Handler)
 
-	log.Printf("server is listening at %s...", addr)
+	log.Printf("server is listening at %s...", address)
+	log.Fatal(http.ListenAndServe(address, mux))
 
-	http.ListenAndServe(addr, mux)
 }
