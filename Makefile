@@ -17,7 +17,7 @@ run:
 
 build:
 	export GO111MODULE=on
-	env GOOS=linux go build -o bin/hello -ldflags="-s -w" src/handlers/hello/main.go
+	env GOOS=linux go build -o src/main -ldflags="-s -w" src/main.go
 
 watch:
 	when-changed -r "./src" make build
