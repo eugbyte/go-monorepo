@@ -21,7 +21,7 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 	}
 	util.Trace("requestBody", requestBody)
 
-	message := strings.ToUpper(requestBody.Message) + "!!"
+	message := strings.ToUpper(requestBody.Message) + "!!!"
 	responseBody := map[string]interface{}{"message": message}
 
 	response.Header().Set("Content-Type", "application/json; charset=UTF-8")

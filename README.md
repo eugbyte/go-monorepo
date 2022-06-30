@@ -1,7 +1,6 @@
-# web-notify-lib/notify-api
+# web-notify-lib/notify-api-azure
 ## About
 serverless lambda in golang
-
 
 ## Installation
 install `azure cloud functions` [here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cwindows%2Cpowershell%2Cazurecli%2Cbash&source=docs#install-the-azure-functions-core-tools)

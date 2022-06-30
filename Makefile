@@ -20,7 +20,7 @@ build:
 	go build main.go
 
 watch:
-	when-changed -r "./src" make build
+	when-changed -r -1 -s "./" make build
 
 #----TESTING----
 
