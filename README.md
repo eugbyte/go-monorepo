@@ -20,10 +20,10 @@ If you are on windows, you need to have `git bash` cli installed to run the comm
 ## start aws-sam development server
 `make run`
 
-## watch files in ./src directory and recompile whenever they change
+## watch files and recompile whenever they change
 Open another terminal
 `make watch`
 
 ### Note
-Only file changes in the src directory is detected.
-Also note that if you change the sam-template.yml file, you will have to restart the aws-sam development server too
+`function.json` cannot be in nested directories, see [here](https://github.com/Azure/azure-functions-host/issues/5373)
+
