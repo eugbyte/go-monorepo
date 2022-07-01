@@ -28,4 +28,4 @@ lint-install:
 	golangci-lint --version
 
 test-install-gotest:
-	go get -u github.com/rakyll/gotest
+	curl https://gotest-release.s3.amazonaws.com/gotest_linux > gotest && chmod +x gotest
