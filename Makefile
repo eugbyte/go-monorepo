@@ -12,6 +12,9 @@ deploy: clean build
 
 #----DEVELOPMENT----
 
+dev:
+	go run main.go
+
 start:
 	func start
 
