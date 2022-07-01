@@ -12,7 +12,7 @@ deploy: clean build
 
 #----DEVELOPMENT----
 
-run:
+start:
 	func start
 
 build:

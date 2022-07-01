@@ -3,7 +3,7 @@
 serverless lambda in golang
 
 ## Installation
-install `azure cloud functions` [here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cwindows%2Cpowershell%2Cazurecli%2Cbash&source=docs#install-the-azure-functions-core-tools)
+install `azure functions core tools` [here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cwindows%2Cpowershell%2Cazurecli%2Cbash&source=docs#install-the-azure-functions-core-tools)
 
 ```
 pip install https://github.com/joh/when-changed/archive/master.zip
@@ -17,13 +17,13 @@ make lint-install
 Full list of commands are listed in Makefile
 If you are on windows, you need to have `git bash` cli installed to run the commands
 
-## start aws-sam development server
+## Start azure functions core server
 `make run`
 
-## watch files and recompile whenever they change
+## Watch files and recompile whenever they change
 Open another terminal
 `make watch`
 
-### Note
-`function.json` cannot be in nested directories, see [here](https://github.com/Azure/azure-functions-host/issues/5373)
-
+## Gotachs
+1. `function.json` cannot be in nested directories, see [here](https://github.com/Azure/azure-functions-host/issues/5373)
+2. Azure functions core tools does not have a watch option
