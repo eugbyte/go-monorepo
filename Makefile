@@ -22,5 +22,10 @@ test-notify:
 
 #----INSTALLATION----
 
+lint-install:
+	# binary will be $(go env GOPATH)/bin/golangci-lint
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2
+	golangci-lint --version
+
 test-install-gotest:
 	go get -u github.com/rakyll/gotest
