@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/api/web-notify-lib/libs/util"
+	"github.com/api/web-notify/libs/util"
 )
 
 type RequestBody struct {

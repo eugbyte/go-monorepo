@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/api/web-notify-lib/services/notify_api/config"
-	hello "github.com/api/web-notify-lib/services/notify_api/hello_handler"
+	"github.com/api/web-notify/services/notify/config"
+	hello "github.com/api/web-notify/services/notify/hello_handler"
 )
 
 func main() {

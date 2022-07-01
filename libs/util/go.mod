@@ -1,3 +1,3 @@
-module github.com/api/web-notify-libs/libs/util
+module github.com/api/web-notify/libs/util
 
 go 1.18
