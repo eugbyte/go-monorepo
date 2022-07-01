@@ -1,4 +1,4 @@
-# web-notify-lib/notify-api-azure
+# browser-notify-api
 ## About
 serverless lambda in golang
 
