@@ -48,9 +48,9 @@ jobs:
           && sudo chmod +x /usr/local/bin/docker-compose
 
       - name: Run test
-        run: make test
+        run: make test-notify
 
       - name: Run lint
-        run: make lint
+        run: make lint-notify
 
 

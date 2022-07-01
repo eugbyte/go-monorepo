@@ -20,6 +20,12 @@ func-start-notify:
 test-notify:
 	cd services/notify && make test-handlers
 
+lint-notify:
+	cd services/notify && make lint
+
+lint-fix-notify:
+	cd services/notify && make lint-fix
+
 #----INSTALLATION----
 
 lint-install:
