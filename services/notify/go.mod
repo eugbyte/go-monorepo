@@ -1,6 +1,7 @@
-module github.com/api/web-notify/services/notify
+module github.com/web-notify/api/services/notify
 
 go 1.18
 
-require github.com/api/web-notify/libs/util v0.0.0
+require github.com/web-notify/api/libs/util v0.0.0
 
+replace github.com/web-notify/api/libs/util v0.0.0 => ../../libs/util
