@@ -1,16 +1,11 @@
-.PHONY: build clean deploy gomodgen
-
-gomodgen:
-	chmod u+x gomod.sh
-	./gomod.sh
-
-clean:
-	rm -rf ./bin ./vendor go.sum
-
-deploy: clean build
-	sls deploy --verbose
-
 #----DEVELOPMENT----
+
+tidy:
+	go mod tidy -e
+
+build:
+	export GO111MODULE=on
+	go build main.go
 
 dev:
 	go run main.go
@@ -18,20 +13,15 @@ dev:
 func-start:
 	func start
 
-build:
-	export GO111MODULE=on
-	go build main.go
-
 watch:
 	when-changed -r -1 -s "./" make build
 
+clean:
+	rm -rf ./bin ./vendor go.sum
+
 #----TESTING----
-
-test-install-gotest:
-	go get -u github.com/rakyll/gotest
-
 test-handlers:
-	gotest -v ./src/handlers/... || go clean -testcache
+	gotest -v ./hello_handler/... || go clean -testcache
 	go clean -testcache
 
 test:

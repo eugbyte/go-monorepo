@@ -1,25 +1,26 @@
-#----DEVELOPMENT----
+#----SERVICES----
 
-## notify
+##----NOTIFY----
 
-notify-build:
+tidy-notify:
+	cd services/notify && make tidy
+
+build-notify:
 	cd services/notify && make build
 
-notify-dev:
+watch-notify:
+	cd services/notify && watch notify
+
+dev-notify:
 	cd services/notify && make dev
 
-notify-func-start:
+func-start-notify:
 	cd services/notify && make func-start
 
+test-notify:
+	cd services/notify && make test-handlers
 
-#----TESTING----
+#----INSTALLATION----
 
 test-install-gotest:
 	go get -u github.com/rakyll/gotest
-
-test-handlers:
-	gotest -v ./servcies/notify/hello_handler/... || go clean -testcache
-	go clean -testcache
-
-test:
-	make test-handlers
