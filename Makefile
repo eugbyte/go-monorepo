@@ -1,8 +1,8 @@
 #----DEVELOPMENT----
 
-## notify-api
-dev:
-	cd services/notify-api && make dev
+## notify_api
+notify_api-dev:
+	cd services/notify_api && make dev
 
-func-start:
-	cd services/notify-api && make func-start
+notify_api-func-start:
+	cd services/notify_api && make func-start
