@@ -3,6 +3,8 @@ package util
 import (
 	"encoding/json"
 	"fmt"
+
+	colors "github.com/TwinProduction/go-color"
 )
 
 func Trace(prefix string, obj interface{}) {
@@ -10,7 +12,7 @@ func Trace(prefix string, obj interface{}) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(prefix+":", string(bytes))
+	fmt.Println(colors.Green, prefix+":", string(bytes), colors.Reset)
 }
 
 // Convert objects to string

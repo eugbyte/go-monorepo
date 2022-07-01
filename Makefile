@@ -1,6 +1,10 @@
 #----DEVELOPMENT----
 
-## notify_api
+## notify
+
+notify-build:
+	cd services/notify && make build
+
 notify-dev:
 	cd services/notify && make dev
 
