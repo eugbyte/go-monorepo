@@ -1,52 +1,37 @@
-.PHONY: build clean deploy gomodgen
+#----SERVICES----
 
-gomodgen:
-	chmod u+x gomod.sh
-	./gomod.sh
+##----NOTIFY----
 
-clean:
-	rm -rf ./bin ./vendor go.sum
+tidy-notify:
+	cd services/notify && make tidy
 
-deploy: clean build
-	sls deploy --verbose
+build-notify:
+	cd services/notify && make build
 
-#----DEVELOPMENT----
+watch-notify:
+	cd services/notify && watch notify
 
-start:
-	func start
+dev-notify:
+	cd services/notify && make dev
 
-build:
-	export GO111MODULE=on
-	go build main.go
+func-start-notify:
+	cd services/notify && make func-start
 
-watch:
-	when-changed -r -1 -s "./" make build
+test-notify:
+	cd services/notify && make test-handlers
 
-#----TESTING----
+lint-notify:
+	cd services/notify && make lint
 
-test-install-gotest:
-	go get -u github.com/rakyll/gotest
+lint-fix-notify:
+	cd services/notify && make lint-fix
 
-test-handlers:
-	gotest -v ./src/handlers/... || go clean -testcache
-	go clean -testcache
+#----INSTALLATION----
 
-test:
-	make test-handlers
-
-#----LINT----
-
-lint-install:
+install-lint:
 	# binary will be $(go env GOPATH)/bin/golangci-lint
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2
 	golangci-lint --version
 
-lint:
-	@if [ -z `which golangci-lint 2> /dev/null` ]; then \
-			echo "Need to install golangci-lint, execute \"make lint-install\"";\
-			exit 1;\
-	fi
-	golangci-lint run
-
-lint-fix:
-	golangci-lint run --fix
+install-gotest:
+	curl https://gotest-release.s3.amazonaws.com/gotest_linux > gotest && chmod +x gotest

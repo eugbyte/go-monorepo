@@ -37,7 +37,7 @@ jobs:
           go-version: '1.18'
 
       - name: Install Go modules, gotest and golangci-lint
-        run: go mod download && make test-install-gotest && sudo make lint-install
+        run: go mod download && make install-gotest && sudo make install-lint
 
       - name: Check docker version
         run: docker version
@@ -48,9 +48,9 @@ jobs:
           && sudo chmod +x /usr/local/bin/docker-compose
 
       - name: Run test
-        run: make test
+        run: make test-notify
 
       - name: Run lint
-        run: make lint
+        run: make lint-notify
 
 

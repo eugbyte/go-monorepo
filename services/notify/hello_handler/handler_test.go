@@ -15,7 +15,7 @@ func TestHandler(t *testing.T) {
 	if err != nil {
 		t.Fatal("Cannot marshal", err.Error())
 	}
-	request := httptest.NewRequest(http.MethodGet, "/hello", bytes.NewBuffer(objBytes))
+	request := httptest.NewRequest(http.MethodPost, "/hello", bytes.NewBuffer(objBytes))
 
 	writer := httptest.NewRecorder()
 	Handler(writer, request)
@@ -28,7 +28,7 @@ func TestHandler(t *testing.T) {
 	}
 
 	var messageMap map[string]string
-	err = json.Unmarshal([]byte(data), &messageMap)
+	err = json.Unmarshal(data, &messageMap)
 	if err != nil {
 		t.Fatal("Error unmarshalling response body to map[string]string")
 	}

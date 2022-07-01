@@ -24,6 +24,7 @@ If you are on windows, you need to have `git bash` cli installed to run the comm
 Open another terminal
 `make watch`
 
-## Gotachs
+## Gotchas
 1. `function.json` cannot be in nested directories, see [here](https://github.com/Azure/azure-functions-host/issues/5373)
-2. Azure functions core tools does not have a watch option
+2. Azure functions core tools does not have a watch option. Thus, need to keep manually rebuilding the executable file.
+3. When running `go mod tidy`, packages specified in the [`go.work` will not be ignored](https://github.com/golang/go/issues/50750). So, do `go mod tidy -e` instead. The `-e` flag causes go mod tidy to attempt to proceed despite errors encountered while loading packages.
