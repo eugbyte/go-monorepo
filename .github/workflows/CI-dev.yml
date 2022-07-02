@@ -35,6 +35,7 @@ jobs:
           go-version: '1.18'
       - name: Download Go modules
         run: |
+          go mod download
           make download-libs
           make download-services
           sudo make install-lint
