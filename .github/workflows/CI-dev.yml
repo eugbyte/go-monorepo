@@ -31,15 +31,17 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '1.18'
-      - name: Install Go modules
-        run: go mod download
+      - name: Download Go modules
+        run: |
+          make download-libs
+          make download-services
       - name: Install golangci-lint, docker-compose
         run: |
           sudo make install-lint
           sudo make install-docker-compose
       - name: Run test
-        run: make test-notify
+        run: make test-greet
       - name: Run lint
-        run: make lint-notify
+        run: make lint-greet
 
 

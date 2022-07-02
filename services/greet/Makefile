@@ -1,5 +1,6 @@
 #----DEVELOPMENT----
-
+download:
+	go mod download
 tidy:
 	go mod tidy -e
 build:
