@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/web-notify/api/services/notify/config"
+	"github.com/web-notify/api/libs/config"
 	hello "github.com/web-notify/api/services/notify/hello_handler"
 )
 

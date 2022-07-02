@@ -4,6 +4,6 @@
     "azureFunctions.projectRuntime": "~4",
     "debug.internalConsoleOptions": "neverOpen",
     "gopls": {
-        "experimentalWorkspaceModule": true
+        "experimentalWorkspaceModule": false
     }
 }
