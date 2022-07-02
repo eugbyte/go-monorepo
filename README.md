@@ -1,4 +1,4 @@
-# browser-notify/api
+# browser-notify/api/monorepo
 ## About
 API to trigger web push notifications
 

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/web-notify/api/libs/util"
+	"github.com/web-notify/api/monorepo/libs/util"
 )
 
 type RequestBody struct {
