@@ -20,7 +20,7 @@ jobs:
         shell: bash
     steps:
       - name: Checkout sls-go-mod
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Print dir
         run: ls
       - name: Update ubuntu
@@ -30,7 +30,7 @@ jobs:
       - name: Install docker-compose
         run: make install-docker-compose
       - name: Install Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: '1.18'
       - name: Download Go modules
