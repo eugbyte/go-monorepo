@@ -12,13 +12,13 @@ lint-utils:
 	cd libs/utils && make lint-fix
 
 #----SERVICES----
-##----NOTIFY----
+##----GREET----
 tidy-greet:
 	cd services/greet && make tidy
 build-greet:
 	cd services/greet && make build
 watch-greet:
-	cd services/greet && watch notify
+	cd services/greet && make watch
 dev-greet:
 	cd services/greet && make dev
 func-start-greet:
@@ -29,6 +29,16 @@ lint-greet:
 	cd services/greet && make lint
 lint-fix-greet:
 	cd services/greet && make lint-fix
+
+##----NOTIFY_QUEUE----
+tidy-notify:
+	cd services/notify_queue && make tidy
+build-notify:
+	cd services/notify_queue && make build
+dev-notify:
+	cd services/notify_queue && make dev
+func-start-notify:
+	cd services/notify_queue && make func-start
 
 #----INSTALLATION----
 install-lint:

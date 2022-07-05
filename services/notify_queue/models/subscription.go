@@ -7,6 +7,7 @@ type Keys struct {
 
 type Subscription struct {
 	Endpoint   string `json:"endpoint"`
-	Expiration int    `json:"expirationTime"`
+	Message    string `json:"message"`
+	Expiration string `json:"expiration_time"`
 	Keys       Keys   `json:"keys"`
 }

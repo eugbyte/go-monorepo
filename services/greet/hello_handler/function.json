@@ -3,7 +3,7 @@
     {
       "type": "httpTrigger",
       "direction": "in",
-      "name": "request",
+      "name": "req",
       "methods": [
         "post"
       ],
@@ -12,7 +12,7 @@
     {
       "type": "http",
       "direction": "out",
-      "name": "response"
+      "name": "res"
     }
   ]
 }

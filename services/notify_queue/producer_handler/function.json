@@ -4,22 +4,13 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "request",
-      "methods": [
-        "post"
-      ],
-      "route": "notify-queue"
+      "methods": ["post"],
+      "route": "notify"
     },
     {
       "type": "http",
       "direction": "out",
       "name": "response"
-    },
-    {
-      "type": "queue",
-      "name": "message",
-      "direction": "out",
-      "queueName": "web-notifications",
-      "connection": "AzureWebJobsStorage"
     }
   ]
 }

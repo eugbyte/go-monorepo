@@ -10,19 +10,15 @@ import (
 
 func Handler(response http.ResponseWriter, request *http.Request) {
 
-	var requestBody models.RequestBody
-	err := json.NewDecoder(request.Body).Decode(&requestBody)
+	log.Trace("Init", "Hello")
+
+	var subscription models.Subscription
+	err := json.NewDecoder(request.Body).Decode(&subscription)
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	}
-	log.Trace("requestBody.MetaData", requestBody.Metadata)
 
-	var reqData models.QueueData
-	json.Unmarshal(requestBody.Data["request"], &reqData)
-	log.Trace("reqData", reqData)
-
-	subscription := reqData.Body.(models.Subscription)
 	log.Trace("subscription", subscription)
 
 	responseBody := models.ResponseBody{}
