@@ -10,15 +10,15 @@
   },
   "extensionBundle": {
     "id": "Microsoft.Azure.Functions.ExtensionBundle",
-    "version": "[2.*, 3.0.0)"
+    "version": "[3.*, 4.0.0)"
   },
-  "functionTimeout": "00:00:10",
+  "functionTimeout": "00:00:30",
   "customHandler": {
     "description": {
       "defaultExecutablePath": "main",
       "workingDirectory": "",
       "arguments": []
     },
-    "enableForwardingHttpRequest": true
+    "enableForwardingHttpRequest": false
   }
 }
