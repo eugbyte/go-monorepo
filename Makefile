@@ -1,6 +1,15 @@
 #----LIB----
-tidy-libs:
-	cd libs && make tidy
+##----MIDDLEWARES----
+tidy-middlewares:
+	cd libs/middlewares && make tidy
+lint-middlewares:
+	cd libs/middlewares && make lint-fix
+
+##----UTILS----
+tidy-utils:
+	cd libs/utils && make tidy
+lint-utils:
+	cd libs/utils && make lint-fix
 
 #----SERVICES----
 ##----NOTIFY----
