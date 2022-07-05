@@ -4,6 +4,9 @@ API to trigger web push notifications
 
 Monorepo in go, using `go.work` workspaces
 
+## Design
+https://drive.google.com/file/d/1iphcdtrMoDIungTmJRdoEseqfzLfNg_P/view?usp=sharing
+
 ## Installation
 install `azure functions core tools` [here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cwindows%2Cpowershell%2Cazurecli%2Cbash&source=docs#install-the-azure-functions-core-tools)
 

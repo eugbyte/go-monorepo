@@ -4,4 +4,5 @@ use (
     ./libs/middlewares
     ./libs/utils
     ./services/greet
+    ./services/notify_queue
 )
