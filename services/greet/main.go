@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/web-notify/api/monorepo/libs/config"
 	"github.com/web-notify/api/monorepo/libs/middlewares"
+	"github.com/web-notify/api/monorepo/libs/utils/config"
 	hello "github.com/web-notify/api/monorepo/services/notify/hello_handler"
 )
 

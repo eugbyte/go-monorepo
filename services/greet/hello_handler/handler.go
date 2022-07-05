@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/web-notify/api/monorepo/libs/util"
+	"github.com/web-notify/api/monorepo/libs/utils/log"
 )
 
 type RequestBody struct {
@@ -24,7 +24,7 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	}
-	util.Trace("requestBody", requestBody)
+	log.Trace("requestBody", requestBody)
 
 	message := strings.ToUpper(requestBody.Message) + "!!"
 	responseBody := map[string]interface{}{"message": message}
