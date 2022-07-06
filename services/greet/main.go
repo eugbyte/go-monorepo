@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	var address string = config.Config.LOCAL_PORT
+	var address string = config.LOCAL_PORT
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/hello", middlewares.Middy(hello.Handler, middlewares.LogMiddleWare{}))
 

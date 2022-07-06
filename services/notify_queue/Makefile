@@ -9,7 +9,7 @@ build:
 dev:
 	go run main.go
 func-start:
-	func start --verbose
+	func start
 watch:
 	when-changed -r -1 -s "./" make build
 clean:

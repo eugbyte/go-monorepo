@@ -11,6 +11,12 @@ tidy-utils:
 lint-utils:
 	cd libs/utils && make lint-fix
 
+##----QUEUE----
+tidy-queue:
+	cd libs/queue && make tidy
+lint-queue:
+	cd libs/queue && make lint-fix
+
 #----SERVICES----
 ##----GREET----
 tidy-greet:
@@ -52,3 +58,9 @@ download-libs:
 	cd libs && make download
 download-services:
 	cd services/greet && make download
+install-azurite:
+	npm install -g azurite
+
+#----CONTAINERS----
+start-azurite:
+	azurite --silent --location c:\azurite --debug c:\azurite\debug.log
