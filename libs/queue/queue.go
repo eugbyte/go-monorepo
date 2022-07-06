@@ -31,7 +31,7 @@ type QueueServiceImpl interface {
 func (qService *QueueService) Init(cxt context.Context, queueName string, accountName string, accountKey string) {
 	qService.cxt = cxt
 	// http://localhost/devstoreaccount1/my-queue
-	connection := GetConnectionString(accountName, queueName)
+	connection := getConnectionString(accountName, queueName)
 	logs.Trace("connectionString:", connection)
 	urlObj, err := url.Parse(connection)
 	if err != nil {
@@ -45,16 +45,6 @@ func (qService *QueueService) Init(cxt context.Context, queueName string, accoun
 	var queueUrl azqueue.QueueURL = azqueue.NewQueueURL(*urlObj, azqueue.NewPipeline(credential, azqueue.PipelineOptions{}))
 	qService.queueUrl = queueUrl
 	logs.Trace("QueueUrl", qService.queueUrl.URL())
-}
-
-// To generate the QueueURL to the queue
-// connection string: "http://127.0.0.1:10001/devstoreaccount1/{queueName}"
-func GetConnectionString(accountName string, queueName string) string {
-	if config.STAGE == config.DEV {
-		return fmt.Sprintf("%s/%s/%s", "http://127.0.0.1:10001", accountName, queueName)
-	} else {
-		return fmt.Sprintf("https://%s.queue.core.windows.net/%s", accountName, queueName)
-	}
 }
 
 func (qService *QueueService) QueueExist() bool {
@@ -73,4 +63,14 @@ func (qService *QueueService) CreateQueue(metaData azqueue.Metadata) error {
 func (qService *QueueService) Enqueue(messageText string, visibilityTimeout time.Duration, timeToLive time.Duration) (*azqueue.EnqueueMessageResponse, error) {
 	messageUrl := qService.queueUrl.NewMessagesURL()
 	return messageUrl.Enqueue(qService.cxt, messageText, visibilityTimeout, timeToLive)
+}
+
+// To generate the QueueURL to the queue
+// connection string: "http://127.0.0.1:10001/devstoreaccount1/{queueName}"
+func getConnectionString(accountName string, queueName string) string {
+	if config.STAGE == config.DEV {
+		return fmt.Sprintf("%s/%s/%s", "http://127.0.0.1:10001", accountName, queueName)
+	} else {
+		return fmt.Sprintf("https://%s.queue.core.windows.net/%s", accountName, queueName)
+	}
 }
