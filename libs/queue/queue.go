@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-storage-queue-go/azqueue"
+	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/logs"
 )
 
@@ -17,7 +18,7 @@ type QueueService struct {
 }
 
 type QueueServiceImpl interface {
-	Init(cxt context.Context, queueName string, accountName string, accountKey string, connectionString string)
+	Init(cxt context.Context, queueName string, accountName string, accountKey string)
 	QueueExist() bool
 	CreateQueue(metaData azqueue.Metadata) error
 	Enqueue(messageText string, visibilityTimeout time.Duration, timeToLive time.Duration) (*azqueue.EnqueueMessageResponse, error)
@@ -27,18 +28,12 @@ type QueueServiceImpl interface {
 	Must use this method to initialise the queue. Each queue is unique to the queue name
 	To change to a different queue, must call this method again with a different queueName
 */
-func (qService *QueueService) Init(cxt context.Context, queueName string, accountName string, accountKey string, connectionString string) {
+func (qService *QueueService) Init(cxt context.Context, queueName string, accountName string, accountKey string) {
 	qService.cxt = cxt
 	// http://localhost/devstoreaccount1/my-queue
-	qService.queueUrl = GenQueueUrl(queueName, accountName, accountKey, connectionString)
-	logs.Trace("QueueUrl", qService.queueUrl.URL())
-}
-
-// To generate the QueueURL to the queue
-// connection string: "http://127.0.0.1:10001/devstoreaccount1/{queueName}"
-func GenQueueUrl(queueName string, accountName string, accountKey string, connection string) azqueue.QueueURL {
-
-	_url, err := url.Parse(fmt.Sprintf("%s/%s", connection, queueName))
+	connection := GetConnectionString(accountName, queueName)
+	logs.Trace("connectionString:", connection)
+	urlObj, err := url.Parse(connection)
 	if err != nil {
 		log.Fatal("Error parsing url: ", err)
 	}
@@ -47,9 +42,19 @@ func GenQueueUrl(queueName string, accountName string, accountKey string, connec
 	if err != nil {
 		log.Fatal("Error creating credentials: ", err)
 	}
+	var queueUrl azqueue.QueueURL = azqueue.NewQueueURL(*urlObj, azqueue.NewPipeline(credential, azqueue.PipelineOptions{}))
+	qService.queueUrl = queueUrl
+	logs.Trace("QueueUrl", qService.queueUrl.URL())
+}
 
-	queueUrl := azqueue.NewQueueURL(*_url, azqueue.NewPipeline(credential, azqueue.PipelineOptions{}))
-	return queueUrl
+// To generate the QueueURL to the queue
+// connection string: "http://127.0.0.1:10001/devstoreaccount1/{queueName}"
+func GetConnectionString(accountName string, queueName string) string {
+	if config.STAGE == config.DEV {
+		return fmt.Sprintf("%s/%s/%s", "http://127.0.0.1:10001", accountName, queueName)
+	} else {
+		return fmt.Sprintf("https://%s.queue.core.windows.net/%s", accountName, queueName)
+	}
 }
 
 func (qService *QueueService) QueueExist() bool {
