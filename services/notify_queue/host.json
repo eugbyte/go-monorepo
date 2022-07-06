@@ -6,21 +6,15 @@
         "isEnabled": true,
         "excludedTypes": "Request"
       }
-    },
-    "logLevel": {
-      "default": "Information"
     }
   },
   "extensionBundle": {
     "id": "Microsoft.Azure.Functions.ExtensionBundle",
     "version": "[3.3.0, 4.0.0)"
   },
-  "functionTimeout": "00:00:10",
   "customHandler": {
     "description": {
-      "defaultExecutablePath": "main.exe",
-      "workingDirectory": "",
-      "arguments": []
+      "defaultExecutablePath": "main"
     },
     "enableForwardingHttpRequest": true
   }

@@ -2,6 +2,8 @@ go 1.18
 
 use (
     ./libs/middlewares
+    ./libs/queue
     ./libs/utils
     ./services/greet
+    ./services/notify_queue
 )

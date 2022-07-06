@@ -4,10 +4,8 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "methods": [
-        "post"
-      ],
-      "route": "hello"
+      "methods": ["post"],
+      "route": "notify"
     },
     {
       "type": "http",
