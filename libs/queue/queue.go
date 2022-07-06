@@ -5,28 +5,33 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"time"
 
 	"github.com/Azure/azure-storage-queue-go/azqueue"
+	"github.com/web-notify/api/monorepo/libs/utils/logs"
 )
 
 type QueueService struct {
-	QueueUrl azqueue.QueueURL
-	CXT      context.Context
+	queueUrl azqueue.QueueURL
+	cxt      context.Context
 }
 
 type QueueServiceImpl interface {
-	Init(queueName string, cxt context.Context, accountName string, accountKey string, connectionString string)
-	IsQueueExist() bool
-	CreateQueue() error
-	GetMessageURL() azqueue.MessagesURL
+	Init(cxt context.Context, queueName string, accountName string, accountKey string, connectionString string)
+	QueueExist() bool
+	CreateQueue(metaData azqueue.Metadata) error
+	Enqueue(messageText string, visibilityTimeout time.Duration, timeToLive time.Duration) (*azqueue.EnqueueMessageResponse, error)
 }
 
 /*
-	Must use this method to initialise the queue client as a state
+	Must use this method to initialise the queue. Each queue is unique to the queue name
+	To change to a different queue, must call this method again with a different queueName
 */
-func (qService *QueueService) Init(queueName string, cxt context.Context, accountName string, accountKey string, connectionString string) {
-	qService.CXT = cxt
-	qService.QueueUrl = GenQueueUrl(queueName, accountName, accountKey, connectionString)
+func (qService *QueueService) Init(cxt context.Context, queueName string, accountName string, accountKey string, connectionString string) {
+	qService.cxt = cxt
+	// http://localhost/devstoreaccount1/my-queue
+	qService.queueUrl = GenQueueUrl(queueName, accountName, accountKey, connectionString)
+	logs.Trace("QueueUrl", qService.queueUrl.URL())
 }
 
 // To generate the QueueURL to the queue
@@ -47,18 +52,20 @@ func GenQueueUrl(queueName string, accountName string, accountKey string, connec
 	return queueUrl
 }
 
-func (qService *QueueService) IsQueueExist() bool {
-	_, err := qService.QueueUrl.GetProperties(qService.CXT)
+func (qService *QueueService) QueueExist() bool {
+	_, err := qService.queueUrl.GetProperties(qService.cxt)
 	return err == nil
 }
 
-func (qService *QueueService) CreateQueue() error {
-	ctx := context.Background()
-	_, err := qService.QueueUrl.Create(ctx, azqueue.Metadata{})
-
+func (qService *QueueService) CreateQueue(metaData azqueue.Metadata) error {
+	if metaData == nil {
+		metaData = azqueue.Metadata{}
+	}
+	_, err := qService.queueUrl.Create(qService.cxt, metaData)
 	return err
 }
 
-func (qService QueueService) GetMessageURL() azqueue.MessagesURL {
-	return qService.QueueUrl.NewMessagesURL()
+func (qService *QueueService) Enqueue(messageText string, visibilityTimeout time.Duration, timeToLive time.Duration) (*azqueue.EnqueueMessageResponse, error) {
+	messageUrl := qService.queueUrl.NewMessagesURL()
+	return messageUrl.Enqueue(qService.cxt, messageText, visibilityTimeout, timeToLive)
 }
