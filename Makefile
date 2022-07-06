@@ -55,9 +55,12 @@ install-docker-compose:
 	curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
           && sudo chmod +x /usr/local/bin/docker-compose
 download-libs:
-	cd libs && make download
+	cd libs/utils && make download
+	cd libs/middlewares && make download
+	cd libs/queue && make download
 download-services:
 	cd services/greet && make download
+	cd services/notify_queue && make download
 install-azurite:
 	npm install -g azurite
 
