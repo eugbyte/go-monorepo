@@ -1,4 +1,4 @@
-package logs
+package format
 
 import (
 	"encoding/json"

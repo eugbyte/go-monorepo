@@ -7,12 +7,12 @@ import (
 
 	qLib "github.com/web-notify/api/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
-	"github.com/web-notify/api/monorepo/libs/utils/logs"
+	"github.com/web-notify/api/monorepo/libs/utils/format"
 	"github.com/web-notify/api/monorepo/services/notify_queue/models"
 )
 
 func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, request *http.Request) {
-	logs.Trace("In handler")
+	format.Trace("In handler")
 
 	var subscription models.Subscription
 	err := json.NewDecoder(request.Body).Decode(&subscription)
@@ -20,15 +20,15 @@ func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, reque
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	}
-	logs.Trace("subscription", subscription)
+	format.Trace("subscription", subscription)
 
-	message := logs.Stringify(subscription)
+	message := format.Stringify(subscription)
 
 	if !(qService.QueueExist()) {
-		logs.Trace("queue does not exist, creating one...")
+		format.Trace("queue does not exist, creating one...")
 		qService.CreateQueue(nil)
 	} else {
-		logs.Trace("queue exist")
+		format.Trace("queue exist")
 	}
 
 	_, err = qService.Enqueue(message, 0, 0)
@@ -36,7 +36,7 @@ func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, reque
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	logs.Trace("successfully enqueued")
+	format.Trace("successfully enqueued")
 
 	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err = json.NewEncoder(response).Encode(map[string]string{
