@@ -39,7 +39,7 @@ jobs:
           make download-libs
           make download-services
           sudo make install-lint
-      - name: Run unit test
+      - name: Run unit tests
         run: |
           make test-greet
           make test-notify
