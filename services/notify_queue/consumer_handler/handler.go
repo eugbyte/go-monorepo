@@ -7,7 +7,6 @@ import (
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
 	"github.com/web-notify/api/monorepo/libs/utils/logs"
 	"github.com/web-notify/api/monorepo/services/notify_queue/models"
-	// "github.com/web-notify/api/monorepo/services/notify_queue/models"
 )
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
