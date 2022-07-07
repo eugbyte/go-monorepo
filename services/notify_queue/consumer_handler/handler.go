@@ -27,12 +27,12 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
+	logs.Trace("rawMessage:", message)
 	err = json.Unmarshal([]byte(message), &message)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	logs.Trace("message:", message)
 
 	var subscription models.Subscription
 	err = json.Unmarshal([]byte(message), &subscription)
