@@ -23,6 +23,8 @@ Full list of commands are listed in Makefile
 ## Start azure functions core server
 `make build-<service>`
 
+`make azurite-start`
+
 `make func-start-<service>`
 
 ## Watch files and recompile whenever they change
