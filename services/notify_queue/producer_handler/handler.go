@@ -40,7 +40,7 @@ func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, reque
 
 	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err = json.NewEncoder(response).Encode(map[string]string{
-		"message": "success",
+		"message": "successfully enqueued",
 	})
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)

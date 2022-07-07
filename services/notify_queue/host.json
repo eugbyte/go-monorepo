@@ -17,5 +17,11 @@
       "defaultExecutablePath": "main"
     },
     "enableForwardingHttpRequest": true
+  },
+  "extensions": {
+    "queues": {
+      "maxDequeueCount": 2,
+      "messageEncoding": "none"
+    }
   }
 }

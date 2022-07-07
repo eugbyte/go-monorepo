@@ -65,5 +65,5 @@ install-azurite:
 	npm install -g azurite
 
 #----CONTAINERS----
-start-azurite:
+azurite-start:
 	azurite --silent --location c:\azurite --debug c:\azurite\debug.log
