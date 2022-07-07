@@ -12,22 +12,23 @@ import (
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
+type QueueServiceImpl interface {
+	/*
+		Must use this method to initialise the queue. Each queue is unique to the queue name
+		To change to a different queue, must call this method again with a different queueName
+	*/
+	Init(cxt context.Context, queueName string, accountName string, accountKey string)
+	QueueExist() bool
+	// metaData argument is optional
+	CreateQueue(metaData azqueue.Metadata) error
+	Enqueue(messageText string, visibilityTimeout time.Duration, timeToLive time.Duration) (*azqueue.EnqueueMessageResponse, error)
+}
+
 type QueueService struct {
 	queueUrl azqueue.QueueURL
 	cxt      context.Context
 }
 
-type QueueServiceImpl interface {
-	Init(cxt context.Context, queueName string, accountName string, accountKey string)
-	QueueExist() bool
-	CreateQueue(metaData azqueue.Metadata) error
-	Enqueue(messageText string, visibilityTimeout time.Duration, timeToLive time.Duration) (*azqueue.EnqueueMessageResponse, error)
-}
-
-/*
-	Must use this method to initialise the queue. Each queue is unique to the queue name
-	To change to a different queue, must call this method again with a different queueName
-*/
 func (qService *QueueService) Init(cxt context.Context, queueName string, accountName string, accountKey string) {
 	qService.cxt = cxt
 	// http://localhost/devstoreaccount1/my-queue
