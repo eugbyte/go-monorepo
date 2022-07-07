@@ -1,7 +1,7 @@
 {
     "bindings": [
       {
-        "name": "queueItem",
+        "name": "res",
         "type": "queueTrigger",
         "direction": "in",
         "queueName": "my-queue",

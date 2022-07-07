@@ -3,23 +3,35 @@ package consumer_handler
 import (
 	"encoding/json"
 	"net/http"
-
-	qModels "github.com/web-notify/api/monorepo/libs/queue/models"
-	"github.com/web-notify/api/monorepo/libs/utils/logs"
 )
 
-func Handler(response http.ResponseWriter, request *http.Request) {
-	var requestBody qModels.RequestBody
-	err := json.NewDecoder(request.Body).Decode(&requestBody)
-	if err != nil {
-		http.Error(response, err.Error(), http.StatusBadRequest)
-		return
-	}
-	logs.Trace("subscription", requestBody)
+type InvokeRequest struct {
+	Data     map[string]json.RawMessage
+	Metadata map[string]interface{}
+}
 
-	responseBody := qModels.ResponseBody{}
-	responseBody.Outputs.Response.Body = "success"
-	response.Header().Set("Content-Type", "application/json")
-	bytes, _ := json.Marshal(responseBody)
-	response.Write(bytes)
+type InvokeResponse struct {
+	Outputs     map[string]interface{}
+	Logs        []string
+	ReturnValue interface{}
+}
+
+func Handler(w http.ResponseWriter, r *http.Request) {
+	var invokeRequest InvokeRequest
+
+	d := json.NewDecoder(r.Body)
+	d.Decode(&invokeRequest)
+
+	outputs := make(map[string]interface{})
+	outputs["message"] = ""
+
+	resData := make(map[string]interface{})
+	resData["body"] = "Order enqueued"
+	outputs["res"] = resData
+	invokeResponse := InvokeResponse{outputs, []string{"Hello log"}, nil}
+	bytes, _ := json.Marshal(invokeResponse)
+
+	w.WriteHeader(http.StatusAccepted)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(bytes)
 }
