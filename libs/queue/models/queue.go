@@ -7,22 +7,11 @@ type RequestBody struct {
 	Metadata map[string]interface{}
 }
 
-type QueueData struct {
-	Url     string
-	Method  string
-	Query   map[string]string
-	Headers struct {
-		ContentType []string `json:"Content-Type"`
-	}
-	Params map[string]string
-	Body   interface{}
-}
-
 type Output struct {
-	Message  string `json:"message"`
-	Response struct {
+	Message string `json:"message"`
+	Res     struct {
 		Body string `json:"body"`
-	} `json:"response"`
+	} `json:"res"`
 }
 
 type ResponseBody struct {

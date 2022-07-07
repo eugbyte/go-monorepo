@@ -3,35 +3,41 @@ package consumer_handler
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/web-notify/api/monorepo/libs/queue/models"
+	"github.com/web-notify/api/monorepo/libs/utils/logs"
 )
 
-type InvokeRequest struct {
-	Data     map[string]json.RawMessage
-	Metadata map[string]interface{}
-}
+func Handler(rw http.ResponseWriter, req *http.Request) {
+	var requestBody models.RequestBody
 
-type InvokeResponse struct {
-	Outputs     map[string]interface{}
-	Logs        []string
-	ReturnValue interface{}
-}
+	err := json.NewDecoder(req.Body).Decode(&requestBody)
+	if err != nil {
+		http.Error(rw, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	var invokeRequest InvokeRequest
+	logs.Trace("requestBody:", requestBody)
 
-	d := json.NewDecoder(r.Body)
-	d.Decode(&invokeRequest)
+	var message string
+	err = json.Unmarshal(requestBody.Data["req"], &message)
+	if err != nil {
+		http.Error(rw, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-	outputs := make(map[string]interface{})
-	outputs["message"] = ""
+	logs.Trace("message:", message)
 
-	resData := make(map[string]interface{})
-	resData["body"] = "Order enqueued"
-	outputs["res"] = resData
-	invokeResponse := InvokeResponse{outputs, []string{"Hello log"}, nil}
-	bytes, _ := json.Marshal(invokeResponse)
+	outputs := models.Output{}
+	outputs.Message = "some message"
+	outputs.Res.Body = message
+	responseBody := models.ResponseBody{
+		Outputs:     outputs,
+		Logs:        []string{"Message successfully dequeued"},
+		ReturnValue: message,
+	}
 
-	w.WriteHeader(http.StatusAccepted)
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(bytes)
+	bytes, _ := json.Marshal(responseBody)
+	rw.Header().Set("Content-Type", "application/json")
+	rw.Write(bytes)
 }
