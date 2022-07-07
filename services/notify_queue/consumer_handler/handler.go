@@ -6,12 +6,12 @@ import (
 	"net/http"
 
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
-	"github.com/web-notify/api/monorepo/libs/utils/format"
+	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify_queue/models"
 )
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
-	format.Trace("queue triggered")
+	formats.Trace("queue triggered")
 
 	var requestBody qmodels.RequestBody
 	err := json.NewDecoder(req.Body).Decode(&requestBody)
@@ -20,6 +20,8 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	formats.Trace(requestBody)
+
 	// the message is stringified twice, so need to unmarshall twice
 	var message string
 	err = json.Unmarshal(requestBody.Data["req"], &message)
@@ -27,7 +29,7 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	format.Trace("rawMessage:", message)
+	formats.Trace("rawMessage:", message)
 	err = json.Unmarshal([]byte(message), &message)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
@@ -40,13 +42,13 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	format.Trace("subscription:", subscription)
+	formats.Trace("subscription:", subscription)
 
 	responseBody := qmodels.ResponseBody{
 		Outputs: map[string]interface{}{
 			"res": "",
 		},
-		Logs:        []string{fmt.Sprintf("message: %s", message), "Message successfully dequeued"},
+		Logs:        []string{"Message successfully dequeued", fmt.Sprintf("message: '%s'", message)},
 		ReturnValue: "",
 	}
 

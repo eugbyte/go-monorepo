@@ -9,7 +9,7 @@ import (
 
 	"github.com/Azure/azure-storage-queue-go/azqueue"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
-	"github.com/web-notify/api/monorepo/libs/utils/format"
+	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
 type QueueService struct {
@@ -32,7 +32,7 @@ func (qService *QueueService) Init(cxt context.Context, queueName string, accoun
 	qService.cxt = cxt
 	// http://localhost/devstoreaccount1/my-queue
 	connection := getConnectionString(accountName, queueName)
-	format.Trace("connectionString:", connection)
+	formats.Trace("connectionString:", connection)
 	urlObj, err := url.Parse(connection)
 	if err != nil {
 		log.Fatal("Error parsing url: ", err)
@@ -44,7 +44,7 @@ func (qService *QueueService) Init(cxt context.Context, queueName string, accoun
 	}
 	var queueUrl azqueue.QueueURL = azqueue.NewQueueURL(*urlObj, azqueue.NewPipeline(credential, azqueue.PipelineOptions{}))
 	qService.queueUrl = queueUrl
-	format.Trace("QueueUrl", qService.queueUrl.URL())
+	formats.Trace("QueueUrl", qService.queueUrl.URL())
 }
 
 func (qService *QueueService) QueueExist() bool {
