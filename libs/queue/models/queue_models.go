@@ -7,15 +7,8 @@ type RequestBody struct {
 	Metadata map[string]interface{}
 }
 
-type Output struct {
-	Message string `json:"message"`
-	Res     struct {
-		Body string `json:"body"`
-	} `json:"res"`
-}
-
 type ResponseBody struct {
-	Outputs     Output
+	Outputs     map[string]interface{}
 	Logs        []string
 	ReturnValue interface{}
 }

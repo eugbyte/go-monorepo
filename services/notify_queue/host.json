@@ -20,7 +20,8 @@
   },
   "extensions": {
     "queues": {
-      "maxDequeueCount": 2
+      "maxDequeueCount": 2,
+      "messageEncoding": "none"
     }
   }
 }
