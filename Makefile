@@ -45,6 +45,8 @@ dev-notify:
 	cd services/notify_queue && make dev
 func-start-notify:
 	cd services/notify_queue && make func-start
+test-notify:
+	cd services/notify_queue && make test
 
 #----INSTALLATION----
 install-lint:

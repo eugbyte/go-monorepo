@@ -17,7 +17,8 @@ clean:
 
 #----TESTING----
 test:
-	go test -v ./hello_handler/... || go clean -testcache
+	go test -v ./producer_handler/... || go clean -testcache
+	go test -v ./consumer_handler/... || go clean -testcache
 	go clean -testcache
 
 #----LINT----
