@@ -10,5 +10,5 @@ type RequestBody struct {
 type ResponseBody struct {
 	Outputs     map[string]interface{}
 	Logs        []string
-	ReturnValue interface{}
+	ReturnValue string
 }
