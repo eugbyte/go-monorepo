@@ -2,6 +2,8 @@ package queue
 
 import (
 	"testing"
+
+	"github.com/web-notify/api/monorepo/libs/utils/config"
 )
 
 func TestQueue(t *testing.T) {
@@ -11,7 +13,9 @@ func TestQueue(t *testing.T) {
 }
 
 func TestGetConnectionString(t *testing.T) {
+	t.Log("stage", config.STAGE)
 	connection := getConnectionString("my_account", "my_queue")
+
 	t.Log(connection)
 	devAns := "http://127.0.0.1:10001/my_account/my_queue"
 	if connection != devAns {
