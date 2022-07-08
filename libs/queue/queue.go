@@ -68,10 +68,10 @@ func (qService *QueueService) Enqueue(messageText string, visibilityTimeout time
 
 // To generate the QueueURL to the queue
 // connection string: "http://127.0.0.1:10001/devstoreaccount1/{queueName}"
-func GetConnectionString(stage string, accountName string, queueName string) string {
+func GetConnectionString(stage string, accountName string) string {
 	if config.STAGE == config.DEV {
-		return fmt.Sprintf("%s/%s/%s", "http://127.0.0.1:10001", accountName, queueName)
+		return fmt.Sprintf("%s/%s", "http://127.0.0.1:10001", accountName)
 	} else {
-		return fmt.Sprintf("https://%s.queue.core.windows.net/%s", accountName, queueName)
+		return fmt.Sprintf("https://%s.queue.core.windows.net", accountName)
 	}
 }
