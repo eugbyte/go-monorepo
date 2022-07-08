@@ -4,6 +4,8 @@ tidy-middlewares:
 	cd libs/middlewares && make tidy
 lint-middlewares:
 	cd libs/middlewares && make lint-fix
+test-middlewares:
+	cd libs/middlewares && make test
 
 ##----UTILS----
 tidy-utils:

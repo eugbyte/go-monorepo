@@ -3,6 +3,10 @@ tidy:
 download:
 	go mod download
 
+#----TEST----
+test:
+	go test -v || go clean -testcache
+
 #----LINT----
 lint:
 	@if [ -z `which golangci-lint 2> /dev/null` ]; then \
