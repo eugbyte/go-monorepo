@@ -2,7 +2,7 @@ package formats
 
 import "testing"
 
-func TestHandler(t *testing.T) {
+func Test_Stringify(t *testing.T) {
 	obj := map[string]interface{}{
 		"a": 123,
 		"b": map[string][]int{
