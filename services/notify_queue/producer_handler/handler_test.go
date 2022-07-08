@@ -17,7 +17,7 @@ import (
 
 type MockQueueService struct{}
 
-func (qService *MockQueueService) Init(cxt context.Context, queueName string, accountName string, accountKey string) {
+func (qService *MockQueueService) Init(cxt context.Context, queueName string, rootConnection string, accountName string, accountKey string) {
 }
 func (qService *MockQueueService) QueueExist() bool {
 	return true

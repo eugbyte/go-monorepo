@@ -17,7 +17,7 @@ type QueueServiceImpl interface {
 		Must use this method to initialise the queue. Each queue is unique to the queue name
 		To change to a different queue, must call this method again with a different queueName
 	*/
-	Init(cxt context.Context, queueName string, accountName string, accountKey string)
+	Init(cxt context.Context, queueName string, rootConnection string, accountName string, accountKey string)
 	QueueExist() bool
 	// metaData argument is optional
 	CreateQueue(metaData azqueue.Metadata) error
@@ -29,10 +29,10 @@ type QueueService struct {
 	cxt      context.Context
 }
 
-func (qService *QueueService) Init(cxt context.Context, queueName string, accountName string, accountKey string) {
+func (qService *QueueService) Init(cxt context.Context, queueName string, rootConnection string, accountName string, accountKey string) {
 	qService.cxt = cxt
 	// http://localhost/devstoreaccount1/my-queue
-	connection := getConnectionString(accountName, queueName)
+	connection := fmt.Sprintf("%s/%s", rootConnection, queueName)
 	formats.Trace("connectionString:", connection)
 	urlObj, err := url.Parse(connection)
 	if err != nil {
@@ -68,10 +68,10 @@ func (qService *QueueService) Enqueue(messageText string, visibilityTimeout time
 
 // To generate the QueueURL to the queue
 // connection string: "http://127.0.0.1:10001/devstoreaccount1/{queueName}"
-func getConnectionString(accountName string, queueName string) string {
+func GetConnectionString(stage string, accountName string) string {
 	if config.STAGE == config.DEV {
-		return fmt.Sprintf("%s/%s/%s", "http://127.0.0.1:10001", accountName, queueName)
+		return fmt.Sprintf("%s/%s", "http://127.0.0.1:10001", accountName)
 	} else {
-		return fmt.Sprintf("https://%s.queue.core.windows.net/%s", accountName, queueName)
+		return fmt.Sprintf("https://%s.queue.core.windows.net", accountName)
 	}
 }
