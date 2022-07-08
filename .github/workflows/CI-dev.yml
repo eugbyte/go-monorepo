@@ -81,8 +81,11 @@ jobs:
           make download-libs
           make download-services
           sudo make install-lint
-      - name: Start azurite
-        run: make azurite-start &
+      - name: Install and start azurite
+        id: azuright
+        uses: potatoqualitee/azuright@v1.1
+      - name: Install azure func
+        uses: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
         run: make func-start-notify &
       - name: Run lint
