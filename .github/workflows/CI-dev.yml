@@ -83,6 +83,8 @@ jobs:
           sudo make install-lint
       - name: Start azurite
         run: make azurite-start &
+      - name: Start azure func
+        run: make func-start-notify &
       - name: Run lint
         run: make lint-greet
 
