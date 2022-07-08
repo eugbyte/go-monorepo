@@ -10,8 +10,6 @@ dev:
 	go run main.go
 func-start:
 	func start
-watch:
-	when-changed -r -1 -s "./" make build
 clean:
 	rm -rf ./bin ./vendor go.sum
 

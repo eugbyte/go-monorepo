@@ -41,6 +41,8 @@ jobs:
           sudo make install-lint
       - name: Run unit tests
         run: |
+          make test-queue
+          make test-formats
           make test-greet
           make test-notify
       - name: Run lint
