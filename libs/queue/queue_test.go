@@ -13,12 +13,19 @@ func TestQueue(t *testing.T) {
 }
 
 func TestGetConnectionString(t *testing.T) {
-	t.Log("stage", config.STAGE)
-	connection := GetConnectionString(config.STAGE, "my_account")
-
+	connection := GetConnectionString(config.DEV, "my_account")
 	t.Log(connection)
-	devAns := "http://127.0.0.1:10001/my_account/my_queue"
+
+	devAns := "http://127.0.0.1:10001/my_account"
 	if connection != devAns {
 		t.Fatalf("test failed. expectected %s, received %s", devAns, connection)
+	}
+
+	connection = GetConnectionString("abc", "my_account")
+	t.Log(connection)
+
+	stgAns := "https://my_account.queue.core.windows.net"
+	if connection != stgAns {
+		t.Fatalf("test failed. expectected %s, received %s", stgAns, connection)
 	}
 }
