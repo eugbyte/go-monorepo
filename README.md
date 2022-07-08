@@ -1,4 +1,4 @@
-# browser-notify/api/monorepo
+# browser-notify/api
 ## About
 API to trigger web push notifications
 
@@ -27,15 +27,10 @@ Full list of commands are listed in Makefile
 
 `make func-start-<service>`
 
-## Watch files and recompile whenever they change
-Open another terminal
-
-`make watch-<service>`
-
 ## Gotchas
 1. `function.json` cannot be in nested directories, see [here](https://github.com/Azure/azure-functions-host/issues/5373)
-2. Azure functions core tools does not have a watch option. Thus, need to keep manually rebuilding the executable file.
-3. When running `go mod tidy`, packages specified in `go.work` [will not be ignored](https://github.com/golang/go/issues/50750). So, do `go mod tidy -e` instead. The `-e` flag causes go mod tidy to attempt to proceed despite errors encountered while loading packages.
+2. Azure functions core tools does not have a `watch` option. Thus, need to keep manually rebuilding the executable file.
+3. When running `go mod tidy`, packages specified in `go.work` [will not be ignored](https://github.com/golang/go/issues/50750). So, do `go mod tidy -e` instead. The `-e` flag causes `go mod tidy` to attempt to proceed despite errors encountered while loading packages.
 4. To have your own customised routes, `enableForwardingHttpRequest` must to be set to true. Otherwise, the route to configure for the custom mux http server must be the name of the function. Azure func by default, will call the custom server via http with the name of the function as the route.
 5. For non-http triggers, the route to configure for the mux http server must be the name of the function
 6. The go pkg for azure queue only allows for messages to be enqueued in UTF-8 format. On the other hand, by default, Azure func expects the message from the queue to be in Base64. Need to change the decoding option in `host.json`, under `extensions.queue.messageEncoding`

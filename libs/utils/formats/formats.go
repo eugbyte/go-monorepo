@@ -12,11 +12,7 @@ import (
 func Trace(objs ...interface{}) {
 	var strs []string
 	for _, obj := range objs {
-		bytes, err := (json.MarshalIndent(obj, "", "\t"))
-		if err != nil {
-			log.Panicln(err)
-		}
-		strs = append(strs, string(bytes))
+		strs = append(strs, Stringify(obj))
 	}
 	fmt.Println(colors.Green, strings.Join(strs, " "), colors.Reset)
 }

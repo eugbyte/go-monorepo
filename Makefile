@@ -4,18 +4,24 @@ tidy-middlewares:
 	cd libs/middlewares && make tidy
 lint-middlewares:
 	cd libs/middlewares && make lint-fix
+test-middlewares:
+	cd libs/middlewares && make test
 
 ##----UTILS----
 tidy-utils:
 	cd libs/utils && make tidy
 lint-utils:
 	cd libs/utils && make lint-fix
+test-utils:
+	cd libs/utils && make test
 
 ##----QUEUE----
 tidy-queue:
 	cd libs/queue && make tidy
 lint-queue:
 	cd libs/queue && make lint-fix
+test-queue:
+	cd libs/queue && make test
 
 #----SERVICES----
 ##----GREET----
@@ -23,8 +29,6 @@ tidy-greet:
 	cd services/greet && make tidy
 build-greet:
 	cd services/greet && make build
-watch-greet:
-	cd services/greet && make watch
 dev-greet:
 	cd services/greet && make dev
 func-start-greet:
