@@ -42,7 +42,7 @@ jobs:
       - name: Run unit tests
         run: |
           make test-queue
-          make test-formats
+          make test-utils
           make test-greet
           make test-notify
       - name: Run lint
