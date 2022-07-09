@@ -82,7 +82,5 @@ jobs:
         run: |
          netstat -nat | grep '7071' | grep LISTEN
          netstat -nat | grep '10000' | grep LISTEN
-         ping http://0.0.0.0:7071/api/hello
-         ping http://127.0.0.1:10001
       - name: GET request to fetch greetings
         run: curl --max-time 10 --location --request GET 'http://127.0.0.1:7071/api/hello'
