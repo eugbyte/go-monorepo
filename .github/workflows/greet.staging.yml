@@ -83,4 +83,4 @@ jobs:
          netstat -nat | grep '7071' | grep LISTEN
          netstat -nat | grep '10000' | grep LISTEN
       - name: GET request to fetch greetings
-        run: curl --max-time 10 --location --request GET 'http://127.0.0.1:7071/api/hello'
+        run: curl --max-time 10 --location --request GET 'http://localhost:7071/api/hello'

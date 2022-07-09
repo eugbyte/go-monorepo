@@ -83,7 +83,7 @@ jobs:
         run: netstat -nat | grep '7071\|10000' | grep LISTEN
       - name: POST request to enqueue subscription
         run: |
-          curl --max-time 10 --location --request POST 'http://127.0.0.1:7071/api/notify' \
+          curl --max-time 10 --location --request POST 'http://localhost/api/notify' \
           --header 'Content-Type: application/json' \
           --data-raw '
           {
