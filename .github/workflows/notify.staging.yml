@@ -85,4 +85,4 @@ jobs:
           netstat -nat | grep '10000' | grep LISTEN
       - name: POST request to enqueue subscription
         run: |
-          curl --max-time 10 --location --request POST 'http://localhost/api/notify' --header 'Content-Type: application/json' --data-raw '{"endpoint": "http://localhost:3000", "message": "your order has been received", "expiration_time": "1657034161512", "keys": { "auth": "123", "p256dh": "abc" } }'
+          curl --max-time 10 --location --request POST 'http://localhost:7071/api/notify' --header 'Content-Type: application/json' --data-raw '{"endpoint": "http://localhost:3000", "message": "your order has been received", "expiration_time": "1657034161512", "keys": { "auth": "123", "p256dh": "abc" } }'
