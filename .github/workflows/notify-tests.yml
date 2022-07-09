@@ -5,13 +5,13 @@ concurrency:
 
 on:
   push:
-    paths:
-      - "libs/**"
-      - "services/notify_queue/**"
-      - "services/go.work"
-      - "services/go.work.sum"
-      - "services/.gitignore"
-      - "services/Makefile"
+    # paths:
+    #   - "libs/**"
+    #   - "services/notify_queue/**"
+    #   - "services/go.work"
+    #   - "services/go.work.sum"
+    #   - "services/.gitignore"
+    #   - "services/Makefile"
 
 jobs:
   unit-test:
