@@ -55,6 +55,10 @@ func-start-notify:
 	cd services/notify_queue && make func-start
 test-notify:
 	cd services/notify_queue && make test
+lint-notify:
+	cd services/notify_queue && make lint
+lint-fix-notify:
+	cd services/notify_queue && make lint-fix
 
 #----INSTALLATION----
 install-lint:
