@@ -77,7 +77,7 @@ jobs:
         run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
         run: make func-start-notify &
-      - name: make curl
+      - name: make curl to enqueue subscription
         run: |
           curl --location --request POST 'http://localhost:7071/api/notify' \
           --header 'Content-Type: application/json' \
