@@ -3,8 +3,10 @@ name: notify-queue-e2e
 on:
   push:
     paths:
-      - "libs"
-      - "services/notify_queue"
+      - "libs/**"
+      - "services/notify_queue/**"
+      - "services/go.work"
+      - "services/Makefile"
 
 jobs:
   unit-test:
