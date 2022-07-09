@@ -80,7 +80,7 @@ jobs:
         run: make func-start-greet &
       - name: Check that daemons are running
         run: netstat -nat | grep '7071\|10000' | grep LISTEN
-      - name: POST request to enqueue subscription
+      - name: GET request to fetch greetings
         run: |
-          curl --location --request GET 'http://localhost:7071/api/hello' \
+          curl --max-time 10 --location --request GET 'http://localhost:7071/api/hello' \
           --data-raw ''
