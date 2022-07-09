@@ -69,11 +69,11 @@ jobs:
           go mod download
           make download-libs
           make download-greet
+      - name: Build main.exe
+        run: make build-greet
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
-      - name: Build main.exe
-        run: make build-greet
       - name: Install azure func
         run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func

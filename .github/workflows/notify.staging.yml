@@ -70,6 +70,8 @@ jobs:
           make download-libs
           make download-notify
           sudo make install-lint
+      - name: Build main.exe
+        run: make build-greet
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
@@ -78,7 +80,7 @@ jobs:
       - name: Start azure func
         run: make func-start-notify &
       - name: Check that daemons are running
-        run: netstat -a
+        run: netstat -nat | grep '7071\|10000' | grep LISTEN
       - name: POST request to enqueue subscription
         run: |
           curl --location --max-time 10 --request POST 'http://localhost:7071/api/notify' \
