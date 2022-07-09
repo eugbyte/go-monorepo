@@ -5,13 +5,13 @@ concurrency:
 
 on:
   push:
-    paths:
-      - "libs/**"
-      - "services/notify_queue/**"
-      - "services/go.work"
-      - "services/go.work.sum"
-      - "services/.gitignore"
-      - "services/Makefile"
+    # paths:
+    #   - "libs/**"
+    #   - "services/notify_queue/**"
+    #   - "services/go.work"
+    #   - "services/go.work.sum"
+    #   - "services/.gitignore"
+    #   - "services/Makefile"
 
 jobs:
   unit-test:
@@ -77,9 +77,9 @@ jobs:
         run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
         run: make func-start-notify &
-      - name: make curl to enqueue subscription
+      - name: curl to enqueue subscription
         run: |
-          curl --location --request POST 'http://localhost:7071/api/notify' \
+          curl -i --location --request POST 'http://localhost:7071/api/notify' \
           --header 'Content-Type: application/json' \
           --data-raw '
           {
