@@ -72,12 +72,14 @@ jobs:
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
+      - name: Build main.exe
+        run: make build-greet
       - name: Install azure func
         run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
         run: make func-start-notify &
       - name: Check that daemons are running
-        run: netstat -a
+        run: netstat -nat | grep '7071\|10000' | grep LISTEN
       - name: POST request to enqueue subscription
         run: |
           curl --location --request GET 'http://localhost:7071/api/hello' \
