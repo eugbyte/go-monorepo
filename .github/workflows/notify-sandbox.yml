@@ -63,16 +63,6 @@ jobs:
           make download-libs
           make download-notify
           sudo make install-lint
-      - name: Run unit tests
-        run: |
-          make test-middlewares
-          make test-queue
-          make test-utils
-          make test-notify
-      - name: Run lint
-        run: |
-          make lint-greet
-          make lint-notify
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
@@ -80,18 +70,17 @@ jobs:
         run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
         run: make func-start-notify &
-      - name: |
-              curl --location --request POST 'http://localhost:7071/api/notify' \
-              --header 'Content-Type: application/json' \
-              --data-raw '
-              {
-                  "endpoint": "http://localhost:3000",
-                  "message": "your order has been received",
-                  "expiration_time": "1657034161512",
-                  "keys": {
-                      "auth": "123",
-                      "p256dh": "abc"
-                  }
-              }'
-      - name: Run lint
-        run: make lint-greet
+      - name: make curl
+        run: |
+          curl --location --request POST 'http://localhost:7071/api/notify' \
+          --header 'Content-Type: application/json' \
+          --data-raw '
+          {
+              "endpoint": "http://localhost:3000",
+              "message": "your order has been received",
+              "expiration_time": "1657034161512",
+              "keys": {
+                  "auth": "123",
+                  "p256dh": "abc"
+              }
+          }'
