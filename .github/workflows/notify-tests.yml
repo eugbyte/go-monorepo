@@ -1,4 +1,7 @@
 name: notify-queue-e2e
+concurrency:
+  group: notify-tests
+  cancel-in-progress: true
 
 on:
   push:
