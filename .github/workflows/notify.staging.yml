@@ -73,14 +73,12 @@ jobs:
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
-      - name: Check that azurite queue is running
-        run: ping http://127.0.0.1:10001
       - name: Install azure func
         run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
         run: make func-start-notify &
-      - name: Check that azure func is running
-        run: ping http://localhost:7071
+      - name: Check that daemons are running
+        run: netstat -a
       - name: POST request to enqueue subscription
         run: |
           curl -i --max-time 10 --location --request POST 'http://localhost:7071/api/notify' \
