@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-
-	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
 type RequestBody struct {
@@ -13,24 +11,16 @@ type RequestBody struct {
 }
 
 func Handler(response http.ResponseWriter, request *http.Request) {
-	if request.Method != http.MethodPost {
+	if request.Method != http.MethodGet {
 		http.Error(response, "Wrong HTTP Method", http.StatusBadRequest)
 		return
 	}
 
-	var requestBody RequestBody
-	err := json.NewDecoder(request.Body).Decode(&requestBody)
-	if err != nil {
-		http.Error(response, err.Error(), http.StatusBadRequest)
-		return
-	}
-	formats.Trace("requestBody", requestBody)
-
-	message := strings.ToUpper(requestBody.Message) + "!!"
+	message := strings.ToUpper("Hello") + "!!"
 	responseBody := map[string]interface{}{"message": message}
 
 	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err = json.NewEncoder(response).Encode(responseBody)
+	err := json.NewEncoder(response).Encode(responseBody)
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 		return

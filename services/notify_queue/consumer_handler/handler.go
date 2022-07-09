@@ -54,5 +54,9 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 
 	bytes, _ := json.Marshal(responseBody)
 	rw.Header().Set("Content-Type", "application/json")
-	rw.Write(bytes)
+	_, err = rw.Write(bytes)
+	if err != nil {
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }

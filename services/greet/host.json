@@ -6,9 +6,6 @@
         "isEnabled": true,
         "excludedTypes": "Request"
       }
-    },
-    "logLevel": {
-      "default": "Information"
     }
   },
   "extensionBundle": {
@@ -18,7 +15,7 @@
   "functionTimeout": "00:00:10",
   "customHandler": {
     "description": {
-      "defaultExecutablePath": "main.exe",
+      "defaultExecutablePath": "main",
       "workingDirectory": "",
       "arguments": []
     },

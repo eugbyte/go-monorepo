@@ -26,7 +26,11 @@ func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, reque
 
 	if !(qService.QueueExist()) {
 		formats.Trace("queue does not exist, creating one...")
-		qService.CreateQueue(nil)
+		err = qService.CreateQueue(nil)
+		if err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	} else {
 		formats.Trace("queue exist")
 	}

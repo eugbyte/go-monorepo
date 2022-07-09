@@ -27,6 +27,8 @@ test-queue:
 ##----GREET----
 tidy-greet:
 	cd services/greet && make tidy
+download-greet:
+	cd services/greet && make download
 build-greet:
 	cd services/greet && make build
 dev-greet:
@@ -45,12 +47,18 @@ tidy-notify:
 	cd services/notify_queue && make tidy
 build-notify:
 	cd services/notify_queue && make build
+download-notify:
+	cd services/notify_queue && make download
 dev-notify:
 	cd services/notify_queue && make dev
 func-start-notify:
 	cd services/notify_queue && make func-start
 test-notify:
 	cd services/notify_queue && make test
+lint-notify:
+	cd services/notify_queue && make lint
+lint-fix-notify:
+	cd services/notify_queue && make lint-fix
 
 #----INSTALLATION----
 install-lint:
@@ -71,5 +79,5 @@ install-azurite:
 	npm install -g azurite
 
 #----CONTAINERS----
-azurite-start:
+start-azurite:
 	azurite --silent --location c:\azurite --debug c:\azurite\debug.log
