@@ -27,6 +27,8 @@ test-queue:
 ##----GREET----
 tidy-greet:
 	cd services/greet && make tidy
+download-greet:
+	cd services/greet && make download
 build-greet:
 	cd services/greet && make build
 dev-greet:
@@ -45,6 +47,8 @@ tidy-notify:
 	cd services/notify_queue && make tidy
 build-notify:
 	cd services/notify_queue && make build
+download-notify:
+	cd services/notify_queue && make download
 dev-notify:
 	cd services/notify_queue && make dev
 func-start-notify:
