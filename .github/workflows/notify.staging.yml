@@ -81,9 +81,8 @@ jobs:
         run: netstat -a
       - name: POST request to enqueue subscription
         run: |
-          curl --location --request POST 'http://localhost:7071/api/notify' \
+          curl --location --max-time 10 --request POST 'http://localhost:7071/api/notify' \
           --header 'Content-Type: application/json' \
-          --header 'Connection: close' \
           --data-raw '
           {
               "endpoint": "http://localhost:3000",

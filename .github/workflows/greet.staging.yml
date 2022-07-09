@@ -77,7 +77,7 @@ jobs:
       - name: Install azure func
         run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
-        run: make func-start-notify &
+        run: make func-start-greet &
       - name: Check that daemons are running
         run: netstat -nat | grep '7071\|10000' | grep LISTEN
       - name: POST request to enqueue subscription
