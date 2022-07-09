@@ -79,7 +79,7 @@ jobs:
         run: make func-start-notify &
       - name: curl to enqueue subscription
         run: |
-          curl -i --location --request POST 'http://localhost:7071/api/notify' \
+          curl -i --max-time 10 --location --request POST 'http://localhost:7071/api/notify' \
           --header 'Content-Type: application/json' \
           --data-raw '
           {
@@ -91,5 +91,3 @@ jobs:
                   "p256dh": "abc"
               }
           }'
-      - name: clean update
-        run: echo "success"
