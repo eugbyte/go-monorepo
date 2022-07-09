@@ -6,6 +6,8 @@ on:
       - "libs/**"
       - "services/notify_queue/**"
       - "services/go.work"
+      - "services/go.work.sum"
+      - "services/.gitignore"
       - "services/Makefile"
 
 jobs:
