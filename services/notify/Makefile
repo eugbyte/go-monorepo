@@ -9,7 +9,7 @@ build:
 dev:
 	go run main.go
 func-start:
-	func start
+	func start --verbose
 clean:
 	rm -rf ./bin ./vendor go.sum
 

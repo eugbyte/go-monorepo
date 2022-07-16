@@ -7,7 +7,7 @@ on:
   push:
     # paths:
     #   - "libs/**"
-    #   - "services/notify_queue/**"
+    #   - "services/notify/**"
     #   - "services/go.work"
     #   - "services/go.work.sum"
     #   - "services/.gitignore"

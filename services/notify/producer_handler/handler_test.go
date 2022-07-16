@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-storage-queue-go/azqueue"
 	qLib "github.com/web-notify/api/monorepo/libs/queue"
-	"github.com/web-notify/api/monorepo/services/notify_queue/models"
+	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
 type MockQueueService struct{}
@@ -35,7 +35,6 @@ func TestHandler(t *testing.T) {
 
 	mockSubscription := models.Subscription{
 		Endpoint:   "http://localhost:3000",
-		Message:    "your order has been received",
 		Expiration: "1657034161512",
 		Keys: models.Keys{
 			Auth:   "123",

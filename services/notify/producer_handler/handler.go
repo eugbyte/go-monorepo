@@ -8,7 +8,7 @@ import (
 	qLib "github.com/web-notify/api/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
-	"github.com/web-notify/api/monorepo/services/notify_queue/models"
+	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
 func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, request *http.Request) {
