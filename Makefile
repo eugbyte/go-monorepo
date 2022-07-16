@@ -42,23 +42,23 @@ lint-greet:
 lint-fix-greet:
 	cd services/greet && make lint-fix
 
-##----NOTIFY_QUEUE----
+##----NOTIFY----
 tidy-notify:
-	cd services/notify_queue && make tidy
+	cd services/notify && make tidy
 build-notify:
-	cd services/notify_queue && make build
+	cd services/notify && make build
 download-notify:
-	cd services/notify_queue && make download
+	cd services/notify && make download
 dev-notify:
-	cd services/notify_queue && make dev
+	cd services/notify && make dev
 func-start-notify:
-	cd services/notify_queue && make func-start
+	cd services/notify && make func-start
 test-notify:
-	cd services/notify_queue && make test
+	cd services/notify && make test
 lint-notify:
-	cd services/notify_queue && make lint
+	cd services/notify && make lint
 lint-fix-notify:
-	cd services/notify_queue && make lint-fix
+	cd services/notify && make lint-fix
 
 #----INSTALLATION----
 install-lint:
@@ -74,7 +74,7 @@ download-libs:
 	cd libs/queue && make download
 download-services:
 	cd services/greet && make download
-	cd services/notify_queue && make download
+	cd services/notify && make download
 install-azurite:
 	npm install -g azurite
 
