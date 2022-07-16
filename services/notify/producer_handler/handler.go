@@ -11,13 +11,13 @@ import (
 	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
-func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, request *http.Request) {
+func handler(qService qLib.QueueServiceImpl, rw http.ResponseWriter, request *http.Request) {
 	formats.Trace("In handler")
 
 	var subscription models.Subscription
 	err := json.NewDecoder(request.Body).Decode(&subscription)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusBadRequest)
+		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
 	formats.Trace("subscription", subscription)
@@ -28,7 +28,7 @@ func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, reque
 		formats.Trace("queue does not exist, creating one...")
 		err = qService.CreateQueue(nil)
 		if err != nil {
-			http.Error(response, err.Error(), http.StatusInternalServerError)
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	} else {
@@ -37,17 +37,17 @@ func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, reque
 
 	_, err = qService.Enqueue(message, 0, 0)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	formats.Trace("successfully enqueued")
 
-	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err = json.NewEncoder(response).Encode(map[string]string{
+	rw.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	err = json.NewEncoder(rw).Encode(map[string]string{
 		"message": "successfully enqueued",
 	})
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
