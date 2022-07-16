@@ -18,11 +18,8 @@ func main() {
 	mux.HandleFunc("/api/notify", producer.Handler)
 	mux.HandleFunc("/consumer_handler", consumer.Handler)
 	mux.HandleFunc("/api/subscribe", subscribe.Handler)
-<<<<<<< HEAD
 
 	wrappedMux := cors.Default().Handler(mux)
-=======
->>>>>>> 33398c7 (chore: rename notify_queue to notify)
 
 	log.Printf("About to listen on %s. Go to https://127.0.0.1:%s/", address, address)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("127.0.0.1:%s", address), wrappedMux))
