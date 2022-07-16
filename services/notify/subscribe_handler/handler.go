@@ -9,6 +9,15 @@ import (
 )
 
 func Handler(response http.ResponseWriter, request *http.Request) {
+	// (response).Header().Set("Access-Control-Allow-Origin", "*")
+	// (response).Header().Set("Access-Control-Allow-Origin", "*")
+	// (response).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	// (response).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
+	// if request.Method == http.MethodOptions {
+	// 	return
+	// }
+
 	if request.Method != http.MethodPost {
 		http.Error(response, "Wrong HTTP Method", http.StatusBadRequest)
 		return
@@ -25,6 +34,8 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 	responseBody := map[string]interface{}{"message": "subscription saved"}
 
 	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	// response.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	// response.Header().Set("Access-Control-Allow-Headers", "Accept, Accept-Language, Content-Type")
 	err = json.NewEncoder(response).Encode(responseBody)
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
