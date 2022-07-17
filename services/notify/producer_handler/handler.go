@@ -55,8 +55,8 @@ func handler(qService qLib.QueueServiceImpl, rw http.ResponseWriter, request *ht
 func Handler(response http.ResponseWriter, request *http.Request) {
 	var qService = qLib.QueueService{}
 	queueName := "my-queue"
-	rootConnection := qLib.GetConnectionString(config.STAGE, config.QUEUE_ACCOUNT_NAME)
-	qService.Init(context.Background(), queueName, rootConnection, config.QUEUE_ACCOUNT_NAME, config.QUEUE_ACCOUNT_KEY)
+	baseConnectionString := qLib.GetBaseConnectionString(config.STAGE, config.QUEUE_ACCOUNT_NAME)
+	qService.Init(context.Background(), queueName, baseConnectionString, config.QUEUE_ACCOUNT_NAME, config.QUEUE_ACCOUNT_KEY)
 
 	// Dependency injection
 	handler(&qService, response, request)

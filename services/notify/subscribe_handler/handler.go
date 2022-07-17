@@ -4,30 +4,38 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/web-notify/api/monorepo/libs/db/mongo"
+	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
-func Handler(response http.ResponseWriter, request *http.Request) {
+func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodPost {
-		http.Error(response, "Wrong HTTP Method", http.StatusBadRequest)
+		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
 		return
 	}
 
 	var subscription models.Subscription
 	err := json.NewDecoder(request.Body).Decode(&subscription)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusBadRequest)
+		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
 	formats.Trace("subscription", subscription)
 
 	responseBody := map[string]interface{}{"message": "subscription saved"}
 
-	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err = json.NewEncoder(response).Encode(responseBody)
+	rw.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	err = json.NewEncoder(rw).Encode(responseBody)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func Handler(response http.ResponseWriter, request *http.Request) {
+	var mongoService = &mongo.MongoService{}
+	mongoService.Init("subscribers", config.MONGO_DB_CONNECTION_STRING)
+	handler(mongoService, response, request)
 }

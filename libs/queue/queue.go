@@ -29,10 +29,10 @@ type QueueService struct {
 	cxt      context.Context
 }
 
-func (qService *QueueService) Init(cxt context.Context, queueName string, rootConnection string, accountName string, accountKey string) {
+func (qService *QueueService) Init(cxt context.Context, queueName string, baseConnectionString string, accountName string, accountKey string) {
 	qService.cxt = cxt
 	// http://localhost/devstoreaccount1/my-queue
-	connection := fmt.Sprintf("%s/%s", rootConnection, queueName)
+	connection := fmt.Sprintf("%s/%s", baseConnectionString, queueName)
 	formats.Trace("connectionString:", connection)
 	urlObj, err := url.Parse(connection)
 	if err != nil {
@@ -68,7 +68,7 @@ func (qService *QueueService) Enqueue(messageText string, visibilityTimeout time
 
 // To generate the QueueURL to the queue
 // connection string: "http://127.0.0.1:10001/devstoreaccount1/{queueName}"
-func GetConnectionString(stage string, accountName string) string {
+func GetBaseConnectionString(stage string, accountName string) string {
 	if stage == config.DEV {
 		return fmt.Sprintf("%s/%s", "http://127.0.0.1:10001", accountName)
 	} else {

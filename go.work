@@ -4,6 +4,7 @@ use (
     ./libs/middlewares
     ./libs/queue
     ./libs/utils
+    ./libs/db
     ./services/greet
     ./services/notify
 )
