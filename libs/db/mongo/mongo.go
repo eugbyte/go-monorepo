@@ -2,10 +2,13 @@ package mongo
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
 	"github.com/pkg/errors"
+	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -15,20 +18,25 @@ type MonogoServiceImp interface {
 	Init(dbName string, connectionString string)
 	Find(collectionName string, filter primitive.D, items []interface{}) error
 	InsertOne(collectionName string, item interface{}) error
+	CreateIndex(collectionName string, field string, unique bool) error
+	CreateShard(collectionName string, field string, unique bool) error
 }
 
 type MongoService struct {
-	database *mongo.Database
+	Database *mongo.Database
 }
 
 func (ms *MongoService) Init(dbName string, connectionString string) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
 	clientOptions := options.Client().ApplyURI(connectionString).SetDirect(true)
 
-	client, _ := mongo.NewClient(clientOptions)
-	err := client.Connect(ctx)
+	client, err := mongo.NewClient(clientOptions)
+	if err != nil {
+		log.Fatalf("cannot create client")
+	}
+	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatalf("unable to initialize connection %v", err)
 	}
@@ -37,11 +45,51 @@ func (ms *MongoService) Init(dbName string, connectionString string) {
 	if err != nil {
 		log.Fatalf("unable to connect %v", err)
 	}
-	ms.database = client.Database(dbName)
+	ms.Database = client.Database(dbName)
+}
+
+// From https://christiangiacomi.com/posts/mongodb-index-using-go/
+func (ms *MongoService) CreateIndex(collectionName string, field string, unique bool) error {
+
+	mod := mongo.IndexModel{
+		Keys:    bson.M{field: 1}, // index in ascending order or -1 for descending order
+		Options: options.Index().SetUnique(unique),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	collection := ms.Database.Collection(collectionName)
+
+	res, err := collection.Indexes().CreateOne(ctx, mod)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	formats.Trace(res)
+
+	return err
+}
+
+// https://www.mongodb.com/community/forums/t/how-do-you-shard-a-collection-with-the-go-driver/4676
+func (ms *MongoService) CreateShard(collectionName string, field string, unique bool) error {
+	cmd := bson.D{
+		{Key: "shardCollection", Value: fmt.Sprintf("%s.%s", ms.Database.Name(), collectionName)},
+		{Key: "key", Value: bson.M{field: 1}}, // index in ascending order or -1 for descending order
+		{Key: "unique", Value: unique},
+		{Key: "numInitialChunks", Value: 5},
+	}
+	ctx := context.Background()
+	err := ms.Database.RunCommand(ctx, cmd).Err()
+
+	if err != nil {
+		log.Fatal("sharding failed", err)
+	}
+
+	return err
 }
 
 func (ms *MongoService) Find(collectionName string, filter primitive.D, items []interface{}) error {
-	collection := ms.database.Collection(collectionName)
+	collection := ms.Database.Collection(collectionName)
 	ctx := context.Background()
 	rs, err := collection.Find(ctx, filter)
 	if err != nil {
@@ -56,13 +104,14 @@ func (ms *MongoService) Find(collectionName string, filter primitive.D, items []
 
 func (ms *MongoService) InsertOne(collectionName string, item interface{}) error {
 	ctx := context.Background()
-	ms.database.Client().Connect(ctx)
-	defer ms.database.Client().Disconnect(ctx)
-	collection := ms.database.Collection(collectionName)
+	ms.Database.Client().Connect(ctx)
+	defer ms.Database.Client().Disconnect(ctx)
+
+	collection := ms.Database.Collection(collectionName)
 	result, err := collection.InsertOne(ctx, item)
+	formats.Trace(result)
 	if err != nil {
-		log.Fatalf("failed to add todo %v", err)
+		log.Fatalf("failed to add item %v", err)
 	}
-	log.Print(result)
 	return err
 }

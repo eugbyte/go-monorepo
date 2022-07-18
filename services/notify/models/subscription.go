@@ -6,7 +6,10 @@ type Keys struct {
 }
 
 type Subscription struct {
-	Endpoint   string `json:"endpoint"`
-	Expiration string `json:"expiration_time"`
-	Keys       Keys   `json:"keys"`
+	ID             string `json:"id" bson:"_id"` // e.g. lowercase(`${company}__${username}`), e.g. fakepanda__abc@m.com
+	Endpoint       string `json:"endpoint"`
+	ExpirationTime string `json:"expirationTime"`
+	Keys           Keys   `json:"keys"`
+	Username       string `json:"username"`
+	Company        string `json:"company"`
 }

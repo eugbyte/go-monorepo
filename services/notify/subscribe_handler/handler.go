@@ -2,6 +2,7 @@ package hello_handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/web-notify/api/monorepo/libs/db/mongo"
@@ -23,6 +24,9 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 		return
 	}
 	formats.Trace("subscription", subscription)
+	subscription.ID = fmt.Sprintf("%s__%s", subscription.Company, subscription.Username)
+
+	mongoService.InsertOne("subscribers", subscription)
 
 	responseBody := map[string]interface{}{"message": "subscription saved"}
 
@@ -35,7 +39,8 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 }
 
 func Handler(response http.ResponseWriter, request *http.Request) {
-	var mongoService = &mongo.MongoService{}
-	mongoService.Init("subscribers", config.MONGO_DB_CONNECTION_STRING)
+	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
+	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
+	mongoService.CreateIndex("subscribers", "company", false)
 	handler(mongoService, response, request)
 }

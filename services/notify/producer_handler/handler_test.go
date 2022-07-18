@@ -35,7 +35,7 @@ func TestHandler(t *testing.T) {
 
 	mockSubscription := models.Subscription{
 		Endpoint:   "http://localhost:3000",
-		Expiration: "1657034161512",
+		ExpirationTime: "1657034161512",
 		Keys: models.Keys{
 			Auth:   "123",
 			P256dh: "abc",

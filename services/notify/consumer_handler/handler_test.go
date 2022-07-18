@@ -13,7 +13,7 @@ import (
 )
 
 func TestHandler(t *testing.T) {
-	jsonStr := "\"{\\\"endpoint\\\":\\\"http://localhost:3000\\\",\\\"message\\\":\\\"your order has been received\\\",\\\"expiration_time\\\":\\\"1657034161512\\\",\\\"keys\\\":{\\\"auth\\\":\\\"123\\\",\\\"p256dh\\\":\\\"abc\\\"}}\""
+	jsonStr := "\"{\\\"endpoint\\\":\\\"http://localhost:3000\\\",\\\"message\\\":\\\"your order has been received\\\",\\\"expirationTime\\\":\\\"1657034161512\\\",\\\"keys\\\":{\\\"auth\\\":\\\"123\\\",\\\"p256dh\\\":\\\"abc\\\"}}\""
 	reqData := map[string]string{
 		"req": jsonStr,
 	}
