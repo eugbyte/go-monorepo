@@ -97,7 +97,6 @@ func (ms *MongoService) CreatedShardedCollection(collectionName string, field st
 		{Key: "shardCollection", Value: fmt.Sprintf("%s.%s", ms.Database.Name(), collectionName)},
 		{Key: "key", Value: bson.M{field: "hashed"}}, // Hashed sharding requires a field hashed index
 		{Key: "unique", Value: unique},
-		// {Key: "numInitialChunks", Value: 5},
 	}
 	err = ms.Database.RunCommand(ctx, cmd).Err()
 
