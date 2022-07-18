@@ -38,9 +38,9 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 	}
 }
 
-func Handler(response http.ResponseWriter, request *http.Request) {
+func Handler(rw http.ResponseWriter, request *http.Request) {
 	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
 	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
 	mongoService.CreateIndex("subscribers", "company", false)
-	handler(mongoService, response, request)
+	handler(mongoService, rw, request)
 }

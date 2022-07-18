@@ -17,6 +17,7 @@ import (
 type MonogoServiceImp interface {
 	Init(dbName string, connectionString string)
 	Find(collectionName string, filter primitive.D, items []interface{}) error
+	FindOne(collectionName string, filter primitive.D, item interface{}) error
 	InsertOne(collectionName string, item interface{}) error
 	CreateIndex(collectionName string, field string, unique bool) error
 	CreateShard(collectionName string, field string, unique bool) error
@@ -96,6 +97,17 @@ func (ms *MongoService) Find(collectionName string, filter primitive.D, items []
 		return errors.Wrap(err, "no item found")
 	}
 	err = rs.All(ctx, &items)
+	if err != nil {
+		log.Fatalf("failed to list todo(s) %v", err)
+	}
+	return err
+}
+
+func (ms *MongoService) FindOne(collectionName string, filter primitive.D, item interface{}) error {
+	collection := ms.Database.Collection(collectionName)
+	ctx := context.Background()
+	rs := collection.FindOne(ctx, filter)
+	err := rs.Decode(item)
 	if err != nil {
 		log.Fatalf("failed to list todo(s) %v", err)
 	}

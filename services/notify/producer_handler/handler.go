@@ -8,21 +8,25 @@ import (
 	qLib "github.com/web-notify/api/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
-	"github.com/web-notify/api/monorepo/services/notify/models"
 )
+
+type RequestBody struct {
+	Username string `json:"username"`
+	Company  string `json:"company"`
+}
 
 func handler(qService qLib.QueueServiceImpl, rw http.ResponseWriter, request *http.Request) {
 	formats.Trace("In handler")
 
-	var subscription models.Subscription
-	err := json.NewDecoder(request.Body).Decode(&subscription)
+	var requestBody RequestBody
+	err := json.NewDecoder(request.Body).Decode(&requestBody)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	formats.Trace("subscription", subscription)
+	formats.Trace("requestBody", requestBody)
 
-	message := formats.Stringify(subscription)
+	message := formats.Stringify(requestBody)
 
 	if !(qService.QueueExist()) {
 		formats.Trace("queue does not exist, creating one...")
