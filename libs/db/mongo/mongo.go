@@ -98,7 +98,7 @@ func (ms *MongoService) Find(collectionName string, filter primitive.D, items []
 	}
 	err = rs.All(ctx, &items)
 	if err != nil {
-		log.Fatalf("failed to list todo(s) %v", err)
+		log.Fatalf("failed to list item(s) %v", err)
 	}
 	return err
 }
@@ -109,7 +109,7 @@ func (ms *MongoService) FindOne(collectionName string, filter primitive.D, item 
 	rs := collection.FindOne(ctx, filter)
 	err := rs.Decode(item)
 	if err != nil {
-		log.Fatalf("failed to list todo(s) %v", err)
+		log.Fatalf("failed to list item %v", err)
 	}
 	return err
 }

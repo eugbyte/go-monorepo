@@ -54,7 +54,7 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 
 	id := fmt.Sprintf("%s__%s", info.Company, info.Username)
 	var subscriber models.Subscription
-	mongoService.FindOne("subscribers", bson.D{{Key: "_id", Value: id}}, subscriber)
+	mongoService.FindOne("subscribers", bson.D{{Key: "_id", Value: id}}, &subscriber)
 
 	responseBody := qmodels.ResponseBody{
 		Outputs: map[string]interface{}{
