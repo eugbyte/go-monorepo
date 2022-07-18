@@ -16,11 +16,12 @@ import (
 
 type MonogoServiceImp interface {
 	Init(dbName string, connectionString string)
+	GetDB() *mongo.Database
 	Find(collectionName string, filter primitive.D, items []interface{}) error
 	FindOne(collectionName string, filter primitive.D, item interface{}) error
 	InsertOne(collectionName string, item interface{}) error
 	CreateIndex(collectionName string, field string, unique bool) error
-	CreateShard(collectionName string, field string, unique bool) error
+	CreatedShardedCollection(collectionName string, field string, unique bool) error
 }
 
 type MongoService struct {
@@ -49,20 +50,22 @@ func (ms *MongoService) Init(dbName string, connectionString string) {
 	ms.Database = client.Database(dbName)
 }
 
+func (ms *MongoService) GetDB() *mongo.Database {
+	return ms.Database
+}
+
 // From https://christiangiacomi.com/posts/mongodb-index-using-go/
 func (ms *MongoService) CreateIndex(collectionName string, field string, unique bool) error {
-
-	mod := mongo.IndexModel{
+	idxModel := mongo.IndexModel{
 		Keys:    bson.M{field: 1}, // index in ascending order or -1 for descending order
 		Options: options.Index().SetUnique(unique),
 	}
-
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	collection := ms.Database.Collection(collectionName)
 
-	res, err := collection.Indexes().CreateOne(ctx, mod)
+	res, err := collection.Indexes().CreateOne(ctx, idxModel)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -72,18 +75,34 @@ func (ms *MongoService) CreateIndex(collectionName string, field string, unique 
 }
 
 // https://www.mongodb.com/community/forums/t/how-do-you-shard-a-collection-with-the-go-driver/4676
-func (ms *MongoService) CreateShard(collectionName string, field string, unique bool) error {
+func (ms *MongoService) CreatedShardedCollection(collectionName string, field string, unique bool) error {
+	ctx := context.Background()
+
+	existingCollectionNames, err := ms.Database.ListCollectionNames(
+		context.TODO(),
+		bson.D{{Key: "options.capped", Value: true}},
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, coltnName := range existingCollectionNames {
+		if coltnName == collectionName {
+			formats.Trace("collection already exists, skipping creating sharded collection ...")
+			return nil
+		}
+	}
+
 	cmd := bson.D{
 		{Key: "shardCollection", Value: fmt.Sprintf("%s.%s", ms.Database.Name(), collectionName)},
-		{Key: "key", Value: bson.M{field: 1}}, // index in ascending order or -1 for descending order
+		{Key: "key", Value: bson.M{field: "hashed"}}, // Hashed sharding requires a field hashed index
 		{Key: "unique", Value: unique},
-		{Key: "numInitialChunks", Value: 5},
+		// {Key: "numInitialChunks", Value: 5},
 	}
-	ctx := context.Background()
-	err := ms.Database.RunCommand(ctx, cmd).Err()
+	err = ms.Database.RunCommand(ctx, cmd).Err()
 
 	if err != nil {
-		log.Fatal("sharding failed", err)
+		log.Fatalf("sharding failed. %v", err)
 	}
 
 	return err

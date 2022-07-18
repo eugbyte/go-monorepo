@@ -11,6 +11,8 @@ import (
 	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
+var collectionName = "subscribers"
+
 func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodPost {
 		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
@@ -23,10 +25,10 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	formats.Trace("subscription", subscription)
+	formats.Trace(collectionName, subscription)
 	subscription.ID = fmt.Sprintf("%s__%s", subscription.Company, subscription.Username)
 
-	mongoService.InsertOne("subscribers", subscription)
+	mongoService.InsertOne(collectionName, subscription)
 
 	responseBody := map[string]interface{}{"message": "subscription saved"}
 
@@ -41,6 +43,6 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 func Handler(rw http.ResponseWriter, request *http.Request) {
 	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
 	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
-	mongoService.CreateIndex("subscribers", "company", false)
+	mongoService.CreatedShardedCollection("subscribers", "company", false)
 	handler(mongoService, rw, request)
 }
