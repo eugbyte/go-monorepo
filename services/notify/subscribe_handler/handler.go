@@ -5,15 +5,16 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/web-notify/api/monorepo/libs/db/mongo"
+	mongoLib "github.com/web-notify/api/monorepo/libs/db/mongo"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/models"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var collectionName = "subscribers"
 
-func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, request *http.Request) {
+func handler(mongoService mongoLib.MonogoServiceImp, rw http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodPost {
 		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
 		return
@@ -28,11 +29,17 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 	formats.Trace(collectionName, subscription)
 	subscription.ID = fmt.Sprintf("%s__%s", subscription.Company, subscription.Username)
 
-	mongoService.InsertOne(collectionName, subscription)
+	responseBody := make(map[string]string)
+	err = mongoService.InsertOne(collectionName, subscription)
+	rw.Header().Set("Content-Type", "application/json")
 
-	responseBody := map[string]interface{}{"message": "subscription saved"}
+	if mongo.IsDuplicateKeyError(err) {
+		responseBody["messsage"] = "subscription already exists, skipping creation ..."
+		rw.WriteHeader(http.StatusAccepted)
+	} else {
+		responseBody["messsage"] = "subscription already exists"
+	}
 
-	rw.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err = json.NewEncoder(rw).Encode(responseBody)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
@@ -41,9 +48,9 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 }
 
 func Handler(rw http.ResponseWriter, request *http.Request) {
-	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
+	var mongoService mongoLib.MonogoServiceImp = &mongoLib.MongoService{}
 	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
-	mongoService.CreatedShardedCollection("subscribers", "company", false)
+	mongoService.CreatedShardedCollection(collectionName, "company", false)
 
 	// Dependency injection
 	handler(mongoService, rw, request)

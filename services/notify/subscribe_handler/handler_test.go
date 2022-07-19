@@ -19,6 +19,11 @@ func (ms *MockMonogoService) Init(dbName string, connectionString string) {}
 func (ms *MockMonogoService) GetDB() *mongo.Database {
 	return &mongo.Database{}
 }
+func (ms *MockMonogoService) CreatedShardedCollection(collectionName string, field string, unique bool) {
+}
+func (ms *MockMonogoService) CreateIndex(collectionName string, field string, unique bool) error {
+	return nil
+}
 func (ms *MockMonogoService) Find(collectionName string, filter primitive.D, items []interface{}) error {
 	return nil
 }
@@ -26,12 +31,6 @@ func (ms *MockMonogoService) FindOne(collectionName string, filter primitive.D, 
 	return nil
 }
 func (ms *MockMonogoService) InsertOne(collectionName string, item interface{}) error {
-	return nil
-}
-func (ms *MockMonogoService) CreateIndex(collectionName string, field string, unique bool) error {
-	return nil
-}
-func (ms *MockMonogoService) CreatedShardedCollection(collectionName string, field string, unique bool) error {
 	return nil
 }
 

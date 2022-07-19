@@ -17,11 +17,11 @@ import (
 type MonogoServiceImp interface {
 	Init(dbName string, connectionString string)
 	GetDB() *mongo.Database
+	CreatedShardedCollection(collectionName string, field string, unique bool)
+	CreateIndex(collectionName string, field string, unique bool) error
 	Find(collectionName string, filter primitive.D, items []interface{}) error
 	FindOne(collectionName string, filter primitive.D, item interface{}) error
 	InsertOne(collectionName string, item interface{}) error
-	CreateIndex(collectionName string, field string, unique bool) error
-	CreatedShardedCollection(collectionName string, field string, unique bool) error
 }
 
 type MongoService struct {
@@ -54,28 +54,9 @@ func (ms *MongoService) GetDB() *mongo.Database {
 	return ms.Database
 }
 
-// From https://christiangiacomi.com/posts/mongodb-index-using-go/
-func (ms *MongoService) CreateIndex(collectionName string, field string, unique bool) error {
-	idxModel := mongo.IndexModel{
-		Keys:    bson.M{field: 1}, // index in ascending order or -1 for descending order
-		Options: options.Index().SetUnique(unique),
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	collection := ms.Database.Collection(collectionName)
-
-	res, err := collection.Indexes().CreateOne(ctx, idxModel)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	formats.Trace(res)
-
-	return err
-}
-
+// Create sharded collection. If sharded collection already exists, operation is skipped
 // https://www.mongodb.com/community/forums/t/how-do-you-shard-a-collection-with-the-go-driver/4676
-func (ms *MongoService) CreatedShardedCollection(collectionName string, field string, unique bool) error {
+func (ms *MongoService) CreatedShardedCollection(collectionName string, field string, unique bool) {
 	ctx := context.Background()
 
 	existingCollectionNames, err := ms.Database.ListCollectionNames(
@@ -89,7 +70,7 @@ func (ms *MongoService) CreatedShardedCollection(collectionName string, field st
 	for _, coltnName := range existingCollectionNames {
 		if coltnName == collectionName {
 			formats.Trace("collection already exists, skipping creating sharded collection ...")
-			return nil
+			return
 		}
 	}
 
@@ -103,6 +84,24 @@ func (ms *MongoService) CreatedShardedCollection(collectionName string, field st
 	if err != nil {
 		log.Fatalf("sharding failed. %v", err)
 	}
+}
+
+// From https://christiangiacomi.com/posts/mongodb-index-using-go/
+func (ms *MongoService) CreateIndex(collectionName string, field string, unique bool) error {
+	indexModel := mongo.IndexModel{
+		Keys:    bson.M{field: 1}, // index in ascending order or -1 for descending order
+		Options: options.Index().SetUnique(unique),
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	collection := ms.Database.Collection(collectionName)
+
+	res, err := collection.Indexes().CreateOne(ctx, indexModel)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	formats.Trace(res)
 
 	return err
 }
@@ -127,7 +126,7 @@ func (ms *MongoService) FindOne(collectionName string, filter primitive.D, item 
 	rs := collection.FindOne(ctx, filter)
 	err := rs.Decode(item)
 	if err != nil {
-		log.Fatalf("failed to list item %v", err)
+		log.Printf("failed to list item. %v", err)
 	}
 	return err
 }
@@ -141,7 +140,7 @@ func (ms *MongoService) InsertOne(collectionName string, item interface{}) error
 	result, err := collection.InsertOne(ctx, item)
 	formats.Trace(result)
 	if err != nil {
-		log.Fatalf("failed to add item %v", err)
+		log.Printf("failed to add item %v", err)
 	}
 	return err
 }
