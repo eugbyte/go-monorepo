@@ -6,6 +6,7 @@ concurrency:
 on:
   push:
     paths:
+      - ".github/**"
       - "libs/**"
       - "services/greet/**"
       - "services/go.work"
