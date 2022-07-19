@@ -63,7 +63,7 @@ jobs:
       - name: Install curl, jq, make, zip, ping, net-tools
         run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
       - name: Upgrade docker
-        run: sudo apt-get install docker-ce docker-ce-cli containerd.io
+        run: docker --version && sudo apt-get install docker-ce docker-ce-cli containerd.io
       - name: Install docker-compose
         run: make install-docker-compose
       - name: Download Go modules
