@@ -7,7 +7,7 @@
       "methods": [
         "post"
       ],
-      "route": "subscribe"
+      "route": "subscriptions"
     },
     {
       "type": "http",

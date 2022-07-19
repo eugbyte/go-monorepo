@@ -8,27 +8,31 @@ import (
 	qLib "github.com/web-notify/api/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
-	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
-func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, request *http.Request) {
+type RequestBody struct {
+	Username string `json:"username"`
+	Company  string `json:"company"`
+}
+
+func handler(qService qLib.QueueServiceImpl, rw http.ResponseWriter, request *http.Request) {
 	formats.Trace("In handler")
 
-	var subscription models.Subscription
-	err := json.NewDecoder(request.Body).Decode(&subscription)
+	var requestBody RequestBody
+	err := json.NewDecoder(request.Body).Decode(&requestBody)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusBadRequest)
+		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	formats.Trace("subscription", subscription)
+	formats.Trace("requestBody", requestBody)
 
-	message := formats.Stringify(subscription)
+	message := formats.Stringify(requestBody)
 
 	if !(qService.QueueExist()) {
 		formats.Trace("queue does not exist, creating one...")
 		err = qService.CreateQueue(nil)
 		if err != nil {
-			http.Error(response, err.Error(), http.StatusInternalServerError)
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	} else {
@@ -37,17 +41,17 @@ func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, reque
 
 	_, err = qService.Enqueue(message, 0, 0)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	formats.Trace("successfully enqueued")
 
-	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err = json.NewEncoder(response).Encode(map[string]string{
+	rw.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	err = json.NewEncoder(rw).Encode(map[string]string{
 		"message": "successfully enqueued",
 	})
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
@@ -55,8 +59,8 @@ func handler(qService qLib.QueueServiceImpl, response http.ResponseWriter, reque
 func Handler(response http.ResponseWriter, request *http.Request) {
 	var qService = qLib.QueueService{}
 	queueName := "my-queue"
-	rootConnection := qLib.GetConnectionString(config.STAGE, config.QUEUE_ACCOUNT_NAME)
-	qService.Init(context.Background(), queueName, rootConnection, config.QUEUE_ACCOUNT_NAME, config.QUEUE_ACCOUNT_KEY)
+	baseConnectionString := qLib.GetBaseConnectionString(config.STAGE, config.QUEUE_ACCOUNT_NAME)
+	qService.Init(context.Background(), queueName, baseConnectionString, config.QUEUE_ACCOUNT_NAME, config.QUEUE_ACCOUNT_KEY)
 
 	// Dependency injection
 	handler(&qService, response, request)

@@ -35,3 +35,5 @@ Full list of commands are listed in Makefile
 5. For non-http triggers, the route to configure for the mux http server must be the name of the function
 6. The go pkg for azure queue only allows for messages to be enqueued in UTF-8 format. On the other hand, by default, Azure func expects the message from the queue to be in Base64. Need to change the decoding option in `host.json`, under `extensions.queue.messageEncoding`
 7. When calling the apis from the browser, need to watch out for [CORS errors, and also handle the pre-flight requests](https://flaviocopes.com/golang-enable-cors/).
+8. To starts the COSMOS DB emulator, [refer here](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21#azure-cosmos-dbs-api-for-mongodb). Remember to use the `EnableMongoDbEndpoint` flag. To check that the port is running, do `netstat -nat | grep '10255' | grep LISTEN`
+9. To create a sharded collection in COSMOS DB, [follow here](https://stackoverflow.com/a/54869239/6514532) and [here](https://www.mongodb.com/community/forums/t/how-do-you-shard-a-collection-with-the-go-driver/4676)

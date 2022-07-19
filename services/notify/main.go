@@ -15,9 +15,9 @@ import (
 func main() {
 	var address string = config.LOCAL_PORT
 	mux := http.NewServeMux()
-	mux.HandleFunc("/api/notify", producer.Handler)
+	mux.HandleFunc("/api/notifications", producer.Handler)
 	mux.HandleFunc("/consumer_handler", consumer.Handler)
-	mux.HandleFunc("/api/subscribe", subscribe.Handler)
+	mux.HandleFunc("/api/subscriptions", subscribe.Handler)
 
 	wrappedMux := cors.Default().Handler(mux)
 

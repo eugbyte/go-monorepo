@@ -1,44 +1,57 @@
-package hello_handler
+package subscriber_handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
+	mongoLib "github.com/web-notify/api/monorepo/libs/db/mongo"
+	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/models"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func Handler(response http.ResponseWriter, request *http.Request) {
-	// (response).Header().Set("Access-Control-Allow-Origin", "*")
-	// (response).Header().Set("Access-Control-Allow-Origin", "*")
-	// (response).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	// (response).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+var collectionName = "subscribers"
 
-	// if request.Method == http.MethodOptions {
-	// 	return
-	// }
-
+func handler(mongoService mongoLib.MonogoServiceImp, rw http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodPost {
-		http.Error(response, "Wrong HTTP Method", http.StatusBadRequest)
+		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
 		return
 	}
 
 	var subscription models.Subscription
 	err := json.NewDecoder(request.Body).Decode(&subscription)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusBadRequest)
+		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	formats.Trace("subscription", subscription)
+	formats.Trace(collectionName, subscription)
+	subscription.ID = fmt.Sprintf("%s__%s", subscription.Company, subscription.Username)
 
-	responseBody := map[string]interface{}{"message": "subscription saved"}
+	responseBody := make(map[string]string)
+	err = mongoService.InsertOne(collectionName, subscription)
+	rw.Header().Set("Content-Type", "application/json")
 
-	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	// response.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	// response.Header().Set("Access-Control-Allow-Headers", "Accept, Accept-Language, Content-Type")
-	err = json.NewEncoder(response).Encode(responseBody)
+	if mongo.IsDuplicateKeyError(err) {
+		responseBody["messsage"] = "subscription already exists, skipping creation ..."
+		rw.WriteHeader(http.StatusAccepted)
+	} else {
+		responseBody["messsage"] = "subscription already exists"
+	}
+
+	err = json.NewEncoder(rw).Encode(responseBody)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func Handler(rw http.ResponseWriter, request *http.Request) {
+	var mongoService mongoLib.MonogoServiceImp = &mongoLib.MongoService{}
+	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
+	mongoService.CreatedShardedCollection(collectionName, "company", false)
+
+	// Dependency injection
+	handler(mongoService, rw, request)
 }
