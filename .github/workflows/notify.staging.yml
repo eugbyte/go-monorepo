@@ -77,21 +77,6 @@ jobs:
         uses: potatoqualitee/azuright@v1.1
       - name: Install azure func
         run: sudo apt-get install azure-functions-core-tools-4
-      - name: Start azure func
-        run: make func-start-notify &
-      - name: Check that daemons are running
-        run: |
-          netstat -nat | grep '7071' | grep LISTEN
-          netstat -nat | grep '10000' | grep LISTEN
-      - name: POST request to enqueue subscription
-        run: |
-          curl --location --request POST 'http://localhost:7071/api/notify' \
-          --header 'Content-Type: application/json' \
-          --header 'Connection: close' \
-          --data-raw '{
-              "username": "abc@m.com",
-              "company": "fakepanda"
-          }'
       - name: Install cosmos docker
         run: |
           ipaddr="`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
@@ -110,5 +95,20 @@ jobs:
           --env AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=$ipaddr \
           --env AZURE_COSMOS_EMULATOR_ENABLE_MONGODB_ENDPOINT=4.0 \
           --interactive \
-          --tty \
-          mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+          mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator &
+      - name: Start azure func
+        run: make func-start-notify &
+      - name: Check that daemons are running
+        run: |
+          netstat -nat | grep '7071' | grep LISTEN
+          netstat -nat | grep '10000' | grep LISTEN
+          netstat -nat | grep '10255' | grep LISTEN
+      - name: POST request to enqueue subscription
+        run: |
+          curl --location --request POST 'http://localhost:7071/api/notify' \
+          --header 'Content-Type: application/json' \
+          --header 'Connection: close' \
+          --data-raw '{
+              "username": "abc@m.com",
+              "company": "fakepanda"
+          }'
