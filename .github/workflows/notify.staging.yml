@@ -99,7 +99,7 @@ jobs:
       - name: Check docker version
         run: docker --version
       - name: Run the emulator
-        run: \
+        run: |
          docker run \
           --publish 8081:8081 \
           --publish 10251-10254:10251-10254 \
