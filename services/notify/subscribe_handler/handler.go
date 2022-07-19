@@ -1,4 +1,4 @@
-package hello_handler
+package subscriber_handler
 
 import (
 	"encoding/json"
@@ -44,5 +44,7 @@ func Handler(rw http.ResponseWriter, request *http.Request) {
 	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
 	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
 	mongoService.CreatedShardedCollection("subscribers", "company", false)
+
+	// Dependency injection
 	handler(mongoService, rw, request)
 }

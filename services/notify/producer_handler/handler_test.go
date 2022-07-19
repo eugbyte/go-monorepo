@@ -41,7 +41,7 @@ func TestHandler(t *testing.T) {
 	if err != nil {
 		t.Fatal("Cannot marshal", err.Error())
 	}
-	request := httptest.NewRequest(http.MethodPost, "/hello", bytes.NewBuffer(objBytes))
+	request := httptest.NewRequest(http.MethodPost, "/api/notifications", bytes.NewBuffer(objBytes))
 
 	writer := httptest.NewRecorder()
 	handler(mockQueueService, writer, request)
