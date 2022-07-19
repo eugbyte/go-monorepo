@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -70,7 +71,9 @@ func TestHandler(t *testing.T) {
 		t.Fatal("Error unmarshalling response body to map[string]string")
 	}
 
+	formats.Trace(responseBody)
 	message := responseBody["message"]
+
 	if message != "subscription saved" {
 		t.Fatalf("expected '%v', but received '%v'", "subscription saved", message)
 	}

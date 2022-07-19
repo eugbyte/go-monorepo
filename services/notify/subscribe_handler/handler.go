@@ -34,10 +34,10 @@ func handler(mongoService mongoLib.MonogoServiceImp, rw http.ResponseWriter, req
 	rw.Header().Set("Content-Type", "application/json")
 
 	if mongo.IsDuplicateKeyError(err) {
-		responseBody["messsage"] = "subscription already exists, skipping creation ..."
+		responseBody["message"] = "subscription already exists, skipping creation ..."
 		rw.WriteHeader(http.StatusAccepted)
 	} else {
-		responseBody["messsage"] = "subscription already exists"
+		responseBody["message"] = "subscription saved"
 	}
 
 	err = json.NewEncoder(rw).Encode(responseBody)
