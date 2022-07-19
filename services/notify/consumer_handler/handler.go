@@ -54,9 +54,13 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 
 	id := fmt.Sprintf("%s__%s", info.Company, info.Username)
 	var subscriber models.Subscription
-	mongoService.FindOne("subscribers", bson.D{{Key: "_id", Value: id}}, &subscriber)
+	err = mongoService.FindOne("subscribers", bson.D{{Key: "_id", Value: id}}, &subscriber)
+	if err != nil {
+		http.Error(rw, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-	responseBody := qmodels.ResponseBody{
+	qResponse := qmodels.ResponseBody{
 		Outputs: map[string]interface{}{
 			"res": "",
 		},
@@ -64,7 +68,7 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 		ReturnValue: "",
 	}
 
-	bytes, _ := json.Marshal(responseBody)
+	bytes, _ := json.Marshal(qResponse)
 	rw.Header().Set("Content-Type", "application/json")
 	_, err = rw.Write(bytes)
 	if err != nil {
@@ -76,5 +80,7 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 func Handler(rw http.ResponseWriter, req *http.Request) {
 	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
 	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
+
+	// Dependency injection
 	handler(mongoService, rw, req)
 }
