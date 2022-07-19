@@ -102,9 +102,7 @@ jobs:
         run: make func-start-notify &
       - name: Check that daemons are running
         run: |
-          netstat -nat | grep '7071' | grep LISTEN
-          netstat -nat | grep '10000' | grep LISTEN
-          netstat -nat | grep '10255' | grep LISTEN
+          netstat -nat | grep LISTEN
       - name: POST request to enqueue subscription
         run: |
           curl --location --request POST 'http://localhost:7071/api/notify' \
