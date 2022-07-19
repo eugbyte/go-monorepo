@@ -52,16 +52,18 @@ jobs:
     steps:
       - name: Checkout monorepo
         uses: actions/checkout@v3
+      - name: Print dir
+        run: ls
       - name: Install Go
         uses: actions/setup-go@v3
         with:
           go-version: '1.18'
-      - name: Print dir
-        run: ls
       - name: Update ubuntu
         run: sudo apt-get -qq update
       - name: Install curl, jq, make, zip, ping, net-tools
         run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
+      - name: Check docker version
+        run: docker --version
       - name: Install docker-compose
         run: make install-docker-compose
       - name: Download Go modules
@@ -81,31 +83,15 @@ jobs:
         run: |
           ipaddr="`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
           docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
-      - name: Check docker version
-        run: docker --version
-      - name: Get local IP address
-        run: ipaddr="`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
-      - name: Run the emulator
-        run: |
-          docker run \
-          --publish 8081:8081 \
-          --publish 10251-10254:10251-10254 \
-          --memory 3g --cpus=2.0 \
-          --name=test-linux-emulator-mongo \
-          --env AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10 \
-          --env AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true \
-          --env AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=$ipaddr \
-          --env AZURE_COSMOS_EMULATOR_ENABLE_MONGODB_ENDPOINT=4.0 \
-          --interactive \
-          mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator &
       - name: Start azure func
         run: make func-start-notify &
       - name: Check that daemons are running
         run: |
-          netstat -nat | grep LISTEN
+          netstat -nat | grep '7071' | grep LISTEN
+          netstat -nat | grep '10000' | grep LISTEN
       - name: POST request to enqueue subscription
         run: |
-          curl --location --request POST 'http://localhost:7071/api/notify' \
+          curl --location --request POST 'http://localhost:7071/api/notifications' \
           --header 'Content-Type: application/json' \
           --header 'Connection: close' \
           --data-raw '{
