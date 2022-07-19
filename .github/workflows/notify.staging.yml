@@ -80,10 +80,6 @@ jobs:
         uses: potatoqualitee/azuright@v1.1
       - name: Install azure func
         run: sudo apt-get install azure-functions-core-tools-4
-      - name: Install cosmos docker
-        run: |
-          ipaddr="`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
-          docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
       - name: Start azure func
         run: make func-start-notify &
       - name: Check that daemons are running
