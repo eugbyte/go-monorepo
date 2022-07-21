@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/pkg/errors"
 	"github.com/web-notify/api/monorepo/libs/db/mongo"
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
+	"github.com/web-notify/api/monorepo/libs/store/vault"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/lib"
@@ -14,7 +16,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func handler(mongoService mongo.MonogoServiceImp, notifyService lib.NotifyServiceImpl, rw http.ResponseWriter, request *http.Request) {
+func handler(
+	mongoService mongo.MonogoServiceImp,
+	notifyService lib.NotifyServiceImpl,
+	vaultService vault.VaultServiceImpl,
+	rw http.ResponseWriter,
+	request *http.Request) {
+
 	formats.Trace("queue triggered")
 
 	var requestBody qmodels.RequestBody
@@ -40,6 +48,12 @@ func handler(mongoService mongo.MonogoServiceImp, notifyService lib.NotifyServic
 		return
 	}
 
+	VAPID_PRIVATE_KEY, err := vaultService.GetSecret("VAPID_PRIVATE_KEY")
+	if err != nil {
+		http.Error(rw, errors.Wrap(err, "Unable to retrieve vapid private key from vault").Error(), http.StatusInternalServerError)
+		return
+	}
+
 	qResponse := qmodels.ResponseBody{
 		Outputs: map[string]interface{}{
 			"res": "",
@@ -61,7 +75,9 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
 	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
 	var notifyService lib.NotifyServiceImpl = &lib.NotifyService{}
+	var vaultService vault.VaultServiceImpl = vault.VaultService{}
+	vaultService.Init("abc")
 
 	// Dependency injection
-	handler(mongoService, notifyService, rw, req)
+	handler(mongoService, notifyService, vaultService, rw, req)
 }

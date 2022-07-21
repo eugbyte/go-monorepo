@@ -5,6 +5,7 @@ use (
     ./libs/queue
     ./libs/utils
     ./libs/db
+    ./libs/store
     ./services/greet
     ./services/notify
 )
