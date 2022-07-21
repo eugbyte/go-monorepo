@@ -9,16 +9,12 @@ import (
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/web-notify/api/monorepo/services/notify/lib"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-type Info struct {
-	Username string `json:"username"`
-	Company  string `json:"company"`
-}
-
-func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, request *http.Request) {
+func handler(mongoService mongo.MonogoServiceImp, notifyService lib.NotifyServiceImpl, rw http.ResponseWriter, request *http.Request) {
 	formats.Trace("queue triggered")
 
 	var requestBody qmodels.RequestBody
@@ -28,24 +24,8 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 		return
 	}
 
-	formats.Trace(requestBody)
-
-	// the message is stringified twice, so need to unmarshall twice
-	var message string
-	err = json.Unmarshal(requestBody.Data["req"], &message)
-	if err != nil {
-		http.Error(rw, err.Error(), http.StatusBadRequest)
-		return
-	}
-	formats.Trace("rawMessage:", message)
-	err = json.Unmarshal([]byte(message), &message)
-	if err != nil {
-		http.Error(rw, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	var info Info
-	err = json.Unmarshal([]byte(message), &info)
+	var info models.Info
+	info, err = lib.DecodeRawMassageToInfo(requestBody.Data["req"])
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
@@ -64,7 +44,7 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 		Outputs: map[string]interface{}{
 			"res": "",
 		},
-		Logs:        []string{"Message successfully dequeued", fmt.Sprintf("message: '%s'", message)},
+		Logs:        []string{"Message successfully dequeued", fmt.Sprintf("message: '%s'", info)},
 		ReturnValue: "",
 	}
 
@@ -80,7 +60,8 @@ func handler(mongoService mongo.MonogoServiceImp, rw http.ResponseWriter, reques
 func Handler(rw http.ResponseWriter, req *http.Request) {
 	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
 	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
+	var notifyService lib.NotifyServiceImpl = &lib.NotifyService{}
 
 	// Dependency injection
-	handler(mongoService, rw, req)
+	handler(mongoService, notifyService, rw, req)
 }

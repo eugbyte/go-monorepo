@@ -26,3 +26,20 @@ func Stringify(obj interface{}) string {
 
 	return string(objBytes)
 }
+
+func FormatURL(baseURL string, pathVariables []string, queryParams map[string]string) string {
+	url := baseURL
+	if len(pathVariables) > 0 {
+		url += "/" + strings.Join(pathVariables, "/")
+	}
+
+	if len(queryParams) > 0 {
+		var strs []string
+		for key, val := range queryParams {
+			strs = append(strs, fmt.Sprintf("%s=%s", key, val))
+		}
+		url += "?" + strings.Join(strs, "&")
+	}
+
+	return url
+}
