@@ -9,9 +9,8 @@ on:
       - ".github/**"
       - "libs/**"
       - "services/notify/**"
+      - "!services/notify/go.sum"
       - "services/go.work"
-      - "services/.gitignore"
-      - "services/Makefile"
 
 jobs:
   unit-test:
