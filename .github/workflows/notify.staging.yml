@@ -1,17 +1,17 @@
-name: notify-queue-e2e
+name: notify-e2e
 concurrency:
   group: notify-tests
   cancel-in-progress: true
 
 on:
   push:
-    # paths:
-    #   - "libs/**"
-    #   - "services/notify/**"
-    #   - "services/go.work"
-    #   - "services/go.work.sum"
-    #   - "services/.gitignore"
-    #   - "services/Makefile"
+    paths:
+      - ".github/**"
+      - "libs/**"
+      - "!libs/**/go.sum"
+      - "services/notify/**"
+      - "!services/notify/go.sum"
+      - "services/go.work"
 
 jobs:
   unit-test:
@@ -58,6 +58,8 @@ jobs:
         run: sudo apt-get -qq update
       - name: Install curl, jq, make, zip, ping, net-tools
         run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
+      - name: Check docker version
+        run: docker --version
       - name: Install docker-compose
         run: make install-docker-compose
       - name: Install Go
@@ -85,7 +87,7 @@ jobs:
           netstat -nat | grep '10000' | grep LISTEN
       - name: POST request to enqueue subscription
         run: |
-          curl --location --request POST 'http://localhost:7071/api/notify' \
+          curl --location --request POST 'http://localhost:7071/api/notifications' \
           --header 'Content-Type: application/json' \
           --header 'Connection: close' \
           --data-raw '{
