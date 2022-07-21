@@ -18,7 +18,6 @@ import (
 
 func handler(
 	mongoService mongo.MonogoServiceImp,
-	notifyService lib.NotifyServiceImpl,
 	vaultService vault.VaultServiceImpl,
 	rw http.ResponseWriter,
 	request *http.Request) {
@@ -53,6 +52,7 @@ func handler(
 		http.Error(rw, errors.Wrap(err, "Unable to retrieve vapid private key from vault").Error(), http.StatusInternalServerError)
 		return
 	}
+	_ = VAPID_PRIVATE_KEY
 
 	qResponse := qmodels.ResponseBody{
 		Outputs: map[string]interface{}{
@@ -74,10 +74,9 @@ func handler(
 func Handler(rw http.ResponseWriter, req *http.Request) {
 	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
 	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
-	var notifyService lib.NotifyServiceImpl = &lib.NotifyService{}
 	var vaultService vault.VaultServiceImpl = vault.VaultService{}
 	vaultService.Init("abc")
 
 	// Dependency injection
-	handler(mongoService, notifyService, vaultService, rw, req)
+	handler(mongoService, vaultService, rw, req)
 }
