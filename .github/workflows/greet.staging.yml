@@ -10,7 +10,6 @@ on:
       - "libs/**"
       - "services/greet/**"
       - "services/go.work"
-      - "services/go.work.sum"
       - "services/.gitignore"
       - "services/Makefile"
 
