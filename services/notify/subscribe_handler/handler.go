@@ -39,9 +39,9 @@ func handler(mongoService mongoLib.MonogoServiceImp, rw http.ResponseWriter, req
 	} else if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
+	} else {
+		responseBody["message"] = "subscription saved"
 	}
-
-	responseBody["message"] = "subscription saved"
 
 	err = json.NewEncoder(rw).Encode(responseBody)
 	if err != nil {
