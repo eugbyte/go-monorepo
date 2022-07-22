@@ -14,7 +14,7 @@ import (
 
 var collectionName = "subscribers"
 
-func handler(mongoService mongoLib.MonogoServiceImp, rw http.ResponseWriter, request *http.Request) {
+func handler(mongoService mongoLib.MonogoServicer, rw http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodPost {
 		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
 		return
@@ -51,8 +51,7 @@ func handler(mongoService mongoLib.MonogoServiceImp, rw http.ResponseWriter, req
 }
 
 func Handler(rw http.ResponseWriter, request *http.Request) {
-	var mongoService mongoLib.MonogoServiceImp = &mongoLib.MongoService{}
-	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
+	var mongoService mongoLib.MonogoServicer = mongoLib.NewMongoService("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
 	mongoService.CreatedShardedCollection(collectionName, "company", false)
 
 	// Dependency injection

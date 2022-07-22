@@ -14,8 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type MonogoServiceImp interface {
-	Init(dbName string, connectionString string)
+type MonogoServicer interface {
 	GetDB() *mongo.Database
 	CreatedShardedCollection(collectionName string, field string, unique bool)
 	CreateIndex(collectionName string, field string, unique bool) error
@@ -24,11 +23,12 @@ type MonogoServiceImp interface {
 	InsertOne(collectionName string, item interface{}) error
 }
 
-type MongoService struct {
+type mongoService struct {
 	Database *mongo.Database
 }
 
-func (ms *MongoService) Init(dbName string, connectionString string) {
+func NewMongoService(dbName string, connectionString string) MonogoServicer {
+	ms := mongoService{}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
@@ -48,15 +48,16 @@ func (ms *MongoService) Init(dbName string, connectionString string) {
 		log.Fatalf("unable to connect %v", err)
 	}
 	ms.Database = client.Database(dbName)
+	return &ms
 }
 
-func (ms *MongoService) GetDB() *mongo.Database {
+func (ms *mongoService) GetDB() *mongo.Database {
 	return ms.Database
 }
 
 // Create sharded collection. If sharded collection already exists, operation is skipped
 // https://www.mongodb.com/community/forums/t/how-do-you-shard-a-collection-with-the-go-driver/4676
-func (ms *MongoService) CreatedShardedCollection(collectionName string, field string, unique bool) {
+func (ms *mongoService) CreatedShardedCollection(collectionName string, field string, unique bool) {
 	ctx := context.Background()
 
 	existingCollectionNames, err := ms.Database.ListCollectionNames(
@@ -87,7 +88,7 @@ func (ms *MongoService) CreatedShardedCollection(collectionName string, field st
 }
 
 // From https://christiangiacomi.com/posts/mongodb-index-using-go/
-func (ms *MongoService) CreateIndex(collectionName string, field string, unique bool) error {
+func (ms *mongoService) CreateIndex(collectionName string, field string, unique bool) error {
 	indexModel := mongo.IndexModel{
 		Keys:    bson.M{field: 1}, // index in ascending order or -1 for descending order
 		Options: options.Index().SetUnique(unique),
@@ -106,7 +107,7 @@ func (ms *MongoService) CreateIndex(collectionName string, field string, unique 
 	return err
 }
 
-func (ms *MongoService) Find(collectionName string, filter primitive.D, items []interface{}) error {
+func (ms *mongoService) Find(collectionName string, filter primitive.D, items []interface{}) error {
 	collection := ms.Database.Collection(collectionName)
 	ctx := context.Background()
 	rs, err := collection.Find(ctx, filter)
@@ -120,7 +121,7 @@ func (ms *MongoService) Find(collectionName string, filter primitive.D, items []
 	return err
 }
 
-func (ms *MongoService) FindOne(collectionName string, filter primitive.D, item interface{}) error {
+func (ms *mongoService) FindOne(collectionName string, filter primitive.D, item interface{}) error {
 	collection := ms.Database.Collection(collectionName)
 	ctx := context.Background()
 	rs := collection.FindOne(ctx, filter)
@@ -131,7 +132,7 @@ func (ms *MongoService) FindOne(collectionName string, filter primitive.D, item 
 	return err
 }
 
-func (ms *MongoService) InsertOne(collectionName string, item interface{}) error {
+func (ms *mongoService) InsertOne(collectionName string, item interface{}) error {
 	ctx := context.Background()
 	ms.Database.Client().Connect(ctx)
 	defer ms.Database.Client().Disconnect(ctx)

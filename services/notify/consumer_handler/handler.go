@@ -17,7 +17,7 @@ import (
 )
 
 func handler(
-	mongoService mongo.MonogoServiceImp,
+	mongoService mongo.MonogoServicer,
 	vaultService vault.VaultServiceImpl,
 	rw http.ResponseWriter,
 	request *http.Request) {
@@ -72,8 +72,7 @@ func handler(
 }
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
-	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
-	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
+	var mongoService mongo.MonogoServicer = mongo.NewMongoService("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
 	var vaultService vault.VaultServiceImpl = &vault.VaultService{}
 	vaultService.Init("abc")
 
