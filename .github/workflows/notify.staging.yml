@@ -74,7 +74,7 @@ jobs:
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
-      - name: Install and start azurite
+      - name: Install azure functions
         run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
         run: make func-start-notify &
