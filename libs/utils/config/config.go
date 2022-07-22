@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 )
@@ -50,4 +51,12 @@ var ENV_VARS = map[STAGE]vars{
 	},
 	STAGING: {},
 	PROD:    {},
+}
+
+func QueueBaseURL(stage STAGE, accountName string) string {
+	if stage == DEV {
+		return fmt.Sprintf("%s/%s", "http://127.0.0.1:10001", accountName)
+	} else {
+		return fmt.Sprintf("https://%s.queue.core.windows.net", accountName)
+	}
 }

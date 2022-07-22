@@ -61,8 +61,8 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 	var stage config.STAGE = config.GetStage()
 	queueAccountName := config.ENV_VARS[stage].QUEUE_ACCOUNT_NAME
 
-	baseConnectionString := qLib.GetBaseConnectionString(stage, queueAccountName)
-	var qService qLib.QueueServicer = qLib.NewQueueService(context.Background(), queueName, baseConnectionString, queueAccountName, config.ENV_VARS[stage].QUEUE_ACCOUNT_KEY)
+	qBaseUrl := config.QueueBaseURL(stage, queueAccountName)
+	var qService qLib.QueueServicer = qLib.NewQueueService(context.Background(), queueName, qBaseUrl, queueAccountName, config.ENV_VARS[stage].QUEUE_ACCOUNT_KEY)
 
 	// Dependency injection
 	handler(qService, response, request)
