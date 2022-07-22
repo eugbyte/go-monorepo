@@ -3,14 +3,15 @@ concurrency:
   group: notify-tests
   cancel-in-progress: true
 
-on: [push]
-    # paths:
-    #   - ".github/**"
-    #   - "libs/**"
-    #   - "!libs/**/go.sum"
-    #   - "services/notify/**"
-    #   - "!services/notify/go.sum"
-    #   - "services/go.work"
+on:
+  push:
+    paths:
+      - ".github/**"
+      - "libs/**"
+      - "!libs/**/go.sum"
+      - "services/notify/**"
+      - "!services/notify/go.sum"
+      - "services/go.work"
 
 jobs:
   unit-test:
@@ -73,13 +74,8 @@ jobs:
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
-      - name: Install azure func
-        run: |
-        curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-        sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-        sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-$(lsb_release -cs)-prod $(lsb_release -cs) main" > /etc/apt/sources.list.d/dotnetdev.list'
-        sudo apt-get update
-        sudo apt-get install azure-functions-core-tools-4
+      - name: Install azure functions
+        run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
         run: make func-start-notify &
       - name: Check that daemons are running

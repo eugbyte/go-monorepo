@@ -3,14 +3,15 @@ concurrency:
   group: greet
   cancel-in-progress: true
 
-on: [push]
-    # paths:
-    #   - ".github/**"
-    #   - "libs/**"
-    #   - "!libs/**/go.sum"
-    #   - "services/greet/**"
-    #   - "!services/greet/go.sum"
-    #   - "services/go.work"
+on:
+  push:
+    paths:
+      - ".github/**"
+      - "libs/**"
+      - "!libs/**/go.sum"
+      - "services/greet/**"
+      - "!services/greet/go.sum"
+      - "services/go.work"
 
 jobs:
   unit-test:
