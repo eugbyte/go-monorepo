@@ -71,7 +71,7 @@ jobs:
           make download-greet
           sudo make install-lint
       - name: Build main.exe
-        run: make chmod +x build-greet
+        run: make build-greet
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
