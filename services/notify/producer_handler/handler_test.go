@@ -30,7 +30,7 @@ func (qService *MockQueueService) Enqueue(messageText string, visibilityTimeout 
 }
 
 func TestHandler(t *testing.T) {
-	var mockQueueService qLib.QueueServiceImpl = &MockQueueService{}
+	var mockQueueService qLib.QueueServicer = &MockQueueService{}
 
 	mockReq := RequestBody{
 		Company:  "fakepanda",

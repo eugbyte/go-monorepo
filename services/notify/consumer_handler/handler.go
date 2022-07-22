@@ -17,8 +17,8 @@ import (
 )
 
 func handler(
-	mongoService mongo.MonogoServiceImp,
-	vaultService vault.VaultServiceImpl,
+	mongoService mongo.MonogoServicer,
+	vaultService vault.VaultServicer,
 	rw http.ResponseWriter,
 	request *http.Request) {
 
@@ -72,11 +72,8 @@ func handler(
 }
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
-	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
-	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
-	var vaultService vault.VaultServiceImpl = &vault.VaultService{}
-	vaultService.Init("abc")
-
+	var mongoService mongo.MonogoServicer = mongo.NewMongoService("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
+	var vaultService vault.VaultServicer = vault.NewVaultService("https://myvault.vault.azure.net/secrets")
 	// Dependency injection
 	handler(mongoService, vaultService, rw, req)
 }

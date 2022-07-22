@@ -10,8 +10,7 @@ import (
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
-type VaultServiceImpl interface {
-	Init(vaultURI string)
+type VaultServicer interface {
 	GetSecret(secretName string) (string, error)
 	SetSecret(secretName string, secretValue string) error
 }
@@ -20,7 +19,8 @@ type VaultService struct {
 	client *azsecrets.Client
 }
 
-func (vs *VaultService) Init(vaultURI string) {
+func NewVaultService(vaultURI string) VaultServicer {
+	vs := VaultService{}
 	credential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("Failed to initialise vault service. %v", err)
@@ -28,6 +28,7 @@ func (vs *VaultService) Init(vaultURI string) {
 
 	// Establish a connection to the Key Vault client
 	vs.client = azsecrets.NewClient(vaultURI, credential, nil)
+	return &vs
 }
 
 func (vs *VaultService) GetSecret(secretName string) (string, error) {

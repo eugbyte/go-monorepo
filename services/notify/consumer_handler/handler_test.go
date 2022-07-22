@@ -61,5 +61,4 @@ func TestHandler(t *testing.T) {
 	}
 
 	t.Logf("test passed")
-
 }

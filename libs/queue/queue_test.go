@@ -7,7 +7,7 @@ import (
 )
 
 func TestQueue(t *testing.T) {
-	var qService QueueServiceImpl = &QueueService{}
+	var qService QueueServicer = &queueService{}
 	t.Log(qService)
 	t.Log("test passed, qService initialised without panic")
 }

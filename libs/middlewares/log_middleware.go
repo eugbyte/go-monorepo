@@ -8,6 +8,10 @@ import (
 
 type LogMiddleWare struct{}
 
+func NewLogMiddleware() LogMiddleWare {
+	return LogMiddleWare{}
+}
+
 func (mw LogMiddleWare) Wrap(handler Handler) Handler {
 	return func(response http.ResponseWriter, request *http.Request) {
 		// pre-process request here

@@ -5,6 +5,7 @@ tidy:
 	go mod tidy -e
 build:
 	export GO111MODULE=on
+	chmod +x main.go
 	go build main.go
 dev:
 	go run main.go
