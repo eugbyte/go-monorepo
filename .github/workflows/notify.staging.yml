@@ -70,7 +70,7 @@ jobs:
           make download-libs
           make download-notify
       - name: Build main.exe
-        run: sudo make build-notify
+        run: chmod +x make build-notify
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
