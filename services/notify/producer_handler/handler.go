@@ -15,7 +15,7 @@ type RequestBody struct {
 	Company  string `json:"company"`
 }
 
-func handler(qService qLib.QueueServiceImpl, rw http.ResponseWriter, request *http.Request) {
+func handler(qService qLib.QueueServicer, rw http.ResponseWriter, request *http.Request) {
 	formats.Trace("In handler")
 
 	var requestBody RequestBody
@@ -57,11 +57,10 @@ func handler(qService qLib.QueueServiceImpl, rw http.ResponseWriter, request *ht
 }
 
 func Handler(response http.ResponseWriter, request *http.Request) {
-	var qService = qLib.QueueService{}
 	queueName := "my-queue"
 	baseConnectionString := qLib.GetBaseConnectionString(config.STAGE, config.QUEUE_ACCOUNT_NAME)
-	qService.Init(context.Background(), queueName, baseConnectionString, config.QUEUE_ACCOUNT_NAME, config.QUEUE_ACCOUNT_KEY)
+	var qService qLib.QueueServicer = qLib.NewQueueService(context.Background(), queueName, baseConnectionString, config.QUEUE_ACCOUNT_NAME, config.QUEUE_ACCOUNT_KEY)
 
 	// Dependency injection
-	handler(&qService, response, request)
+	handler(qService, response, request)
 }
