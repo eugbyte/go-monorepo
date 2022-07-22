@@ -69,6 +69,7 @@ jobs:
           go mod download
           make download-libs
           make download-greet
+          sudo make install-lint
       - name: Build main.exe
         run: make build-greet
       - name: Install and start azurite
