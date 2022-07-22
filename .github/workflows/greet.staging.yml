@@ -44,7 +44,7 @@ jobs:
         run: make lint-greet
 
   e2e-local-sandbox:
-    runs-on: ubuntu-18.04 
+    runs-on: ubuntu-latest
     needs: unit-test
     defaults:
       run:
