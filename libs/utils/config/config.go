@@ -14,7 +14,7 @@ const (
 	PROD
 )
 
-func GetEnvOrDefault(key string, defaultValue string) string {
+func EnvOrDefault(key string, defaultValue string) string {
 	value := os.Getenv(key)
 	if value == "" {
 		return defaultValue
@@ -22,8 +22,8 @@ func GetEnvOrDefault(key string, defaultValue string) string {
 	return value
 }
 
-func GetStage() STAGE {
-	var stage = GetEnvOrDefault("STAGE", "dev")
+func Stage() STAGE {
+	var stage = EnvOrDefault("STAGE", "dev")
 	stageMap := map[string]STAGE{
 		"dev":  DEV,
 		"stg":  STAGING,

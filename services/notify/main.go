@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	var stage config.STAGE = config.GetStage()
+	var stage config.STAGE = config.Stage()
 	var address string = config.ENV_VARS[stage].LOCAL_PORT
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/notifications", producer.Handler)

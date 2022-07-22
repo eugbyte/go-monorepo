@@ -8,7 +8,7 @@ import (
 )
 
 func TestQueue(t *testing.T) {
-	stage := config.GetStage()
+	stage := config.Stage()
 	accountName := "my_acc"
 	url := config.QueueBaseURL(stage, accountName)
 	var qService QueueServicer = NewQueueService(context.Background(), "my_queue", url, accountName, "my_key")

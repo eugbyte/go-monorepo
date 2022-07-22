@@ -66,7 +66,7 @@ func handler(
 }
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
-	var stage config.STAGE = config.GetStage()
+	var stage config.STAGE = config.Stage()
 
 	var mongoService mongo.MonogoServicer = mongo.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
 	// Dependency injection

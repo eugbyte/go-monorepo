@@ -6,12 +6,12 @@ import (
 )
 
 func TestHandler(t *testing.T) {
-	myEnv := GetEnvOrDefault("MY_ENV", "abc")
+	myEnv := EnvOrDefault("MY_ENV", "abc")
 	if myEnv != "abc" {
 		t.Fatalf("test failed, expected %s, but received %s", "abc", myEnv)
 	}
 	os.Setenv("MY_ENV", "def")
-	myEnv = GetEnvOrDefault("MY_ENV", "abc")
+	myEnv = EnvOrDefault("MY_ENV", "abc")
 	if myEnv != "def" {
 		t.Fatalf("test failed, expected %s, but received %s", "def", myEnv)
 	}

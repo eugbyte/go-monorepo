@@ -15,7 +15,7 @@ import (
 )
 
 type MonogoServicer interface {
-	GetDB() *mongo.Database
+	DB() *mongo.Database
 	CreatedShardedCollection(collectionName string, field string, unique bool)
 	CreateIndex(collectionName string, field string, unique bool) error
 	Find(collectionName string, filter primitive.D, items []interface{}) error
@@ -51,7 +51,7 @@ func NewMongoService(dbName string, connectionString string) MonogoServicer {
 	return &ms
 }
 
-func (ms *mongoService) GetDB() *mongo.Database {
+func (ms *mongoService) DB() *mongo.Database {
 	return ms.Database
 }
 

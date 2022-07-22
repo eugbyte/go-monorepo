@@ -19,7 +19,7 @@ import (
 type MockMonogoService struct{}
 
 func (ms *MockMonogoService) Init(dbName string, connectionString string) {}
-func (ms *MockMonogoService) GetDB() *mongo.Database {
+func (ms *MockMonogoService) DB() *mongo.Database {
 	return &mongo.Database{}
 }
 func (ms *MockMonogoService) CreatedShardedCollection(collectionName string, field string, unique bool) {
@@ -84,7 +84,7 @@ func TestHandler(t *testing.T) {
 type MockMonogoService2 struct{}
 
 func (ms *MockMonogoService2) Init(dbName string, connectionString string) {}
-func (ms *MockMonogoService2) GetDB() *mongo.Database {
+func (ms *MockMonogoService2) DB() *mongo.Database {
 	return &mongo.Database{}
 }
 func (ms *MockMonogoService2) CreatedShardedCollection(collectionName string, field string, unique bool) {

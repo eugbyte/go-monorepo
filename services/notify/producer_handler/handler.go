@@ -58,7 +58,7 @@ func handler(qService qLib.QueueServicer, rw http.ResponseWriter, request *http.
 
 func Handler(response http.ResponseWriter, request *http.Request) {
 	queueName := "my-queue"
-	var stage config.STAGE = config.GetStage()
+	var stage config.STAGE = config.Stage()
 	queueAccountName := config.ENV_VARS[stage].QUEUE_ACCOUNT_NAME
 
 	qBaseUrl := config.QueueBaseURL(stage, queueAccountName)
