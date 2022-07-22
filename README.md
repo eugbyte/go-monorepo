@@ -37,4 +37,13 @@ Full list of commands are listed in Makefile
 7. When calling the apis from the browser, need to watch out for [CORS errors, and also handle the pre-flight requests](https://flaviocopes.com/golang-enable-cors/).
 8. To starts the COSMOS DB emulator, [refer here](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21#azure-cosmos-dbs-api-for-mongodb). Remember to use the `EnableMongoDbEndpoint` flag. To check that the port is running, do `netstat -nat | grep '10255' | grep LISTEN`
 9. To create a sharded collection in COSMOS DB, [follow here](https://stackoverflow.com/a/54869239/6514532) and [here](https://www.mongodb.com/community/forums/t/how-do-you-shard-a-collection-with-the-go-driver/4676)
-10. Right now, not possible to install COSMOS DB emulator for mongoDB, [see here](https://github.com/MicrosoftDocs/azure-docs/issues/95755)
+10. Right now, not possible to install COSMOS DB emulator for mongoDB with docker, [see here](https://github.com/MicrosoftDocs/azure-docs/issues/95755)
+11. To start the [azure key vault emulator](https://github.com/nagyesta/lowkey-vault), use:
+```
+// pull the image
+docker pull nagyesta/lowkey-vault:1.8.14
+// run the container
+docker run --rm -d -p 8443:8443 --name lowkey_vault  nagyesta/lowkey-vault:1.8.14 
+// stop the container
+docker container stop lowkey_vault
+```

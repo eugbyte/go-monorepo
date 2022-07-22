@@ -52,7 +52,7 @@ func handler(
 		http.Error(rw, errors.Wrap(err, "Unable to retrieve vapid private key from vault").Error(), http.StatusInternalServerError)
 		return
 	}
-	_ = VAPID_PRIVATE_KEY
+	formats.Trace(VAPID_PRIVATE_KEY)
 
 	qResponse := qmodels.ResponseBody{
 		Outputs: map[string]interface{}{
@@ -74,7 +74,7 @@ func handler(
 func Handler(rw http.ResponseWriter, req *http.Request) {
 	var mongoService mongo.MonogoServiceImp = &mongo.MongoService{}
 	mongoService.Init("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
-	var vaultService vault.VaultServiceImpl = vault.VaultService{}
+	var vaultService vault.VaultServiceImpl = &vault.VaultService{}
 	vaultService.Init("abc")
 
 	// Dependency injection
