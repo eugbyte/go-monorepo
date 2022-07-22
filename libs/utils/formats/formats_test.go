@@ -20,3 +20,19 @@ func Test_Stringify(t *testing.T) {
 
 	t.Logf("test passed")
 }
+
+func Test_FormatURL(t *testing.T) {
+	baseUrl := "http://localhost:7071/api"
+	pathVariables := []string{"v1", "notifications"}
+	queryParams := map[string]string{
+		"page_number": "1",
+		"page_length": "5",
+	}
+
+	res := FormatURL(baseUrl, pathVariables, queryParams)
+	t.Log(res)
+	ans := "http://localhost:7071/api/v1/notifications?page_number=1&page_length=5"
+	if res != ans {
+		t.Fatalf("expected %v, but received %v", ans, res)
+	}
+}
