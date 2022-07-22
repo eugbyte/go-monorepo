@@ -21,7 +21,7 @@ func TestGetConnectionString(t *testing.T) {
 		t.Fatalf("test failed. expectected %s, received %s", devAns, connection)
 	}
 
-	connection = GetBaseConnectionString("abc", "my_account")
+	connection = GetBaseConnectionString(config.GetStage(), "my_account")
 	t.Log(connection)
 
 	stgAns := "https://my_account.queue.core.windows.net"

@@ -69,7 +69,7 @@ func (qService *queueService) Enqueue(messageText string, visibilityTimeout time
 
 // To generate the QueueURL to the queue
 // connection string: "http://127.0.0.1:10001/devstoreaccount1/{queueName}"
-func GetBaseConnectionString(stage string, accountName string) string {
+func GetBaseConnectionString(stage config.STAGE, accountName string) string {
 	if stage == config.DEV {
 		return fmt.Sprintf("%s/%s", "http://127.0.0.1:10001", accountName)
 	} else {

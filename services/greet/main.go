@@ -11,7 +11,8 @@ import (
 )
 
 func main() {
-	var address string = config.LOCAL_PORT
+	var stage config.STAGE = config.GetStage()
+	var address string = config.ENV_VARS[stage].LOCAL_PORT
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/hello", middlewares.Middy(hello.Handler, middlewares.NewLogMiddleware()))
 
