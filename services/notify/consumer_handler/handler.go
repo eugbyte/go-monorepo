@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/pkg/errors"
 	"github.com/web-notify/api/monorepo/libs/db/mongo"
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
-	"github.com/web-notify/api/monorepo/libs/store/vault"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/lib"
@@ -18,7 +16,6 @@ import (
 
 func handler(
 	mongoService mongo.MonogoServicer,
-	vaultService vault.VaultServicer,
 	rw http.ResponseWriter,
 	request *http.Request) {
 
@@ -47,12 +44,9 @@ func handler(
 		return
 	}
 
-	VAPID_PRIVATE_KEY, err := vaultService.GetSecret("VAPID_PRIVATE_KEY")
-	if err != nil {
-		http.Error(rw, errors.Wrap(err, "Unable to retrieve vapid private key from vault").Error(), http.StatusInternalServerError)
-		return
-	}
-	formats.Trace(VAPID_PRIVATE_KEY)
+	// TO DO
+	// 1. Retrieve VAPID_PRIVATE_KEY from azure vault secret
+	// 2. Web push with the private key
 
 	qResponse := qmodels.ResponseBody{
 		Outputs: map[string]interface{}{
@@ -72,8 +66,9 @@ func handler(
 }
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
-	var mongoService mongo.MonogoServicer = mongo.NewMongoService("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
-	var vaultService vault.VaultServicer = vault.NewVaultService("https://myvault.vault.azure.net/secrets")
+	var stage config.STAGE = config.Stage()
+
+	var mongoService mongo.MonogoServicer = mongo.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
 	// Dependency injection
-	handler(mongoService, vaultService, rw, req)
+	handler(mongoService, rw, req)
 }

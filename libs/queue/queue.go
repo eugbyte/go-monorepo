@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-storage-queue-go/azqueue"
-	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
@@ -24,10 +23,7 @@ type queueService struct {
 	cxt      context.Context
 }
 
-/*
-	Must use this method to initialise the queue. Each queue is unique to the queue name
-	To change to a different queue, must call this method again with a different queueName
-*/
+// Get the baseConnectionString from config.QueueBaseURL()
 func NewQueueService(cxt context.Context, queueName string, baseConnectionString string, accountName string, accountKey string) QueueServicer {
 	qService := queueService{}
 	qService.cxt = cxt
@@ -65,14 +61,4 @@ func (qService *queueService) CreateQueue(metaData azqueue.Metadata) error {
 func (qService *queueService) Enqueue(messageText string, visibilityTimeout time.Duration, timeToLive time.Duration) (*azqueue.EnqueueMessageResponse, error) {
 	messageUrl := qService.queueUrl.NewMessagesURL()
 	return messageUrl.Enqueue(qService.cxt, messageText, visibilityTimeout, timeToLive)
-}
-
-// To generate the QueueURL to the queue
-// connection string: "http://127.0.0.1:10001/devstoreaccount1/{queueName}"
-func GetBaseConnectionString(stage string, accountName string) string {
-	if stage == config.DEV {
-		return fmt.Sprintf("%s/%s", "http://127.0.0.1:10001", accountName)
-	} else {
-		return fmt.Sprintf("https://%s.queue.core.windows.net", accountName)
-	}
 }

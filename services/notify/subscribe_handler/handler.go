@@ -51,7 +51,8 @@ func handler(mongoService mongoLib.MonogoServicer, rw http.ResponseWriter, reque
 }
 
 func Handler(rw http.ResponseWriter, request *http.Request) {
-	var mongoService mongoLib.MonogoServicer = mongoLib.NewMongoService("subscriberDB", config.MONGO_DB_CONNECTION_STRING)
+	var stage config.STAGE = config.Stage()
+	var mongoService mongoLib.MonogoServicer = mongoLib.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
 	mongoService.CreatedShardedCollection(collectionName, "company", false)
 
 	// Dependency injection
