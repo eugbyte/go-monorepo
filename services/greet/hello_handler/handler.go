@@ -3,7 +3,6 @@ package hello_handler
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
 )
 
 type RequestBody struct {
@@ -16,8 +15,7 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	message := strings.ToUpper("Hello") + "!!"
-	responseBody := map[string]interface{}{"message": message}
+	responseBody := map[string]interface{}{"message": "Hello World"}
 
 	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err := json.NewEncoder(response).Encode(responseBody)

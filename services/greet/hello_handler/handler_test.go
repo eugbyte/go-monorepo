@@ -1,7 +1,6 @@
 package hello_handler
 
 import (
-	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -11,11 +10,7 @@ import (
 
 func TestHandler(t *testing.T) {
 
-	objBytes, err := json.Marshal(RequestBody{Message: "Hello"})
-	if err != nil {
-		t.Fatal("Cannot marshal", err.Error())
-	}
-	request := httptest.NewRequest(http.MethodPost, "/hello", bytes.NewBuffer(objBytes))
+	request := httptest.NewRequest(http.MethodPost, "/hello", nil)
 
 	writer := httptest.NewRecorder()
 	Handler(writer, request)
@@ -33,7 +28,7 @@ func TestHandler(t *testing.T) {
 		t.Fatal("Error unmarshalling response body to map[string]string")
 	}
 	message := messageMap["message"]
-	if message != "HELLO!!" {
+	if message != "Hello World" {
 		t.Fatalf("test failed. Expected %v, received %v", "HELLO!!", message)
 	} else {
 		t.Logf("test passed. Expected %v, received %v", "HELLO!!", message)
