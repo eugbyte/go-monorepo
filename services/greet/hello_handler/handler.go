@@ -28,6 +28,10 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 		log.Fatalf("failed to create a secret: %v", err)
 	}
 	ans, err := vs.GetSecret(secretName)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	formats.Trace(ans)
 
 	responseBody := map[string]interface{}{"message": "Hello World"}
