@@ -7,11 +7,8 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
-	"github.com/web-notify/api/monorepo/libs/utils/config"
-	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
 type VaultServicer interface {
@@ -25,17 +22,6 @@ type vaultService struct {
 
 func NewVaultService(vaultURI string) VaultServicer {
 	vs := vaultService{}
-	stage := config.Stage()
-	formats.Trace(stage)
-
-	if stage == config.DEV {
-		formats.Trace("Creating emulated vault...")
-		httpClient := InsecureClient()
-		vs.client = azsecrets.NewClient("https://localhost:8443",
-			&FakeCredential{},
-			&policy.ClientOptions{Transport: &httpClient})
-		return &vs
-	}
 
 	credential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

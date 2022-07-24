@@ -8,6 +8,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+	"github.com/web-notify/api/monorepo/libs/utils/config"
+	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
 /*
@@ -27,4 +30,17 @@ func InsecureClient() http.Client {
 	customTransport := http.DefaultTransport.(*http.Transport).Clone()
 	customTransport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	return http.Client{Transport: customTransport}
+}
+
+func NewMockVaultService(vaultURI string) VaultServicer {
+	vs := vaultService{}
+	stage := config.Stage()
+	formats.Trace(stage)
+
+	formats.Trace("Creating emulated vault...")
+	httpClient := InsecureClient()
+	vs.client = azsecrets.NewClient("https://localhost:8443",
+		&FakeCredential{},
+		&policy.ClientOptions{Transport: &httpClient})
+	return &vs
 }
