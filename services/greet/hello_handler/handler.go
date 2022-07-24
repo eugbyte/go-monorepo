@@ -34,6 +34,13 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 	}
 	formats.Trace(ans)
 
+	secret, err := vs.GetSecret("test-secret")
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	formats.Trace(secret)
+
 	responseBody := map[string]interface{}{"message": "Hello World"}
 
 	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
