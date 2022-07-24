@@ -1,13 +1,10 @@
 package hello_handler
 
 import (
-	"context"
 	"encoding/json"
 	"log"
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 	"github.com/web-notify/api/monorepo/libs/store/vault"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
@@ -22,22 +19,16 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	httpClient := vault.InsecureClient()
-	client := azsecrets.NewClient("https://localhost:8443",
-		&vault.FakeCredential{},
-		&policy.ClientOptions{Transport: &httpClient})
-
+	vs := vault.NewVaultService("https://localhost:8443")
 	secretName := "name"
 	secretValue := "Tom"
-	params := azsecrets.SetSecretParameters{Value: &secretValue}
-	_, err := client.SetSecret(context.TODO(), secretName, params, nil)
+	err := vs.SetSecret(secretName, secretValue)
 	if err != nil {
+		formats.Trace(err)
 		log.Fatalf("failed to create a secret: %v", err)
 	}
-
-	var ans azsecrets.GetSecretResponse
-	ans, err = client.GetSecret(context.TODO(), "name", "", nil)
-	formats.Trace(ans.Value)
+	ans, err := vs.GetSecret(secretName)
+	formats.Trace(ans)
 
 	responseBody := map[string]interface{}{"message": "Hello World"}
 

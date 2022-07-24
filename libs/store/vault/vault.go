@@ -17,12 +17,12 @@ type VaultServicer interface {
 	SetSecret(secretName string, secretValue string) error
 }
 
-type VaultService struct {
+type vaultService struct {
 	client *azsecrets.Client
 }
 
 func NewVaultService(vaultURI string) VaultServicer {
-	vs := VaultService{}
+	vs := vaultService{}
 	stage := config.Stage()
 	formats.Trace(stage)
 
@@ -34,6 +34,7 @@ func NewVaultService(vaultURI string) VaultServicer {
 		return &vs
 	}
 
+	formats.Trace("Here")
 	credential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("Failed to initialise vault service. %v", err)
@@ -44,22 +45,20 @@ func NewVaultService(vaultURI string) VaultServicer {
 	return &vs
 }
 
-func (vs *VaultService) GetSecret(secretName string) (string, error) {
+func (vs *vaultService) GetSecret(secretName string) (string, error) {
 	// Get a secret. An empty string version gets the latest version of the secret.
 	version := ""
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
 	respn, err := vs.client.GetSecret(ctx, secretName, version, nil)
-	formats.Trace(err)
 	if err != nil {
 		return "", err
 	}
-	formats.Trace(respn)
 	return *respn.Value, err
 }
 
-func (vs *VaultService) SetSecret(secretName string, secretValue string) error {
+func (vs *vaultService) SetSecret(secretName string, secretValue string) error {
 	params := azsecrets.SetSecretParameters{Value: &secretValue}
 	_, err := vs.client.SetSecret(context.TODO(), secretName, params, nil)
 	if err != nil {
