@@ -32,7 +32,9 @@ func InsecureClient() http.Client {
 	return http.Client{Transport: customTransport}
 }
 
-func NewMockVaultService(vaultURI string) VaultServicer {
+// Note - not using https, but http, thus insecure
+// use for local development only
+func NewEmulatedVaultService(vaultURI string) VaultServicer {
 	vs := vaultService{}
 	stage := config.Stage()
 	formats.Trace(stage)
