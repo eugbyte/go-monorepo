@@ -42,8 +42,16 @@ Full list of commands are listed in Makefile
 ```
 // pull the image
 docker pull nagyesta/lowkey-vault:1.8.14
+
 // run the container
-docker run --rm -d -p 8443:8443 --name lowkey_vault  nagyesta/lowkey-vault:1.8.14 
+docker run --rm -d -p 8443:8443 --name lowkey_vault nagyesta/lowkey-vault:1.8.14
+
+// view the ports
+docker container list | grep 'lowkey_vault'
+
 // stop the container
 docker container stop lowkey_vault
+
+// kill the container
+docker kill lowkey_vault
 ```
