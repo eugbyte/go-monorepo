@@ -44,7 +44,7 @@ Full list of commands are listed in Makefile
 docker pull nagyesta/lowkey-vault:1.8.14
 
 // run the container
-docker run --rm -d -p 8443:8443 --name lowkey_vault nagyesta/lowkey-vault:1.8.14 --env LOWKEY_IMPORT_LOCATION=/services/notify/vault.secrets.json.hbs
+docker run --rm -d -p 8443:8443 --name lowkey_vault nagyesta/lowkey-vault:1.8.14
 
 // view the ports
 docker container list | grep 'lowkey_vault'

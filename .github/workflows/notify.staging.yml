@@ -78,9 +78,12 @@ jobs:
         run: sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
         run: make func-start-notify &
+      - name: Start azure vault emulator
+        run: docker run --rm -d -p 8443:8443 --name lowkey_vault nagyesta/lowkey-vault:1.8.14
       - name: Check that daemons are running
         run: |
           netstat -nat | grep '7071' | grep LISTEN
+          netstat -nat | grep '8443' | grep LISTEN
           netstat -nat | grep '10000' | grep LISTEN
       - name: POST request to enqueue subscription
         run: |
