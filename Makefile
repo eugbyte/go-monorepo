@@ -23,6 +23,10 @@ lint-queue:
 test-queue:
 	cd libs/queue && make test
 
+##----STORE----
+test-store:
+	cd libs/store && make test
+
 #----SERVICES----
 ##----GREET----
 tidy-greet:
