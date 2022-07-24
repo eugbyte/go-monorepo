@@ -33,7 +33,8 @@ func InsecureClient() http.Client {
 }
 
 // Note - not using https, but http, thus insecure
-// use for local development only
+// use for local development only.
+// vaultURI = "https://localhost:8443"
 func NewEmulatedVaultService(vaultURI string) VaultServicer {
 	vs := vaultService{}
 	stage := config.Stage()
@@ -41,7 +42,7 @@ func NewEmulatedVaultService(vaultURI string) VaultServicer {
 
 	formats.Trace("Creating emulated vault...")
 	httpClient := InsecureClient()
-	vs.client = azsecrets.NewClient("https://localhost:8443",
+	vs.client = azsecrets.NewClient(vaultURI,
 		&FakeCredential{},
 		&policy.ClientOptions{Transport: &httpClient})
 	return &vs
