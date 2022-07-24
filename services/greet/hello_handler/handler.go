@@ -5,10 +5,6 @@ import (
 	"net/http"
 )
 
-type RequestBody struct {
-	Message string `json:"message"`
-}
-
 func Handler(response http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodGet {
 		http.Error(response, "Wrong HTTP Method", http.StatusBadRequest)
