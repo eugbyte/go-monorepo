@@ -2,7 +2,7 @@ package middlewares
 
 import "net/http"
 
-type Handler = func(res http.ResponseWriter, req *http.Request)
+type Handler = func(rw http.ResponseWriter, req *http.Request)
 
 type MiddlewareImpl interface {
 	Wrap(handler Handler) Handler
