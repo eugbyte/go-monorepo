@@ -29,9 +29,7 @@ func TestHandler(t *testing.T) {
 	}
 	message := messageMap["message"]
 	if message != "Hello World" {
-		t.Fatalf("test failed. Expected %v, received %v", "HELLO!!", message)
-	} else {
-		t.Logf("test passed. Expected %v, received %v", "HELLO!!", message)
+		t.Fatalf("test failed. Expected %v, received %v", "Hello World", message)
 	}
 
 }
