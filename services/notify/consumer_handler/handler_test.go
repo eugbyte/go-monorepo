@@ -9,11 +9,51 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
+	webpush "github.com/web-notify/api/monorepo/libs/notifications/web_push"
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
+	"github.com/web-notify/api/monorepo/services/notify/models"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
+type MockMonogoService struct{}
+
+func (ms *MockMonogoService) DB() *mongo.Database {
+	return &mongo.Database{}
+}
+func (ms *MockMonogoService) CreatedShardedCollection(collectionName string, field string, unique bool) {
+}
+func (ms *MockMonogoService) CreateIndex(collectionName string, field string, unique bool) error {
+	return nil
+}
+func (ms *MockMonogoService) Find(collectionName string, filter primitive.D, items []interface{}) error {
+	return nil
+}
+func (ms *MockMonogoService) FindOne(collectionName string, filter primitive.D, item interface{}) error {
+	subscription := models.Subscription{}
+	objBytes, err := json.Marshal(subscription)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(objBytes, item)
+	return err
+}
+func (ms *MockMonogoService) InsertOne(collectionName string, item interface{}) error {
+	return nil
+}
+func (ms *MockMonogoService) UpdateOne(collectionName string, filter primitive.D, item interface{}, upsert bool) error {
+	return nil
+}
+
+type MockWebService struct{}
+
+func (ms *MockWebService) SendNotification(message interface{}, endpoint string, auth string, p256dh string, ttl int) error {
+	return nil
+}
+
 func TestHandler(t *testing.T) {
-	jsonStr := "\"{\\\"company\\\":\\\"fakepanda\\\",\\\"username\\\":\\\"abc@m.com\\\"}\""
+	jsonStr := "\"{\\\"company\\\":\\\"fakepanda\\\",\\\"userID\\\":\\\"abc@m.com\\\"}\""
 	reqData := map[string]string{
 		"req": jsonStr,
 	}
@@ -27,9 +67,11 @@ func TestHandler(t *testing.T) {
 	}
 
 	request := httptest.NewRequest(http.MethodPost, "/hello", bytes.NewBuffer(objBytes))
-
 	writer := httptest.NewRecorder()
-	Handler(writer, request)
+	var mockMongoService mongolib.MonogoServicer = &MockMonogoService{}
+	var mockWebService webpush.WebPushServicer = &MockWebService{}
+
+	handler(mockWebService, mockMongoService, writer, request)
 	result := writer.Result()
 	defer result.Body.Close()
 

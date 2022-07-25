@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"log"
-	"regexp"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
 type VaultServicer interface {
@@ -47,7 +47,7 @@ func (vs *vaultService) GetSecret(secretName string) (string, error) {
 }
 
 func (vs *vaultService) SetSecret(secretName string, secretValue string) error {
-	if !ValidateSecretName(secretName) {
+	if !formats.ValidateAzureParamString(secretName) {
 		// https://docs.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal#add-a-secret-to-key-vault
 		return errors.New("Secret name must only contain only 0-9, a-z, A-Z, and -. ")
 	}
@@ -59,13 +59,4 @@ func (vs *vaultService) SetSecret(secretName string, secretValue string) error {
 		return err
 	}
 	return nil
-}
-
-// https://docs.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal#add-a-secret-to-key-vault
-func ValidateSecretName(secretName string) bool {
-	re, err := regexp.Compile("^(?i)([a-z0-9\\-\\.])*$")
-	if err != nil {
-		log.Fatalf("Could not compile regex expression: %v", err)
-	}
-	return re.MatchString(secretName)
 }

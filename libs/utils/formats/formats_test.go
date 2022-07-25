@@ -1,6 +1,9 @@
 package formats
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func Test_Stringify(t *testing.T) {
 	obj := map[string]interface{}{
@@ -34,5 +37,18 @@ func Test_FormatURL(t *testing.T) {
 	ans := "http://localhost:7071/api/v1/notifications?page_number=1&page_length=5"
 	if res != ans {
 		t.Fatalf("expected %v, but received %v", ans, res)
+	}
+}
+
+func Test_ValidateAzureParamString(t *testing.T) {
+	fmt.Println("Secret name must only contain only 0-9, a-z, A-Z, and -. ")
+	var isValid bool = ValidateAzureParamString("dbName")
+	if isValid == false {
+		t.Fatalf("expected result to be valid, but received %v", isValid)
+	}
+
+	isValid = ValidateAzureParamString("db_name")
+	if isValid == true {
+		t.Fatalf("expected result to be false due to illegal '_', but received %v", isValid)
 	}
 }

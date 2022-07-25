@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"regexp"
 	"strings"
 
 	colors "github.com/TwinProduction/go-color"
@@ -42,4 +43,14 @@ func FormatURL(baseURL string, pathVariables []string, queryParams map[string]st
 	}
 
 	return url
+}
+
+// Azure string must only contain only "0-9", "a-z", "A-Z", and "-", "."
+// https://docs.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal#add-a-secret-to-key-vault
+func ValidateAzureParamString(secretName string) bool {
+	re, err := regexp.Compile("^(?i)([a-z0-9\\-\\.])*$")
+	if err != nil {
+		log.Fatalf("Could not compile regex expression: %v", err)
+	}
+	return re.MatchString(secretName)
 }

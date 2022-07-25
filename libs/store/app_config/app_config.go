@@ -1,4 +1,4 @@
-package app_config
+package appconfig
 
 import (
 	"context"
@@ -20,18 +20,20 @@ type AppConfigService struct {
 	configStoreName   string
 }
 
-func NewAppConfig(resourceGroupName string, configStoreName string) AppConfigServicer {
+// get the subId, resourceGroupName, configStoreName from the properties tab
+// for the subId, ignore the prefix '/subscriptions/'
+func NewAppConfig(subId string, resourceGroupName string, configStoreName string) AppConfigServicer {
 	var appConfig AppConfigService = AppConfigService{
 		resourceGroupName: resourceGroupName,
 		configStoreName:   configStoreName,
 	}
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		log.Panicln(errors.Wrap(err, "failed to create credentials"))
+		log.Fatal(errors.Wrap(err, "failed to create credentials"))
 	}
-	client, err := appconfig.NewKeyValuesClient("mySubId", cred, nil)
+	client, err := appconfig.NewKeyValuesClient(subId, cred, nil)
 	if err != nil {
-		log.Panicln(errors.Wrap(err, "failed to create client"))
+		log.Fatal(errors.Wrap(err, "failed to create client"))
 	}
 	appConfig.client = client
 	return appConfig
