@@ -4,16 +4,15 @@ go 1.18
 
 require (
 	github.com/Azure/azure-storage-queue-go v0.0.0-20191125232315-636801874cdd
-	github.com/pkg/errors v0.9.1
 	github.com/rs/cors v1.8.2
 	go.mongodb.org/mongo-driver v1.10.0
 )
 
 require (
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/montanaflynn/stats v0.6.6 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.1 // indirect
@@ -24,7 +23,4 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 )
 
-require (
-	github.com/Azure/azure-pipeline-go v0.1.8 // indirect
-	github.com/SherClockHolmes/webpush-go v1.2.0
-)
+require github.com/Azure/azure-pipeline-go v0.1.8 // indirect
