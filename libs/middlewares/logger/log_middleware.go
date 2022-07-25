@@ -3,21 +3,16 @@ package logger
 import (
 	"net/http"
 
-	"github.com/web-notify/api/monorepo/libs/middlewares"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
-type logMiddleWare struct{}
+// AuthMiddleware is an example of a middleware layer. It handles the request authorization
+// by checking for a key in the url.
+func LoggerMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-func NewLogMiddleware() logMiddleWare {
-	return logMiddleWare{}
-}
+		formats.Trace("preprocessing request...")
 
-func (mw logMiddleWare) Wrap(handler middlewares.Handler) middlewares.Handler {
-	return func(rw http.ResponseWriter, req *http.Request) {
-		// pre-process request here
-		formats.Trace("LogMiddleware", "pre-processing request...")
-		handler(rw, req)
-		// post-process reponse here
-	}
+		next.ServeHTTP(w, r)
+	})
 }
