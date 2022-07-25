@@ -24,9 +24,14 @@ func main() {
 	var address string = config.ENV_VARS[stage].LOCAL_PORT
 
 	mux := http.NewServeMux()
-	mux.Handle("/api/notifications", middlewares.Middy(http.HandlerFunc(producer.Handler), vaultMW))
-	mux.HandleFunc("/consumer_handler", consumer.Handler)
 	mux.HandleFunc("/api/subscriptions", subscribe.Handler)
+	if stage != config.DEV {
+		var notifyHandler http.Handler = middlewares.Middy(http.HandlerFunc(producer.Handler), vaultMW)
+		mux.Handle("/api/notifications", notifyHandler)
+	} else {
+		mux.HandleFunc("/api/notifications", producer.Handler)
+	}
+	mux.HandleFunc("/consumer_handler", consumer.Handler)
 
 	wrappedMux := middlewares.Middy(mux, cors.Default().Handler)
 
