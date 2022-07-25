@@ -17,8 +17,7 @@ import (
 
 func main() {
 
-	var vaultService vault.VaultServicer
-	vaultService = vault.NewVaultService("https://kv-customers-stg.vault.azure.net/")
+	var vaultService vault.VaultServicer = vault.NewVaultService("https://kv-customers-stg.vault.azure.net/")
 	vaultMW := vaultMWLib.VaultMiddleware(vaultService)
 
 	var stage config.STAGE = config.Stage()
