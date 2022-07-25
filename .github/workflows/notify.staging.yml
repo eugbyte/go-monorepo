@@ -39,8 +39,8 @@ jobs:
           make test-middlewares
           make test-queue
           make test-utils
-          make test-notify
           make test-store
+          make test-notify
       - name: Run lint
         run: make lint-notify
 
