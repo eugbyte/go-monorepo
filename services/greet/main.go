@@ -7,6 +7,7 @@ import (
 
 	"github.com/rs/cors"
 	"github.com/web-notify/api/monorepo/libs/middlewares"
+	loggerMW "github.com/web-notify/api/monorepo/libs/middlewares/logger"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	hello "github.com/web-notify/api/monorepo/services/greet/hello_handler"
 )
@@ -15,7 +16,7 @@ func main() {
 	var stage config.STAGE = config.Stage()
 	var address string = config.ENV_VARS[stage].LOCAL_PORT
 	mux := http.NewServeMux()
-	mux.HandleFunc("/api/hello", middlewares.Middy(hello.Handler, middlewares.NewLogMiddleware()))
+	mux.HandleFunc("/api/hello", middlewares.Middy(hello.Handler, loggerMW.NewLogMiddleware()))
 
 	wrappedMux := cors.Default().Handler(mux)
 

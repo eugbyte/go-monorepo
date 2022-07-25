@@ -14,13 +14,13 @@ type RequestBody struct {
 	Num int `json:"num"`
 }
 
-func MockHandler(response http.ResponseWriter, request *http.Request) {
+func MockHandler(rw http.ResponseWriter, request *http.Request) {
 	myVal := request.Header.Get("my_value")
 
-	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err := json.NewEncoder(response).Encode(myVal)
+	rw.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	err := json.NewEncoder(rw).Encode(myVal)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
@@ -30,12 +30,12 @@ type MockMiddleWare struct {
 }
 
 func (mw MockMiddleWare) Wrap(handler Handler) Handler {
-	return func(response http.ResponseWriter, request *http.Request) {
+	return func(rw http.ResponseWriter, req *http.Request) {
 		// let's extract the number from the request body, and multiply it by two
 		formats.Trace("LogMiddleware", "pre-processing request...")
-		request.Header.Set("my_value", "my_header")
+		req.Header.Set("my_value", "my_header")
 
-		handler(response, request)
+		handler(rw, req)
 	}
 }
 

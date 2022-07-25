@@ -2,7 +2,7 @@ package middlewares
 
 import "net/http"
 
-type Handler = func(response http.ResponseWriter, request *http.Request)
+type Handler = func(res http.ResponseWriter, req *http.Request)
 
 type MiddlewareImpl interface {
 	Wrap(handler Handler) Handler
@@ -14,7 +14,7 @@ func Middy(handler Handler, middlewares ...MiddlewareImpl) Handler {
 		current = mw.Wrap(current)
 	}
 
-	return func(response http.ResponseWriter, request *http.Request) {
-		current(response, request)
+	return func(rw http.ResponseWriter, request *http.Request) {
+		current(rw, request)
 	}
 }
