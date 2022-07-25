@@ -56,9 +56,9 @@ func handler(
 		ReturnValue: "",
 	}
 
-	bytes, _ := json.Marshal(qResponse)
+	objBytes, _ := json.Marshal(qResponse)
 	rw.Header().Set("Content-Type", "application/json")
-	_, err = rw.Write(bytes)
+	_, err = rw.Write(objBytes)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
