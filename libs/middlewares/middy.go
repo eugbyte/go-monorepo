@@ -2,19 +2,15 @@ package middlewares
 
 import "net/http"
 
-type Handler = func(response http.ResponseWriter, request *http.Request)
+type Handler = func(http.Handler) http.Handler
 
-type MiddlewareImpl interface {
-	Wrap(handler Handler) Handler
-}
-
-func Middy(handler Handler, middlewares ...MiddlewareImpl) Handler {
+// Middleware pattern from https://golangcode.com/middleware-on-handlers .
+// Middy makes adding more than one layer of middleware easy by specifying them as a list
+func Middy(handler http.Handler, middlewares ...Handler) http.Handler {
 	current := handler
-	for _, mw := range middlewares {
-		current = mw.Wrap(current)
+	for i := len(middlewares) - 1; i >= 0; i-- {
+		var mw Handler = middlewares[i]
+		current = mw(current)
 	}
-
-	return func(response http.ResponseWriter, request *http.Request) {
-		current(response, request)
-	}
+	return current
 }
