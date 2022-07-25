@@ -10,6 +10,7 @@ require (
 )
 
 require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/montanaflynn/stats v0.6.6 // indirect
@@ -23,4 +24,7 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 )
 
-require github.com/Azure/azure-pipeline-go v0.1.8 // indirect
+require (
+	github.com/Azure/azure-pipeline-go v0.1.8 // indirect
+	github.com/SherClockHolmes/webpush-go v1.2.0
+)
