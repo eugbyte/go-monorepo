@@ -4,10 +4,9 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/web-notify/api/monorepo/libs/middlewares"
 	"github.com/web-notify/api/monorepo/libs/store/vault"
 )
-
-type Handler func(http.Handler) http.Handler
 
 func vaultMiddleware(vaultService vault.VaultServicer, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
@@ -23,7 +22,7 @@ func vaultMiddleware(vaultService vault.VaultServicer, next http.Handler) http.H
 	})
 }
 
-func VaultMiddleware(vaultService vault.VaultServicer, next http.Handler) Handler {
+func VaultMiddleware(vaultService vault.VaultServicer) middlewares.HandlerWrapper {
 	return func(next http.Handler) http.Handler {
 		// Dependency injection
 		return vaultMiddleware(vaultService, next)

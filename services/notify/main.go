@@ -7,6 +7,8 @@ import (
 
 	"github.com/rs/cors"
 	"github.com/web-notify/api/monorepo/libs/middlewares"
+	vaultMWLib "github.com/web-notify/api/monorepo/libs/middlewares/vault"
+	"github.com/web-notify/api/monorepo/libs/store/vault"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	consumer "github.com/web-notify/api/monorepo/services/notify/consumer_handler"
 	producer "github.com/web-notify/api/monorepo/services/notify/producer_handler"
@@ -14,10 +16,16 @@ import (
 )
 
 func main() {
+
+	var vaultService vault.VaultServicer
+	vaultService = vault.NewVaultService("https://kv-customers-stg.vault.azure.net/")
+	vaultMW := vaultMWLib.VaultMiddleware(vaultService)
+
 	var stage config.STAGE = config.Stage()
 	var address string = config.ENV_VARS[stage].LOCAL_PORT
+
 	mux := http.NewServeMux()
-	mux.HandleFunc("/api/notifications", producer.Handler)
+	mux.Handle("/api/notifications", middlewares.Middy(http.HandlerFunc(producer.Handler), vaultMW))
 	mux.HandleFunc("/consumer_handler", consumer.Handler)
 	mux.HandleFunc("/api/subscriptions", subscribe.Handler)
 
