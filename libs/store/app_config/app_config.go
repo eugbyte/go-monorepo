@@ -1,50 +1,67 @@
 package app_config
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
-	"net/http"
+	"log"
 
-	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	appconfig "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration"
+	"github.com/pkg/errors"
 )
 
+type AppConfigServicer interface {
+	GetConfig(ctx context.Context, keyName string, _label *string) (string, error)
+}
+
 type AppConfigService struct {
-	baseUrl string
+	client            *appconfig.KeyValuesClient
+	resourceGroupName string
+	configStoreName   string
 }
 
-func (ac *AppConfigService) Init(subscriptionId string, resourceGroupName string, name string) {
-	ac.baseUrl = fmt.Sprintf(
-		`https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Web/sites/%s/config/web`,
-		subscriptionId,
-		resourceGroupName,
-		name)
+func NewAppConfig(resourceGroupName string, configStoreName string) AppConfigServicer {
+	var appConfig AppConfigService = AppConfigService{
+		resourceGroupName: resourceGroupName,
+		configStoreName:   configStoreName,
+	}
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Panicln(errors.Wrap(err, "failed to create credentials"))
+	}
+	client, err := appconfig.NewKeyValuesClient("mySubId", cred, nil)
+	if err != nil {
+		log.Panicln(errors.Wrap(err, "failed to create client"))
+	}
+	appConfig.client = client
+	return appConfig
 }
 
-// key - key name
-// label and api version are optional
-func (ac *AppConfigService) GetValue(key string, label *string, apiVersion *string) (string, error) {
-	pathVariables := []string{"kv", key}
-	queryParams := map[string]string{}
-
-	if label != nil {
-		queryParams["label"] = *label
-	}
-	if apiVersion != nil {
-		queryParams["apiVersion"] = *apiVersion
+func (ac AppConfigService) GetConfig(ctx context.Context, keyName string, _label *string) (string, error) {
+	label := ""
+	if _label != nil {
+		label = *_label
 	}
 
-	url := formats.FormatURL(ac.baseUrl, pathVariables, queryParams)
-	resp, err := http.Get(url)
+	keyLabel := keyName
+	if len(label) >= 1 {
+		// Key and label are joined by $ character. Label is optional
+		// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration#example-KeyValuesClient.Get
+		keyLabel = fmt.Sprintf("%s$%s", keyName, label)
+	}
+
+	res, err := ac.client.Get(ctx,
+		ac.resourceGroupName,
+		ac.configStoreName,
+		keyLabel,
+		nil)
 	if err != nil {
-		return "", err
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 
-	var result map[string]interface{}
-	err = json.NewDecoder(resp.Body).Decode(&result)
-	if err != nil {
-		return "", err
+	val := res.Properties.Value
+	if val == nil {
+		return "", errors.New("No such key")
 	}
-	formats.Trace(result)
-
-	return result["value"].(string), nil
+	return *val, nil
 }
