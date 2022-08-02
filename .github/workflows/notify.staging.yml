@@ -92,6 +92,11 @@ jobs:
           --header 'Content-Type: application/json' \
           --header 'Connection: close' \
           --data-raw '{
-              "username": "abc@m.com",
-              "company": "fakepanda"
+              "userID": "abc@m.com",
+              "company": "fakepanda",
+              "notification": {
+                  "title": "My title",
+                  "body": "My message",
+                  "icon": "My icon"
+              }
           }'

@@ -1,4 +1,4 @@
-package mongo
+package mongolib
 
 import (
 	"context"
@@ -21,6 +21,7 @@ type MonogoServicer interface {
 	Find(collectionName string, filter primitive.D, items []interface{}) error
 	FindOne(collectionName string, filter primitive.D, item interface{}) error
 	InsertOne(collectionName string, item interface{}) error
+	UpdateOne(collectionName string, filter primitive.D, item interface{}, upsert bool) error
 }
 
 type mongoService struct {
@@ -141,7 +142,27 @@ func (ms *mongoService) InsertOne(collectionName string, item interface{}) error
 	result, err := collection.InsertOne(ctx, item)
 	formats.Trace(result)
 	if err != nil {
-		log.Printf("failed to add item %v", err)
+		log.Printf("failed to add item. %v", err)
+	}
+	return err
+}
+
+// upsert = true means that a new record will be created if none exists
+func (ms *mongoService) UpdateOne(collectionName string, filter primitive.D, item interface{}, upsert bool) error {
+	ctx := context.Background()
+	ms.Database.Client().Connect(ctx)
+	defer ms.Database.Client().Disconnect(ctx)
+
+	collection := ms.Database.Collection(collectionName)
+
+	update := bson.D{
+		{Key: "$set", Value: item},
+	}
+	opts := options.UpdateOptions{Upsert: &upsert}
+	result, err := collection.UpdateOne(ctx, filter, update, &opts)
+	formats.Trace(result)
+	if err != nil {
+		log.Printf("failed to add item. %v", err)
 	}
 	return err
 }

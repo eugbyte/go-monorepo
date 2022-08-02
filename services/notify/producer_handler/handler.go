@@ -5,28 +5,24 @@ import (
 	"encoding/json"
 	"net/http"
 
-	qLib "github.com/web-notify/api/monorepo/libs/queue"
+	qlib "github.com/web-notify/api/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
-type RequestBody struct {
-	Username string `json:"username"`
-	Company  string `json:"company"`
-}
-
-func handler(qService qLib.QueueServicer, rw http.ResponseWriter, request *http.Request) {
+func handler(qService qlib.QueueServicer, rw http.ResponseWriter, request *http.Request) {
 	formats.Trace("In handler")
 
-	var requestBody RequestBody
-	err := json.NewDecoder(request.Body).Decode(&requestBody)
+	var info models.MessageInfo
+	err := json.NewDecoder(request.Body).Decode(&info)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	formats.Trace("requestBody", requestBody)
+	formats.Trace("requestBody", info)
 
-	message := formats.Stringify(requestBody)
+	message := formats.Stringify(info)
 
 	if !(qService.QueueExist()) {
 		formats.Trace("queue does not exist, creating one...")
@@ -56,14 +52,19 @@ func handler(qService qLib.QueueServicer, rw http.ResponseWriter, request *http.
 	}
 }
 
+// Dependency injection
 func Handler(response http.ResponseWriter, request *http.Request) {
 	queueName := "my-queue"
 	var stage config.STAGE = config.Stage()
 	queueAccountName := config.ENV_VARS[stage].QUEUE_ACCOUNT_NAME
 
 	qBaseUrl := config.QueueBaseURL(stage, queueAccountName)
-	var qService qLib.QueueServicer = qLib.NewQueueService(context.Background(), queueName, qBaseUrl, queueAccountName, config.ENV_VARS[stage].QUEUE_ACCOUNT_KEY)
+	var qService qlib.QueueServicer = qlib.NewQueueService(context.Background(), queueName, qBaseUrl, queueAccountName, config.ENV_VARS[stage].QUEUE_ACCOUNT_KEY)
 
-	// Dependency injection
 	handler(qService, response, request)
 }
+
+// var vaultService = vault.NewVaultService("https://kv-notify-secrets-stg.vault.azure.net")
+
+// Apply middleware
+var HTTPHandler http.Handler = http.HandlerFunc(Handler)

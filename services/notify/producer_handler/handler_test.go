@@ -11,7 +11,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-storage-queue-go/azqueue"
-	qLib "github.com/web-notify/api/monorepo/libs/queue"
+	qlib "github.com/web-notify/api/monorepo/libs/queue"
+	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
 type MockQueueService struct{}
@@ -30,11 +31,11 @@ func (qService *MockQueueService) Enqueue(messageText string, visibilityTimeout 
 }
 
 func TestHandler(t *testing.T) {
-	var mockQueueService qLib.QueueServicer = &MockQueueService{}
+	var mockQueueService qlib.QueueServicer = &MockQueueService{}
 
-	mockReq := RequestBody{
-		Company:  "fakepanda",
-		Username: "abc@m.com",
+	mockReq := models.MessageInfo{
+		Company: "fakepanda",
+		UserID:  "abc@m.com",
 	}
 
 	objBytes, err := json.Marshal(mockReq)

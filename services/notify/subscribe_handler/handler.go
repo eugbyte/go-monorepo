@@ -5,16 +5,16 @@ import (
 	"fmt"
 	"net/http"
 
-	mongoLib "github.com/web-notify/api/monorepo/libs/db/mongo"
+	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/models"
-	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 var collectionName = "subscribers"
 
-func handler(mongoService mongoLib.MonogoServicer, rw http.ResponseWriter, request *http.Request) {
+func handler(mongoService mongolib.MonogoServicer, rw http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodPost {
 		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
 		return
@@ -27,16 +27,18 @@ func handler(mongoService mongoLib.MonogoServicer, rw http.ResponseWriter, reque
 		return
 	}
 	formats.Trace(collectionName, subscription)
-	subscription.ID = fmt.Sprintf("%s__%s", subscription.Company, subscription.Username)
+	subscription.ID = fmt.Sprintf("%s__%s", subscription.Company, subscription.UserID)
 
-	responseBody := make(map[string]string)
-	err = mongoService.InsertOne(collectionName, subscription)
+	filter := bson.D{
+		{Key: "_id", Value: subscription.ID},
+		{Key: "company", Value: subscription.Company},
+	}
+	err = mongoService.UpdateOne(collectionName, filter, subscription, true)
+
 	rw.Header().Set("Content-Type", "application/json")
+	responseBody := make(map[string]string)
 
-	if mongo.IsDuplicateKeyError(err) {
-		responseBody["message"] = "subscription already exists, skipping creation ..."
-		rw.WriteHeader(http.StatusAccepted)
-	} else if err != nil {
+	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	} else {
@@ -52,7 +54,7 @@ func handler(mongoService mongoLib.MonogoServicer, rw http.ResponseWriter, reque
 
 func Handler(rw http.ResponseWriter, request *http.Request) {
 	var stage config.STAGE = config.Stage()
-	var mongoService mongoLib.MonogoServicer = mongoLib.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
+	var mongoService mongolib.MonogoServicer = mongolib.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
 	mongoService.CreatedShardedCollection(collectionName, "company", false)
 
 	// Dependency injection

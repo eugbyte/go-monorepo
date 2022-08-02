@@ -6,6 +6,7 @@ use (
     ./libs/utils
     ./libs/db
     ./libs/store
+    ./libs/notifications
     ./services/greet
     ./services/notify
 )

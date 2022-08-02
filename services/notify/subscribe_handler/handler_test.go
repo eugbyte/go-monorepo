@@ -36,15 +36,17 @@ func (ms *MockMonogoService) FindOne(collectionName string, filter primitive.D, 
 func (ms *MockMonogoService) InsertOne(collectionName string, item interface{}) error {
 	return nil
 }
+func (ms *MockMonogoService) UpdateOne(collectionName string, filter primitive.D, item interface{}, upsert bool) error {
+	return nil
+}
 
 func TestHandler(t *testing.T) {
 	mockMongoService := MockMonogoService{}
 
 	mockReq := models.Subscription{
-		Company:        "fakepanda",
-		Username:       "abc@m.com",
-		Endpoint:       "https://fcm.googleapis.com/fcm/send/ePpws-p5uBI:APA91bFm_zyeVqFGxiw5kWJJR9KLy9eFRRUKbc8_yebfBbsNBcX3iJmAUgl22uu_zpe2Hv0RSHpEThblr_Bz5AbbHQ7WXuUO2LkxmqJjTc6N1GURuZEOjtt2Y6_pr0org506K1ZMk6lK",
-		ExpirationTime: "",
+		Company:  "fakepanda",
+		UserID:   "abc@m.com",
+		Endpoint: "https://fcm.googleapis.com/fcm/send/ePpws-p5uBI:APA91bFm_zyeVqFGxiw5kWJJR9KLy9eFRRUKbc8_yebfBbsNBcX3iJmAUgl22uu_zpe2Hv0RSHpEThblr_Bz5AbbHQ7WXuUO2LkxmqJjTc6N1GURuZEOjtt2Y6_pr0org506K1ZMk6lK",
 		Keys: models.Keys{
 			P256dh: "BKOynOSa_eUI1ZGhmWxsaA34lbfqtxGTXiZTFa24SpDjOQBHwwCfxLBuWRdO_92E5A3ia8VA3Q5774ECPK6-Khg",
 			Auth:   "wquys90eGkBzfmTSyMT-PQ",
@@ -99,6 +101,9 @@ func (ms *MockMonogoService2) FindOne(collectionName string, filter primitive.D,
 	return nil
 }
 func (ms *MockMonogoService2) InsertOne(collectionName string, item interface{}) error {
+	return nil
+}
+func (ms *MockMonogoService2) UpdateOne(collectionName string, filter primitive.D, item interface{}, upsert bool) error {
 	return errors.New("MOCK_ERROR")
 }
 
@@ -106,10 +111,9 @@ func TestHandlerWithFaultyDB(t *testing.T) {
 	mockMongoService := MockMonogoService2{}
 
 	mockReq := models.Subscription{
-		Company:        "fakepanda",
-		Username:       "abc@m.com",
-		Endpoint:       "https://fcm.googleapis.com/fcm/send/ePpws-p5uBI:APA91bFm_zyeVqFGxiw5kWJJR9KLy9eFRRUKbc8_yebfBbsNBcX3iJmAUgl22uu_zpe2Hv0RSHpEThblr_Bz5AbbHQ7WXuUO2LkxmqJjTc6N1GURuZEOjtt2Y6_pr0org506K1ZMk6lK",
-		ExpirationTime: "",
+		Company:  "fakepanda",
+		UserID:   "abc@m.com",
+		Endpoint: "https://fcm.googleapis.com/fcm/send/ePpws-p5uBI:APA91bFm_zyeVqFGxiw5kWJJR9KLy9eFRRUKbc8_yebfBbsNBcX3iJmAUgl22uu_zpe2Hv0RSHpEThblr_Bz5AbbHQ7WXuUO2LkxmqJjTc6N1GURuZEOjtt2Y6_pr0org506K1ZMk6lK",
 		Keys: models.Keys{
 			P256dh: "BKOynOSa_eUI1ZGhmWxsaA34lbfqtxGTXiZTFa24SpDjOQBHwwCfxLBuWRdO_92E5A3ia8VA3Q5774ECPK6-Khg",
 			Auth:   "wquys90eGkBzfmTSyMT-PQ",
