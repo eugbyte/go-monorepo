@@ -5,18 +5,18 @@ import (
 	"net/http"
 )
 
-func Handler(response http.ResponseWriter, request *http.Request) {
-	if request.Method != http.MethodGet {
-		http.Error(response, "Wrong HTTP Method", http.StatusBadRequest)
+func Handler(rw http.ResponseWriter, req *http.Request) {
+	if req.Method != http.MethodGet {
+		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
 		return
 	}
 
-	responseBody := map[string]interface{}{"message": "Hello World"}
+	responseBody := map[string]string{"message": "Hello World"}
 
-	response.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err := json.NewEncoder(response).Encode(responseBody)
+	rw.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	err := json.NewEncoder(rw).Encode(responseBody)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }

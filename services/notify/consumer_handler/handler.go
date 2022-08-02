@@ -63,7 +63,7 @@ func handler(
 		Outputs: map[string]interface{}{
 			"res": "",
 		},
-		Logs:        []string{"Message successfully dequeued", fmt.Sprintf("message: '%s'", info)},
+		Logs:        []string{"Message successfully dequeued", formats.Stringify(info)},
 		ReturnValue: "",
 	}
 

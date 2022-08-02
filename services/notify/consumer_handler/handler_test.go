@@ -12,6 +12,7 @@ import (
 	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
 	webpush "github.com/web-notify/api/monorepo/libs/notifications/web_push"
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
+	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -53,7 +54,18 @@ func (ms *MockWebService) SendNotification(message interface{}, endpoint string,
 }
 
 func TestHandler(t *testing.T) {
-	jsonStr := "\"{\\\"company\\\":\\\"fakepanda\\\",\\\"userID\\\":\\\"abc@m.com\\\"}\""
+	info := models.MessageInfo{
+		UserID:  "abc@m.com",
+		Company: "fakepanda",
+		Notification: models.Notification{
+			Title: "My title",
+			Body:  "My message",
+			Icon:  "My icon",
+		},
+	}
+
+	infoStr := formats.Stringify(info)
+	jsonStr := formats.Stringify(infoStr) // for some reason, the azure queue stringyfies the UTF-8 message twice
 	reqData := map[string]string{
 		"req": jsonStr,
 	}
@@ -80,6 +92,8 @@ func TestHandler(t *testing.T) {
 		t.Fatal("Cannot read", err.Error())
 	}
 
+	fmt.Println(formats.Stringify(data))
+
 	var responseBody qmodels.ResponseBody
 	err = json.Unmarshal(data, &responseBody)
 	if err != nil {
@@ -97,7 +111,7 @@ func TestHandler(t *testing.T) {
 		t.Fatalf("test failed. Expected %v, received %v", "Message successfully dequeued", responseBody.Logs[0])
 	}
 
-	isMessageMatch = responseBody.Logs[1] == fmt.Sprintf("message: '%s'", message)
+	isMessageMatch = responseBody.Logs[1] == infoStr
 	if !isMessageMatch {
 		t.Fatalf("test failed. Expected %v, received %v", message, responseBody.Logs[1])
 	}

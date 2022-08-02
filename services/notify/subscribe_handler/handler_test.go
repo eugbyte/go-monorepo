@@ -101,10 +101,10 @@ func (ms *MockMonogoService2) FindOne(collectionName string, filter primitive.D,
 	return nil
 }
 func (ms *MockMonogoService2) InsertOne(collectionName string, item interface{}) error {
-	return errors.New("MOCK_ERROR")
+	return nil
 }
 func (ms *MockMonogoService2) UpdateOne(collectionName string, filter primitive.D, item interface{}, upsert bool) error {
-	return nil
+	return errors.New("MOCK_ERROR")
 }
 
 func TestHandlerWithFaultyDB(t *testing.T) {
