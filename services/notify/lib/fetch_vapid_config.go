@@ -10,13 +10,13 @@ import (
 )
 
 type vapidConfig struct {
-	mu         *sync.Mutex
+	mu         sync.Mutex
 	PrivateKey string
 	PublicKey  string
 	Email      string
 }
 
-func FetchVapidConfig(vaultService vault.VaultServicer, appConfigService appConfig.AppConfigServicer) (vapidConfig, error) {
+func FetchVapidConfig(vaultService vault.VaultServicer, appConfigService appConfig.AppConfigServicer) (*vapidConfig, error) {
 	var conf vapidConfig = vapidConfig{}
 
 	grp := new(errgroup.Group)
@@ -46,6 +46,5 @@ func FetchVapidConfig(vaultService vault.VaultServicer, appConfigService appConf
 	})
 
 	err := grp.Wait()
-	conf.mu.Unlock()
-	return conf, err
+	return &conf, err
 }
