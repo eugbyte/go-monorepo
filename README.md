@@ -21,11 +21,13 @@ make lint-install
 Full list of commands are listed in Makefile
 
 ## Start azure functions core server
-`make build-<service>`
+Basic cmd structure is `make workspace=<dir> <cmd>`
+
+`make workspace=services/notify build`
 
 `make azurite-start`
 
-`make func-start-<service>`
+`make workspace=services/notify func-start`
 
 ## Gotchas
 1. `function.json` cannot be in nested directories, see [here](https://github.com/Azure/azure-functions-host/issues/5373)
