@@ -21,10 +21,18 @@ func vaultMiddleware(vaultService vault.VaultServicer, next http.Handler) http.H
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		// To be able to read request body multiple times
 		body, err := io.ReadAll(req.Body)
+		if err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
 		var info Info
 		err = json.Unmarshal(body, &info)
 		defer req.Body.Close()
+		if err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
 		key := req.Header.Get("Notification-Key")
 		formats.Trace(info.Company, key)

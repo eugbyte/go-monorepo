@@ -8,6 +8,7 @@ build:
 	chmod +x main.go
 	go build main.go
 dev:
+	ls
 	go run main.go
 func-start:
 	func start

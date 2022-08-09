@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 )
 
@@ -28,9 +27,6 @@ func Stage() STAGE {
 		"dev":  DEV,
 		"stg":  STAGING,
 		"prod": PROD,
-	}
-	if stageMap == nil {
-		log.Panicln("STAGE environment variable must be ['dev', 'stg', 'prod']")
 	}
 	return stageMap[stage]
 }
