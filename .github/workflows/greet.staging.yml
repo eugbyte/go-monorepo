@@ -32,17 +32,16 @@ jobs:
         run: |
           go mod download
           make download-libs
-          make download-greet
+          make workspace=services/greet download
           sudo make install-lint
       - name: Run unit tests
         run: |
-          make test-middlewares
-          make test-queue
-          make test-utils
-          make test-store
-          make test-greet
+          make test-libs
+          make workspace=services/greet test
       - name: Run lint
-        run: make lint-greet
+        run: |
+          make lint-libs
+          make workspace=services/greet lint
 
   e2e-local-sandbox:
     runs-on: ubuntu-latest
@@ -69,22 +68,20 @@ jobs:
         run: |
           go mod download
           make download-libs
-          make download-greet
+          make workspace=services/greet download
           sudo make install-lint
       - name: Build main.exe
-        run: make build-greet
+        run: make workspace=services/greet build
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
       - name: Install azure func
         run: |
-          curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-          sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-          sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-$(lsb_release -cs)-prod $(lsb_release -cs) main" > /etc/apt/sources.list.d/dotnetdev.list'
-          sudo apt-get update
+          wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+          sudo dpkg -i packages-microsoft-prod.deb
           sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
-        run: make func-start-greet &
+        run: make workspace=services/greet func-start &
       - name: Check that daemons are running
         run: |
          netstat -nat | grep '7071' | grep LISTEN

@@ -32,17 +32,16 @@ jobs:
         run: |
           go mod download
           make download-libs
-          make download-notify
+          make workspace=services/notify download
           sudo make install-lint
       - name: Run unit tests
         run: |
-          make test-middlewares
-          make test-queue
-          make test-utils
-          make test-store
-          make test-notify
+          make test-libs
+          make workspace=services/notify test
       - name: Run lint
-        run: make lint-notify
+        run: |
+          make lint-libs
+          make workspace=services/notify lint
 
   e2e-local-sandbox:
     runs-on: ubuntu-latest
@@ -69,16 +68,19 @@ jobs:
         run: |
           go mod download
           make download-libs
-          make download-notify
+          make workspace=services/notify download
       - name: Build main.exe
-        run: make build-notify
+        run: make workspace=services/notify build
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
       - name: Install azure functions
-        run: sudo apt-get install azure-functions-core-tools-4
+        run: |
+          wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+          sudo dpkg -i packages-microsoft-prod.deb
+          sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
-        run: make func-start-notify &
+        run: make workspace=services/notify func-start &
       - name: Start azure vault emulator
         run: docker run --rm -d -p 8443:8443 --name lowkey_vault nagyesta/lowkey-vault:1.8.14
       - name: Check that daemons are running
