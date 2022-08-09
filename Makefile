@@ -1,3 +1,26 @@
+## call the commands like this
+## $ make workspace=services/greet dev
+
+dev:
+	cd ${workspace} && make dev
+tidy:
+	cd ${workspace} && make tidy
+build:
+	cd ${workspace} && make build
+download:
+	cd ${workspace} && make download
+dev:
+	cd ${workspace} && make dev
+func-start:
+	cd ${workspace} && make func-start
+test:
+	cd ${workspace} && make test
+lint:
+	cd ${workspace} && make lint
+lint-fix:
+	cd ${workspace} && make lint-fix
+
+
 #----LIB----
 ##----MIDDLEWARES----
 tidy-middlewares:
@@ -13,7 +36,7 @@ tidy-utils:
 lint-utils:
 	cd libs/utils && make lint-fix
 test-utils:
-	cd libs/utils && make test
+	cd libs/utils && make testx
 
 ##----QUEUE----
 tidy-queue:
