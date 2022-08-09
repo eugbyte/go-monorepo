@@ -71,7 +71,7 @@ jobs:
           make workspace=services/greet download
           sudo make install-lint
       - name: Build main.exe
-        run: make build-greet
+        run: make workspace=services/greet build
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
