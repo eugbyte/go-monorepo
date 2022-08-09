@@ -31,16 +31,13 @@ jobs:
       - name: Download Go modules
         run: |
           go mod download
-          make download-libs
-          make download-greet
+          make workspace=libs/util download
+          make workspace=services/greet download
           sudo make install-lint
       - name: Run unit tests
         run: |
-          make test-middlewares
-          make test-queue
-          make test-utils
-          make test-store
-          make test-greet
+          make workspace=libs/util test
+          make workspace=services/greet test
       - name: Run lint
         run: make lint-greet
 
@@ -68,8 +65,8 @@ jobs:
       - name: Download Go modules
         run: |
           go mod download
-          make download-libs
-          make download-greet
+          make workspace=libs/util download
+          make workspace=services/greet download
           sudo make install-lint
       - name: Build main.exe
         run: make build-greet
@@ -84,7 +81,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
-        run: make func-start-greet &
+        run: make workspace=services/greet func-start &
       - name: Check that daemons are running
         run: |
          netstat -nat | grep '7071' | grep LISTEN

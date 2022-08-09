@@ -1,6 +1,3 @@
-hello:
-	echo "hello"
-
 #----DEVELOPMENT----
 download:
 	go mod download
