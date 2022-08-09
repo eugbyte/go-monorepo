@@ -19,6 +19,18 @@ lint:
 lint-fix:
 	cd ${workspace} && make lint-fix
 
+#----LIBS----
+test-libs:
+	cd libs/utils && make test
+	cd libs/middlewares && make test
+	cd libs/queue && make test
+
+lint-libs:
+	cd libs/db && make lint
+	cd libs/middlewares && make lint
+	cd libs/queue && make lint
+	cd libs/utils && make lint
+
 #----INSTALLATION----
 install-lint:
 	# binary will be $(go env GOPATH)/bin/golangci-lint
@@ -37,14 +49,3 @@ download-libs:
 #----CONTAINERS----
 start-azurite:
 	azurite --silent --location c:\azurite --debug c:\azurite\debug.log
-
-#----LIBS----
-test-libs:
-	cd libs/utils && make test
-	cd libs/middlewares && make test
-	cd libs/queue && make test
-
-lint-libs:
-	cd libs/utils && make lint
-	cd libs/middlewares && make lint
-	cd libs/queue && make lint
