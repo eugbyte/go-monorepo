@@ -1,4 +1,4 @@
-#----COMMON COMMANDS----
+#----SERVICES----
 ## call the commands like this: `$ make workspace=services/greet dev`
 dev:
 	cd ${workspace} && make dev
@@ -38,8 +38,13 @@ download-libs:
 start-azurite:
 	azurite --silent --location c:\azurite --debug c:\azurite\debug.log
 
-#----TEST-LIBS----
+#----LIBS----
 test-libs:
 	cd libs/utils && make test
 	cd libs/middlewares && make test
 	cd libs/queue && make test
+
+lint-libs:
+	cd libs/utils && make lint
+	cd libs/middlewares && make lint
+	cd libs/queue && make lint

@@ -39,7 +39,9 @@ jobs:
           make test-libs
           make workspace=services/notify test
       - name: Run lint
-        run: make lint-notify
+        run: |
+          make lint-libs
+          make workspace=services/notify lint
 
   e2e-local-sandbox:
     runs-on: ubuntu-latest
