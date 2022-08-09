@@ -36,7 +36,7 @@ jobs:
           sudo make install-lint
       - name: Run unit tests
         run: |
-          make workspace=libs/util test
+          make workspace=libs/utils test
           make workspace=services/greet test
       - name: Run lint
         run: make lint-greet
@@ -65,7 +65,7 @@ jobs:
       - name: Download Go modules
         run: |
           go mod download
-          make workspace=libs/util download
+          make workspace=libs/utils download
           make workspace=services/greet download
           sudo make install-lint
       - name: Build main.exe
