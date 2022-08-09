@@ -29,7 +29,17 @@ install-docker-compose:
           && sudo chmod +x /usr/local/bin/docker-compose
 install-azurite:
 	npm install -g azurite
+download-libs:
+	cd libs/utils && make download
+	cd libs/middlewares && make download
+	cd libs/queue && make download
 
 #----CONTAINERS----
 start-azurite:
 	azurite --silent --location c:\azurite --debug c:\azurite\debug.log
+
+#----TEST-LIBS----
+test-libs:
+	cd libs/utils && make test
+	cd libs/middlewares && make test
+	cd libs/queue && make test
