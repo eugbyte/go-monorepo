@@ -39,7 +39,9 @@ jobs:
           make workspace=libs/utils test
           make workspace=services/greet test
       - name: Run lint
-        run: make lint-greet
+        run: |
+          make workspace=libs/utils lint
+          make workspace=services/greet lint
 
   e2e-local-sandbox:
     runs-on: ubuntu-latest
