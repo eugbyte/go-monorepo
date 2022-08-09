@@ -31,7 +31,7 @@ jobs:
       - name: Download Go modules
         run: |
           go mod download
-          make workspace=libs/util download
+          make workspace=libs/utils download
           make workspace=services/greet download
           sudo make install-lint
       - name: Run unit tests
