@@ -1,7 +1,5 @@
 #----SERVICES----
 ## call the commands like this: `$ make workspace=services/greet dev`
-dev:
-	cd ${workspace} && make dev
 tidy:
 	cd ${workspace} && make tidy
 build:
@@ -18,30 +16,6 @@ lint:
 	cd ${workspace} && make lint
 lint-fix:
 	cd ${workspace} && make lint-fix
-
-#----LIB----
-##----MIDDLEWARES----
-tidy-middlewares:
-	cd libs/middlewares && make tidy
-lint-middlewares:
-	cd libs/middlewares && make lint-fix
-test-middlewares:
-	cd libs/middlewares && make test
-
-##----UTILS----
-tidy-utils:
-	cd libs/utils && make tidy
-lint-utils:
-	cd libs/utils && make lint-fix
-test-utils:
-	cd libs/utils && make testx
-
-##----QUEUE----
-tidy-queue:
-	cd libs/queue && make tidy
-lint-queue:
-	cd libs/queue && make lint-fix
-test-queue:
 
 #----LIBS----
 test-libs:
