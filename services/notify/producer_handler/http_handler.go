@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/web-notify/api/monorepo/libs/middlewares"
-	vaultmwlib "github.com/web-notify/api/monorepo/libs/middlewares/vault"
+	"github.com/web-notify/api/monorepo/libs/middlewares/auth"
 	qlib "github.com/web-notify/api/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/libs/store/vault"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
@@ -23,8 +23,18 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 	handler(qService, rw, req)
 }
 
-var vaultService = vault.NewVaultService("https://kv-notify-secrets-stg.vault.azure.net")
-var vaultMW = vaultmwlib.VaultMiddleware(vaultService)
+var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
+	var vaultService = vault.NewVaultService("https://kv-notify-secrets-stg.vault.azure.net")
+	key := header.Get("Notification-Key")
+	company := header.Get("Company")
+	checkVal, err := vaultService.GetSecret(company)
+	if err != nil {
+		return false, err
+	}
+	if key != checkVal {
+		return false, nil
+	}
+	return true, nil
+}
 
-// Apply middleware
-var HTTPHandler http.Handler = middlewares.Middy(http.HandlerFunc(Handler), vaultMW)
+var HTTPHandler http.Handler = middlewares.Middy(http.HandlerFunc(Handler), auth.AuthMiddleware(isAuth))

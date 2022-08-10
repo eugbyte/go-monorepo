@@ -38,7 +38,6 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 	)
 	mongoService := mongolib.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
 
-	// Dependency injection
 	handler(webpushService, mongoService, rw, req)
 }
 
