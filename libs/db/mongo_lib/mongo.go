@@ -135,10 +135,8 @@ func (ms *mongoService) FindOne(collectionName string, filter primitive.D, item 
 
 func (ms *mongoService) InsertOne(collectionName string, item interface{}) error {
 	ctx := context.Background()
-	err := ms.Database.Client().Connect(ctx)
-	if err != nil {
-		return err
-	}
+	// false positive of err, ignore
+	_ = ms.Database.Client().Connect(ctx)
 	//nolint
 	defer ms.Database.Client().Disconnect(ctx)
 
@@ -154,10 +152,8 @@ func (ms *mongoService) InsertOne(collectionName string, item interface{}) error
 // upsert = true means that a new record will be created if none exists
 func (ms *mongoService) UpdateOne(collectionName string, filter primitive.D, item interface{}, upsert bool) error {
 	ctx := context.Background()
-	err := ms.Database.Client().Connect(ctx)
-	if err != nil {
-		return err
-	}
+	// false positive of err, ignore
+	_ = ms.Database.Client().Connect(ctx)
 	//nolint
 	defer ms.Database.Client().Disconnect(ctx)
 

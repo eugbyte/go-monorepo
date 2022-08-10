@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func Handler(rw http.ResponseWriter, req *http.Request) {
+func handler(rw http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodGet {
 		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
 		return

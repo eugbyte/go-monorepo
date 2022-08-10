@@ -19,9 +19,9 @@ func main() {
 	var address string = config.ENV_VARS[stage].LOCAL_PORT
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/api/subscriptions", subscribe.Handler)
+	mux.Handle("/api/subscriptions", subscribe.HTTPHandler)
 	mux.Handle("/api/notifications", producer.HTTPHandler)
-	mux.HandleFunc("/consumer_handler", consumer.Handler)
+	mux.Handle("/consumer_handler", consumer.HTTPHandler)
 
 	wrappedMux := middlewares.Middy(mux, cors.Default().Handler)
 

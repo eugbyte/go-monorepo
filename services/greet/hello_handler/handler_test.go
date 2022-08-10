@@ -14,7 +14,7 @@ func TestHandler(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/hello", nil)
 
 	writer := httptest.NewRecorder()
-	Handler(writer, req)
+	handler(writer, req)
 	result := writer.Result()
 	defer result.Body.Close()
 
