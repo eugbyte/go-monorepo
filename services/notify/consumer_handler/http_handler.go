@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
+	"github.com/web-notify/api/monorepo/libs/middlewares"
 	webpush "github.com/web-notify/api/monorepo/libs/notifications/web_push"
 	appconfig "github.com/web-notify/api/monorepo/libs/store/app_config"
 	"github.com/web-notify/api/monorepo/libs/store/vault"
@@ -14,7 +15,7 @@ import (
 )
 
 // Dependency injection
-func Handler(rw http.ResponseWriter, req *http.Request) {
+var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	var stage config.STAGE = config.Stage()
 
 	// Get the VAPID keys
@@ -39,6 +40,7 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 	mongoService := mongolib.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
 
 	handler(webpushService, mongoService, rw, req)
-}
+})
 
-var HTTPHandler http.Handler = http.HandlerFunc(Handler)
+// Wrap middlewares
+var HTTPHandler http.Handler = middlewares.Middy(httpHandler)

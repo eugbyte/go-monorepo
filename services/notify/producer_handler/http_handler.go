@@ -12,7 +12,7 @@ import (
 )
 
 // Dependency injection
-func Handler(rw http.ResponseWriter, req *http.Request) {
+var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	queueName := "my-queue"
 	var stage config.STAGE = config.Stage()
 	queueAccountName := config.ENV_VARS[stage].QUEUE_ACCOUNT_NAME
@@ -21,7 +21,7 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 	var qService qlib.QueueServicer = qlib.NewQueueService(context.Background(), queueName, qBaseUrl, queueAccountName, config.ENV_VARS[stage].QUEUE_ACCOUNT_KEY)
 
 	handler(qService, rw, req)
-}
+})
 
 var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
 	var vaultService = vault.NewVaultService("https://kv-notify-secrets-stg.vault.azure.net")
@@ -37,4 +37,5 @@ var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
 	return true, nil
 }
 
-var HTTPHandler http.Handler = middlewares.Middy(http.HandlerFunc(Handler), auth.AuthMiddleware(isAuth))
+// Wrap middlewares
+var HTTPHandler http.Handler = middlewares.Middy(httpHandler, auth.AuthMiddleware(isAuth))
