@@ -12,7 +12,7 @@ import (
 )
 
 // Dependency injection
-func Handler(response http.ResponseWriter, request *http.Request) {
+func Handler(rw http.ResponseWriter, req *http.Request) {
 	queueName := "my-queue"
 	var stage config.STAGE = config.Stage()
 	queueAccountName := config.ENV_VARS[stage].QUEUE_ACCOUNT_NAME
@@ -20,7 +20,7 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 	qBaseUrl := config.QueueBaseURL(stage, queueAccountName)
 	var qService qlib.QueueServicer = qlib.NewQueueService(context.Background(), queueName, qBaseUrl, queueAccountName, config.ENV_VARS[stage].QUEUE_ACCOUNT_KEY)
 
-	handler(qService, response, request)
+	handler(qService, rw, req)
 }
 
 var vaultService = vault.NewVaultService("https://kv-notify-secrets-stg.vault.azure.net")

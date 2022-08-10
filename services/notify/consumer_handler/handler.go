@@ -21,12 +21,12 @@ func handler(
 	webpushService webpush.WebPushServicer,
 	mongoService mongolib.MonogoServicer,
 	rw http.ResponseWriter,
-	request *http.Request) {
+	req *http.Request) {
 
 	formats.Trace("queue triggered")
 
 	var requestBody qmodels.RequestBody
-	err := json.NewDecoder(request.Body).Decode(&requestBody)
+	err := json.NewDecoder(req.Body).Decode(&requestBody)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return

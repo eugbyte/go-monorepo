@@ -32,9 +32,9 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 	})
 
 	webpushService := webpush.NewWebPush(
-		"olKYvd22Tt-OsP5-X25jxFfDAr4hlWFX6eeUX3i_D7I",
-		"BPlL5OTZwtW-0-4pQXmobTgX6URszc9-UKoTTvpvInhUlPHorlDM8y04J-rrErlQXMVH7_Us983mNmmwsb-z53U",
-		"eugenetham1994@gmail.com",
+		vapidConf.PrivateKey,
+		vapidConf.PublicKey,
+		vapidConf.Email,
 	)
 	mongoService := mongolib.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
 
