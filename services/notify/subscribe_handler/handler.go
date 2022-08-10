@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
-	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 	"go.mongodb.org/mongo-driver/bson"
@@ -50,13 +49,4 @@ func handler(mongoService mongolib.MonogoServicer, rw http.ResponseWriter, reque
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
-}
-
-func Handler(rw http.ResponseWriter, request *http.Request) {
-	var stage config.STAGE = config.Stage()
-	var mongoService mongolib.MonogoServicer = mongolib.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
-	mongoService.CreatedShardedCollection(collectionName, "company", false)
-
-	// Dependency injection
-	handler(mongoService, rw, request)
 }

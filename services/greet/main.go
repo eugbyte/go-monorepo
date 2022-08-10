@@ -16,7 +16,7 @@ func main() {
 	var stage config.STAGE = config.Stage()
 	var address string = config.ENV_VARS[stage].LOCAL_PORT
 	mux := http.NewServeMux()
-	mux.Handle("/api/hello", middlewares.Middy(http.HandlerFunc(hello.Handler), loggerMW.LoggerMiddleware, cors.Default().Handler))
+	mux.Handle("/api/hello", middlewares.Middy(hello.HTTPHandler, loggerMW.LoggerMiddleware, cors.Default().Handler))
 
 	log.Printf("About to listen on %s. Go to https://127.0.0.1:%s/", address, address)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("127.0.0.1:%s", address), mux))
