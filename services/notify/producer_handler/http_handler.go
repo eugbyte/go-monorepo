@@ -2,6 +2,7 @@ package producer_handler
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/web-notify/api/monorepo/libs/middlewares"
@@ -25,10 +26,11 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 
 var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
 	var vaultService = vault.NewVaultService("https://kv-notify-secrets-stg.vault.azure.net")
-	key := header.Get("Notify-Secret-Name")
-	company := header.Get("Notify-Secret-Value")
+	company := header.Get("Notify-Secret-Name")
+	key := header.Get("Notify-Secret-Value")
 	checkVal, err := vaultService.GetSecret(company)
 	if err != nil {
+		fmt.Println(err.Error())
 		return false, err
 	}
 	if key != checkVal {
