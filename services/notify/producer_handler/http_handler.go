@@ -25,8 +25,8 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 
 var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
 	var vaultService = vault.NewVaultService("https://kv-notify-secrets-stg.vault.azure.net")
-	key := header.Get("Notification-Key")
-	company := header.Get("Company")
+	key := header.Get("Notify-Secret-Name")
+	company := header.Get("Notify-Secret-Value")
 	checkVal, err := vaultService.GetSecret(company)
 	if err != nil {
 		return false, err
