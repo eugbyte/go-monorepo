@@ -17,10 +17,13 @@ lint:
 lint-fix:
 	cd ${workspace} && make lint-fix
 watch:
+# e.g. make workspace=services/notify exec="make func-start" watch
+# exec flag refers to the cmd to run upon a successful build
 # https://github.com/cosmtrek/air#-beta-feature
+# this feature is experimental, so might be buggy
 # directories observed must be under root dir where `air` is called, not possible to watch parent dir or sibling dir
 	echo "requires github.com/cosmtrek/air@latest. Install with `make install-watch`"
-	air --build.cmd "cd ${workspace} && make build" --build.bin "cd ${workspace} && make func-start"
+	air --build.cmd "cd ${workspace} && make build" --build.bin "cd ${workspace} && ${exec}"
 
 #----LIBS----
 test-libs:
