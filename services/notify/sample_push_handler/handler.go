@@ -12,7 +12,7 @@ import (
 	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
-func handler(rw http.ResponseWriter, req *http.Request) {
+func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodPost {
 		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
 		return
@@ -35,7 +35,6 @@ func handler(rw http.ResponseWriter, req *http.Request) {
 	// make a request to the producer_handler
 	// only way to invoke one lambda from another, is through Durable Functions, which is not available in golang
 	// https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview?tabs=csharp#language-support
-	client := &http.Client{}
 	post, err := http.NewRequest("POST", config.ENV_VARS[config.DEV].NOTIFY_PRODUCER_URL, bytes.NewBuffer(objBytes))
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
