@@ -3,7 +3,6 @@ package sample_push_handler
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -50,12 +49,15 @@ func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	body, err := ioutil.ReadAll(resp.Body)
-	fmt.Sprintln(string(body))
 
-	err = json.NewEncoder(rw).Encode(map[string]string{
-		"message": "successfully enqueued",
-	})
+	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	if err != nil {
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	_, err = rw.Write(body)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
