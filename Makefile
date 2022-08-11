@@ -1,5 +1,5 @@
-#----SERVICES----
-## call the commands like this: `$ make workspace=services/greet dev`
+#----WORKSPACES CMDS----
+## call the commands like this: `$ make workspace=<dir> <cmd>`, e.g. `$ make workspace=services/greet dev`
 tidy:
 	cd ${workspace} && make tidy
 build:
@@ -16,6 +16,11 @@ lint:
 	cd ${workspace} && make lint
 lint-fix:
 	cd ${workspace} && make lint-fix
+watch:
+# https://github.com/cosmtrek/air#-beta-feature
+# directories following must be under root, not possible to watch parent dir or sibling dir, i.e. "../../libs"
+	echo "requires github.com/cosmtrek/air@latest"
+	air --build.cmd "cd ${workspace} && make build" --build.bin "cd ${workspace} && make func-start"
 
 #----LIBS----
 test-libs:
@@ -43,6 +48,8 @@ download-libs:
 	cd libs/utils && make download
 	cd libs/middlewares && make download
 	cd libs/queue && make download
+install-watch:
+	go install github.com/cosmtrek/air@latest
 
 #----CONTAINERS----
 start-azurite:
