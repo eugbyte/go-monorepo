@@ -18,8 +18,8 @@ lint-fix:
 	cd ${workspace} && make lint-fix
 watch:
 # https://github.com/cosmtrek/air#-beta-feature
-# directories following must be under root, not possible to watch parent dir or sibling dir, i.e. "../../libs"
-	echo "requires github.com/cosmtrek/air@latest"
+# directories observed must be under root dir where `air` is called, not possible to watch parent dir or sibling dir
+	echo "requires github.com/cosmtrek/air@latest. Install with `make install-watch`"
 	air --build.cmd "cd ${workspace} && make build" --build.bin "cd ${workspace} && make func-start"
 
 #----LIBS----
@@ -49,7 +49,7 @@ download-libs:
 	cd libs/middlewares && make download
 	cd libs/queue && make download
 install-watch:
-	go install github.com/cosmtrek/air@latest
+	go install github.com/cosmtrek/air@v1.40.4
 
 #----CONTAINERS----
 start-azurite:
