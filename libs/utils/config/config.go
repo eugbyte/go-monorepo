@@ -39,6 +39,7 @@ type vars struct {
 	VAPID_PUBLIC_KEY           string
 	VAPID_SENDER_EMAIL         string
 	VAULT_URI                  string
+	NOTIFY_PRODUCER_URL        string
 }
 
 var ENV_VARS = map[STAGE]vars{
@@ -50,6 +51,7 @@ var ENV_VARS = map[STAGE]vars{
 		VAPID_PUBLIC_KEY:           "BPlL5OTZwtW-0-4pQXmobTgX6URszc9-UKoTTvpvInhUlPHorlDM8y04J-rrErlQXMVH7_Us983mNmmwsb-z53U",
 		VAPID_SENDER_EMAIL:         "eugenetham1994@gmail.com",
 		VAULT_URI:                  "https://kv-notify-secrets-stg.vault.azure.net",
+		NOTIFY_PRODUCER_URL:        "http://localhost:7071/api/notifications",
 	},
 	STAGING: {
 		VAULT_URI: "https://kv-notify-secrets-stg.vault.azure.net",
