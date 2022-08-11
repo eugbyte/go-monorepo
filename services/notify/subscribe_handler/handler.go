@@ -13,14 +13,14 @@ import (
 
 var collectionName = "subscribers"
 
-func handler(mongoService mongolib.MonogoServicer, rw http.ResponseWriter, request *http.Request) {
-	if request.Method != http.MethodPost {
+func handler(mongoService mongolib.MonogoServicer, rw http.ResponseWriter, req *http.Request) {
+	if req.Method != http.MethodPost {
 		http.Error(rw, "Wrong HTTP Method", http.StatusBadRequest)
 		return
 	}
 
 	var subscription models.Subscription
-	err := json.NewDecoder(request.Body).Decode(&subscription)
+	err := json.NewDecoder(req.Body).Decode(&subscription)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return

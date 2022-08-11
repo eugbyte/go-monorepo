@@ -10,6 +10,7 @@ import (
 	qlib "github.com/web-notify/api/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/libs/store/vault"
 	"github.com/web-notify/api/monorepo/libs/utils/config"
+	"github.com/web-notify/api/monorepo/libs/utils/formats"
 )
 
 // Dependency injection
@@ -27,6 +28,8 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
 	company := header.Get("Notify-Secret-Name")
 	key := header.Get("Notify-Secret-Value")
+
+	formats.Trace(company, key)
 
 	var vaultService = vault.NewVaultService("https://kv-notify-secrets-stg.vault.azure.net")
 	checkVal, err := vaultService.GetSecret(company)

@@ -10,6 +10,7 @@ import (
 	"github.com/web-notify/api/monorepo/libs/utils/config"
 	consumer "github.com/web-notify/api/monorepo/services/notify/consumer_handler"
 	producer "github.com/web-notify/api/monorepo/services/notify/producer_handler"
+	samplepush "github.com/web-notify/api/monorepo/services/notify/sample_push_handler"
 	subscribe "github.com/web-notify/api/monorepo/services/notify/subscribe_handler"
 )
 
@@ -22,6 +23,7 @@ func main() {
 	mux.Handle("/api/subscriptions", subscribe.HTTPHandler)
 	mux.Handle("/api/notifications", producer.HTTPHandler)
 	mux.Handle("/consumer_handler", consumer.HTTPHandler)
+	mux.Handle("/api/sample-push", samplepush.HTTPHandler)
 
 	wrappedMux := middlewares.Middy(mux, cors.Default().Handler)
 
