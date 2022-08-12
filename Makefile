@@ -22,7 +22,7 @@ watch:
 # https://github.com/cosmtrek/air#-beta-feature
 # directories observed must be under root dir where `air` is called, not possible to watch parent dir or sibling dir
 	echo "requires github.com/cosmtrek/air@latest. Install with `make install-watch`"
-	air --build.cmd "cd ${workspace} && make build" --build.bin "cd ${workspace} && ${exec}"
+	air --build.cmd "cd ${workspace} && make build" --build.bin "cd ${workspace} && ${exec}" --build.exclude_dir ".vscode,tmp"
 
 #----LIBS----
 test-libs:
