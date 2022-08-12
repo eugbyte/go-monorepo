@@ -20,7 +20,6 @@ watch:
 # e.g. make workspace=services/notify exec="make func-start" watch
 # exec flag refers to the cmd to run upon a successful build. root directory is the workspace specified
 # https://github.com/cosmtrek/air#-beta-feature
-# this feature is experimental, so might be buggy
 # directories observed must be under root dir where `air` is called, not possible to watch parent dir or sibling dir
 	echo "requires github.com/cosmtrek/air@latest. Install with `make install-watch`"
 	air --build.cmd "cd ${workspace} && make build" --build.bin "cd ${workspace} && ${exec}"
