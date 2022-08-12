@@ -9,7 +9,7 @@ download:
 dev:
 	cd ${workspace} && make dev
 func-start:
-	cd ${workspace} && make funcstart
+	cd ${workspace} && make func-start
 test:
 	cd ${workspace} && make test
 lint:
