@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/web-notify/api/monorepo/libs/middlewares"
-	"github.com/web-notify/api/monorepo/libs/middlewares/auth"
+	"github.com/web-notify/api/monorepo/libs/middleware"
+	"github.com/web-notify/api/monorepo/libs/middleware/auth"
 	qlib "github.com/web-notify/api/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/libs/store/vault"
 	"github.com/web-notify/api/monorepo/services/notify/config"
@@ -42,4 +42,4 @@ var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
 }
 
 // Wrap middlewares
-var HTTPHandler http.Handler = middlewares.Middy(httpHandler, auth.AuthMiddleware(isAuth))
+var HTTPHandler http.Handler = middleware.Middy(httpHandler, auth.AuthMiddleware(isAuth))

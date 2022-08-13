@@ -3,7 +3,7 @@ package auth
 import (
 	"net/http"
 
-	"github.com/web-notify/api/monorepo/libs/middlewares"
+	"github.com/web-notify/api/monorepo/libs/middleware"
 )
 
 type IsAuth func(header http.Header) (bool, error)
@@ -25,7 +25,7 @@ func authMiddleware(isAuth IsAuth, next http.Handler) http.Handler {
 	})
 }
 
-func AuthMiddleware(isAuth IsAuth) middlewares.HandlerWrapper {
+func AuthMiddleware(isAuth IsAuth) middleware.HandlerWrapper {
 	return func(next http.Handler) http.Handler {
 		return authMiddleware(isAuth, next)
 	}

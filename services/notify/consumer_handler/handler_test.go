@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
-	webpush "github.com/web-notify/api/monorepo/libs/notifications/web_push"
+	webpush "github.com/web-notify/api/monorepo/libs/notification/web_push"
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
 	"github.com/web-notify/api/monorepo/services/notify/models"

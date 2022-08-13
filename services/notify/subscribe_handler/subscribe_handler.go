@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
-	"github.com/web-notify/api/monorepo/libs/middlewares"
+	"github.com/web-notify/api/monorepo/libs/middleware"
 	"github.com/web-notify/api/monorepo/services/notify/config"
 )
 
@@ -18,4 +18,4 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 })
 
 // Wrap middlewares
-var HTTPHandler http.Handler = middlewares.Middy(httpHandler)
+var HTTPHandler http.Handler = middleware.Middy(httpHandler)

@@ -1,4 +1,4 @@
-module github.com/web-notify/api/monorepo/libs/notifications
+module github.com/web-notify/api/monorepo/libs/notification
 
 go 1.18
 

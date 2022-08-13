@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
-	"github.com/web-notify/api/monorepo/libs/middlewares"
-	webpush "github.com/web-notify/api/monorepo/libs/notifications/web_push"
+	"github.com/web-notify/api/monorepo/libs/middleware"
+	webpush "github.com/web-notify/api/monorepo/libs/notification/web_push"
 	appconfig "github.com/web-notify/api/monorepo/libs/store/app_config"
 	"github.com/web-notify/api/monorepo/libs/store/vault"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
@@ -43,4 +43,4 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 })
 
 // Wrap middlewares
-var HTTPHandler http.Handler = middlewares.Middy(httpHandler)
+var HTTPHandler http.Handler = middleware.Middy(httpHandler)

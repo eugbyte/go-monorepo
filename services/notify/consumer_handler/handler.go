@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
-	webpush "github.com/web-notify/api/monorepo/libs/notifications/web_push"
+	webpush "github.com/web-notify/api/monorepo/libs/notification/web_push"
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
 
 	// appConfig "github.com/web-notify/api/monorepo/libs/store/app_config"

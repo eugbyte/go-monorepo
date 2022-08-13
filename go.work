@@ -1,12 +1,12 @@
 go 1.18
 
 use (
-    ./libs/middlewares
+    ./libs/middleware
     ./libs/queue
     ./libs/utils
     ./libs/db
     ./libs/store
-    ./libs/notifications
+    ./libs/notification
     ./services/greet
     ./services/notify
 )

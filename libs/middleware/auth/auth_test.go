@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/web-notify/api/monorepo/libs/middlewares"
+	"github.com/web-notify/api/monorepo/libs/middleware"
 )
 
 func Test_VaultMW(t *testing.T) {
@@ -21,7 +21,7 @@ func Test_VaultMW(t *testing.T) {
 		return false, errors.New("Somethin went wrong")
 	}
 
-	var httpHandler = middlewares.Middy(http.HandlerFunc(handler), AuthMiddleware(isAuth))
+	var httpHandler = middleware.Middy(http.HandlerFunc(handler), AuthMiddleware(isAuth))
 
 	httpHandler.ServeHTTP(writer, request)
 

@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/rs/cors"
-	"github.com/web-notify/api/monorepo/libs/middlewares"
-	loggerMW "github.com/web-notify/api/monorepo/libs/middlewares/logger"
+	"github.com/web-notify/api/monorepo/libs/middleware"
+	loggerMW "github.com/web-notify/api/monorepo/libs/middleware/logger"
 	"github.com/web-notify/api/monorepo/services/greet/config"
 	"github.com/web-notify/api/monorepo/services/greet/hello_handler"
 )
@@ -18,7 +18,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/api/hello", hello_handler.HTTPHandler)
 
-	wrappedMux := middlewares.Middy(mux, loggerMW.LoggerMiddleware, cors.Default().Handler)
+	wrappedMux := middleware.Middy(mux, loggerMW.LoggerMiddleware, cors.Default().Handler)
 
 	log.Printf("About to listen on %s. Go to https://127.0.0.1:%s/", address, address)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("127.0.0.1:%s", address), wrappedMux))
