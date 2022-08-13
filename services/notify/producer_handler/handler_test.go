@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-storage-queue-go/azqueue"
-	qlib "github.com/web-notify/api/monorepo/libs/queue"
+	qlib "github.com/eugbyte/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 

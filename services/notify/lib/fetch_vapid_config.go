@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	appConfig "github.com/web-notify/api/monorepo/libs/store/app_config"
-	"github.com/web-notify/api/monorepo/libs/store/vault"
+	appConfig "github.com/eugbyte/monorepo/libs/store/app_config"
+	"github.com/eugbyte/monorepo/libs/store/vault"
 	"golang.org/x/sync/errgroup"
 )
 

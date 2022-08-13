@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/eugbyte/monorepo/libs/formats"
-	qlib "github.com/web-notify/api/monorepo/libs/queue"
+	qlib "github.com/eugbyte/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 

@@ -7,7 +7,7 @@ import (
 
 	mongolib "github.com/eugbyte/monorepo/libs/db/mongo_lib"
 	webpush "github.com/eugbyte/monorepo/libs/notification/web_push"
-	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
+	qmodels "github.com/eugbyte/monorepo/libs/queue/models"
 
 	// appConfig "github.com/web-notify/api/monorepo/libs/store/app_config"
 

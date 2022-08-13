@@ -7,8 +7,8 @@ import (
 
 	"github.com/eugbyte/monorepo/libs/middleware"
 	"github.com/eugbyte/monorepo/libs/middleware/auth"
-	qlib "github.com/web-notify/api/monorepo/libs/queue"
-	"github.com/web-notify/api/monorepo/libs/store/vault"
+	qlib "github.com/eugbyte/monorepo/libs/queue"
+	"github.com/eugbyte/monorepo/libs/store/vault"
 	"github.com/web-notify/api/monorepo/services/notify/config"
 )
 

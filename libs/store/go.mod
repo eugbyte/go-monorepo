@@ -1,4 +1,4 @@
-module github.com/web-notify/api/monorepo/libs/store
+module github.com/eugbyte/monorepo/libs/store
 
 go 1.18
 
