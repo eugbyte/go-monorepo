@@ -1,4 +1,4 @@
-# browser-notify/api
+# web_push/api
 ## About
 API to trigger web push notifications
 
