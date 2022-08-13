@@ -8,7 +8,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
-	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/eugbyte/monorepo/libs/formats"
 )
 
 type VaultServicer interface {

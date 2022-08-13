@@ -1,3 +1,3 @@
-module github.com/web-notify/api/monorepo/services/greet
+module github.com/eugbyte/monorepo/services/greet
 
 go 1.18

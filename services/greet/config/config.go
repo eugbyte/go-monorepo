@@ -1,7 +1,7 @@
 package config
 
 import (
-	configlib "github.com/web-notify/api/monorepo/libs/utils/config"
+	configlib "github.com/eugbyte/monorepo/libs/config"
 )
 
 type vars struct {
@@ -14,7 +14,7 @@ type STAGE = configlib.STAGE
 var DEV = configlib.DEV
 var STAGING = configlib.STAGING
 var PROD = configlib.PROD
-var Stage = configlib.Stage
+var Stage func() configlib.STAGE = configlib.Stage
 
 var ENV_VARS = map[STAGE]vars{
 	DEV: {

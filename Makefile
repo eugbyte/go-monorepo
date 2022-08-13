@@ -17,7 +17,7 @@ lint:
 lint-fix:
 	cd ${workspace} && make lint-fix
 watch:
-# e.g. make workspace=services/notify exec="make func-start" watch
+# e.g. make workspace=services/webpush exec="make func-start" watch
 # exec flag refers to the cmd to run upon a successful build. root directory is the workspace specified
 # https://github.com/cosmtrek/air#-beta-feature
 # directories observed must be under root dir where `air` is called, not possible to watch parent dir or sibling dir
@@ -26,15 +26,22 @@ watch:
 
 #----LIBS----
 test-libs:
-	cd libs/utils && make test
-	cd libs/middlewares && make test
+	cd libs/config && make test
+	cd libs/db && make test
+	cd libs/formats && make test
+	cd libs/middleware && make test
+	cd libs/notification && make test
 	cd libs/queue && make test
+	cd libs/store && make test
 
 lint-libs:
+	cd libs/config && make lint
 	cd libs/db && make lint
-	cd libs/middlewares && make lint
+	cd libs/formats && make lint
+	cd libs/middleware && make lint
+	cd libs/notification && make lint
 	cd libs/queue && make lint
-	cd libs/utils && make lint
+	cd libs/store && make lint
 
 #----INSTALLATION----
 install-lint:
@@ -47,9 +54,13 @@ install-docker-compose:
 install-azurite:
 	npm install -g azurite
 download-libs:
-	cd libs/utils && make download
-	cd libs/middlewares && make download
+	cd libs/config && make download
+	cd libs/db && make download
+	cd libs/formats && make download
+	cd libs/middleware && make download
+	cd libs/notification && make download
 	cd libs/queue && make download
+	cd libs/store && make download
 install-watch:
 	go install github.com/cosmtrek/air@v1.40.4
 

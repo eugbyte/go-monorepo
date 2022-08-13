@@ -1,4 +1,4 @@
-package hello_handler
+package sample_push_handler
 
 import (
 	"net/http"
@@ -6,12 +6,11 @@ import (
 	"github.com/eugbyte/monorepo/libs/middleware"
 )
 
-// Dependency injection, if any
-// e.g. handler(NewService(), rw, req)
+// Dependency injection
 var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-	handler(rw, req)
+	client := http.Client{}
+	handler(&client, rw, req)
 })
 
 // Wrap middlewares
-// middleware applied here, in contrast to the mux server, will be for this specific controller only
 var HTTPHandler http.Handler = middleware.Middy(httpHandler)

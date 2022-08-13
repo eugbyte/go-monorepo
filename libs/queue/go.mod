@@ -1,4 +1,4 @@
-module github.com/web-notify/api/monorepo/libs/queue
+module github.com/eugbyte/monorepo/libs/queue
 
 go 1.18
 
