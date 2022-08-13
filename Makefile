@@ -48,9 +48,11 @@ install-docker-compose:
 install-azurite:
 	npm install -g azurite
 download-libs:
-	cd libs/utils && make download
-	cd libs/middlewares && make download
+	cd libs/formats && make download
+	cd libs/config && make download
+	cd libs/middleware && make download
 	cd libs/queue && make download
+	cd libs/notification && make download
 install-watch:
 	go install github.com/cosmtrek/air@v1.40.4
 
