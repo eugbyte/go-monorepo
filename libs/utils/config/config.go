@@ -12,6 +12,18 @@ const (
 	PROD
 )
 
+func (s STAGE) String() string {
+	switch s {
+	case DEV:
+		return "dev"
+	case STAGING:
+		return "stg"
+	case PROD:
+		return "prod"
+	}
+	return "unknown"
+}
+
 func EnvOrDefault(key string, defaultValue string) string {
 	value := os.Getenv(key)
 	if value == "" {
