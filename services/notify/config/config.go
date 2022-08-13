@@ -37,7 +37,8 @@ var ENV_VARS = map[STAGE]vars{
 		NOTIFY_PRODUCER_URL:        "http://localhost:7071/api/notifications",
 	},
 	STAGING: {
-		VAULT_URI: "https://kv-notify-secrets-stg.vault.azure.net",
+		LOCAL_PORT: configlib.EnvOrDefault("FUNCTIONS_CUSTOMHANDLER_PORT", "8080"),
+		VAULT_URI:  "https://kv-notify-secrets-stg.vault.azure.net",
 	},
 	PROD: {},
 }
