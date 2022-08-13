@@ -8,8 +8,8 @@ import (
 	webpush "github.com/web-notify/api/monorepo/libs/notifications/web_push"
 	appconfig "github.com/web-notify/api/monorepo/libs/store/app_config"
 	"github.com/web-notify/api/monorepo/libs/store/vault"
-	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/web-notify/api/monorepo/services/notify/config"
 	"github.com/web-notify/api/monorepo/services/notify/lib"
 	"go.mongodb.org/mongo-driver/bson"
 )

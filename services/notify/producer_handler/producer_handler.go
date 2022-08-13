@@ -9,7 +9,7 @@ import (
 	"github.com/web-notify/api/monorepo/libs/middlewares/auth"
 	qlib "github.com/web-notify/api/monorepo/libs/queue"
 	"github.com/web-notify/api/monorepo/libs/store/vault"
-	"github.com/web-notify/api/monorepo/libs/utils/config"
+	"github.com/web-notify/api/monorepo/services/notify/config"
 )
 
 // Dependency injection

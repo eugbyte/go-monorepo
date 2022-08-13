@@ -8,7 +8,7 @@ import (
 	"github.com/rs/cors"
 	"github.com/web-notify/api/monorepo/libs/middlewares"
 	loggerMW "github.com/web-notify/api/monorepo/libs/middlewares/logger"
-	"github.com/web-notify/api/monorepo/libs/utils/config"
+	"github.com/web-notify/api/monorepo/services/greet/config"
 	"github.com/web-notify/api/monorepo/services/greet/hello_handler"
 )
 

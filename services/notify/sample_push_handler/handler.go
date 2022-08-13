@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/web-notify/api/monorepo/libs/utils/config"
 	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/web-notify/api/monorepo/services/notify/config"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 )
 
