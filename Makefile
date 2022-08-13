@@ -17,7 +17,7 @@ lint:
 lint-fix:
 	cd ${workspace} && make lint-fix
 watch:
-# e.g. make workspace=services/notify exec="make func-start" watch
+# e.g. make workspace=services/webpush exec="make func-start" watch
 # exec flag refers to the cmd to run upon a successful build. root directory is the workspace specified
 # https://github.com/cosmtrek/air#-beta-feature
 # directories observed must be under root dir where `air` is called, not possible to watch parent dir or sibling dir

@@ -9,5 +9,5 @@ use (
     ./libs/store
     ./libs/notification
     ./services/greet
-    ./services/notify
+    ./services/web_push
 )
