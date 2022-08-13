@@ -27,15 +27,21 @@ watch:
 #----LIBS----
 test-libs:
 	cd libs/config && make test
+	cd libs/db && make test
 	cd libs/formats && make test
 	cd libs/middleware && make test
+	cd libs/notification && make test
 	cd libs/queue && make test
+	cd libs/store && make test
 
 lint-libs:
+	cd libs/config && make lint
 	cd libs/db && make lint
-	cd libs/middlewares && make lint
+	cd libs/formats && make lint
+	cd libs/middleware && make lint
+	cd libs/notification && make lint
 	cd libs/queue && make lint
-	cd libs/utils && make lint
+	cd libs/store && make lint
 
 #----INSTALLATION----
 install-lint:
@@ -48,11 +54,13 @@ install-docker-compose:
 install-azurite:
 	npm install -g azurite
 download-libs:
-	cd libs/formats && make download
 	cd libs/config && make download
+	cd libs/db && make download
+	cd libs/formats && make download
 	cd libs/middleware && make download
-	cd libs/queue && make download
 	cd libs/notification && make download
+	cd libs/queue && make download
+	cd libs/store && make download
 install-watch:
 	go install github.com/cosmtrek/air@v1.40.4
 
