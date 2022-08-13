@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/web-notify/api/monorepo/services/notify/config"
+	"github.com/eugbyte/monorepo/libs/config"
 )
 
 func TestQueue(t *testing.T) {

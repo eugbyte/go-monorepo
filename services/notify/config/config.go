@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 
-	configlib "github.com/web-notify/api/monorepo/libs/utils/config"
+	configlib "github.com/eugbyte/monorepo/libs/config"
 )
 
 type vars struct {

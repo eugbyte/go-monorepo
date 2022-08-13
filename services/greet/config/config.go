@@ -1,7 +1,7 @@
 package config
 
 import (
-	configlib "github.com/web-notify/api/monorepo/libs/utils/config"
+	configlib "github.com/eugbyte/monorepo/libs/config"
 )
 
 type vars struct {
