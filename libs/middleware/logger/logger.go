@@ -3,7 +3,7 @@ package logger
 import (
 	"net/http"
 
-	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/eugbyte/monorepo/libs/formats"
 )
 
 // AuthMiddleware is an example of a middleware layer. It handles the request authorization

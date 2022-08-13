@@ -4,7 +4,7 @@ use (
     ./libs/config
     ./libs/middleware
     ./libs/queue
-    ./libs/utils
+    ./libs/formats
     ./libs/db
     ./libs/store
     ./libs/notification

@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/eugbyte/monorepo/libs/formats"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

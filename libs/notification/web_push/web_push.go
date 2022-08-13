@@ -6,7 +6,7 @@ import (
 	"io"
 
 	webpush "github.com/SherClockHolmes/webpush-go"
-	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/eugbyte/monorepo/libs/formats"
 )
 
 type WebPushServicer interface {

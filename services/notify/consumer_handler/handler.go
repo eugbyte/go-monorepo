@@ -11,7 +11,7 @@ import (
 
 	// appConfig "github.com/web-notify/api/monorepo/libs/store/app_config"
 
-	"github.com/web-notify/api/monorepo/libs/utils/formats"
+	"github.com/eugbyte/monorepo/libs/formats"
 	"github.com/web-notify/api/monorepo/services/notify/lib"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 	"go.mongodb.org/mongo-driver/bson"

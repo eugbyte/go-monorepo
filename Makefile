@@ -26,8 +26,9 @@ watch:
 
 #----LIBS----
 test-libs:
-	cd libs/utils && make test
-	cd libs/middlewares && make test
+	cd libs/config && make test
+	cd libs/formats && make test
+	cd libs/middleware && make test
 	cd libs/queue && make test
 
 lint-libs:

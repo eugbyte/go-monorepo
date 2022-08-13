@@ -1,4 +1,4 @@
-module github.com/web-notify/api/monorepo/libs/utils
+module github.com/eugbyte/monorepo/libs/formats
 
 go 1.18
 
