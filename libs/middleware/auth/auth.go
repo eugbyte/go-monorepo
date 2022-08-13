@@ -3,7 +3,7 @@ package auth
 import (
 	"net/http"
 
-	"github.com/web-notify/api/monorepo/libs/middleware"
+	"github.com/eugbyte/monorepo/libs/middleware"
 )
 
 type IsAuth func(header http.Header) (bool, error)

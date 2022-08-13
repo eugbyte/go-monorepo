@@ -3,7 +3,7 @@ package sample_push_handler
 import (
 	"net/http"
 
-	"github.com/web-notify/api/monorepo/libs/middleware"
+	"github.com/eugbyte/monorepo/libs/middleware"
 )
 
 // Dependency injection

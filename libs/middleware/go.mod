@@ -1,3 +1,3 @@
-module github.com/web-notify/api/monorepo/libs/middleware
+module github.com/eugbyte/monorepo/libs/middleware
 
 go 1.18

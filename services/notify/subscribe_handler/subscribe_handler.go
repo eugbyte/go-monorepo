@@ -3,8 +3,8 @@ package subscriber_handler
 import (
 	"net/http"
 
-	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
-	"github.com/web-notify/api/monorepo/libs/middleware"
+	mongolib "github.com/eugbyte/monorepo/libs/db/mongo_lib"
+	"github.com/eugbyte/monorepo/libs/middleware"
 	"github.com/web-notify/api/monorepo/services/notify/config"
 )
 

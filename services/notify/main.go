@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/eugbyte/monorepo/libs/middleware"
 	"github.com/rs/cors"
-	"github.com/web-notify/api/monorepo/libs/middleware"
 	"github.com/web-notify/api/monorepo/services/notify/config"
 	consumer "github.com/web-notify/api/monorepo/services/notify/consumer_handler"
 	producer "github.com/web-notify/api/monorepo/services/notify/producer_handler"

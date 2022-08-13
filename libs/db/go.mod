@@ -1,4 +1,4 @@
-module github.com/web-notify/api/monorepo/libs/db
+module github.com/eugbyte/monorepo/libs/db
 
 go 1.18
 

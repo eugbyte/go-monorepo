@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/web-notify/api/monorepo/libs/middleware"
+	"github.com/eugbyte/monorepo/libs/middleware"
 )
 
 func Test_VaultMW(t *testing.T) {

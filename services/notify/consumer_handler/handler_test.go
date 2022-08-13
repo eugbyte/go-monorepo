@@ -9,9 +9,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	mongolib "github.com/eugbyte/monorepo/libs/db/mongo_lib"
 	"github.com/eugbyte/monorepo/libs/formats"
-	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
-	webpush "github.com/web-notify/api/monorepo/libs/notification/web_push"
+	webpush "github.com/eugbyte/monorepo/libs/notification/web_push"
 	qmodels "github.com/web-notify/api/monorepo/libs/queue/models"
 	"github.com/web-notify/api/monorepo/services/notify/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
