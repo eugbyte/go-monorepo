@@ -23,7 +23,7 @@ type STAGE = configlib.STAGE
 var DEV = configlib.DEV
 var STAGING = configlib.STAGING
 var PROD = configlib.PROD
-var Stage = configlib.Stage
+var Stage func() configlib.STAGE = configlib.Stage
 
 var ENV_VARS = map[STAGE]vars{
 	DEV: {
