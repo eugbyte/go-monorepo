@@ -1,6 +1,6 @@
-name: notify-e2e
+name: web_push-e2e
 concurrency:
-  group: notify-tests
+  group: web_push-tests
   cancel-in-progress: true
 
 on:
@@ -9,8 +9,8 @@ on:
       - ".github/**"
       - "libs/**"
       - "!libs/**/go.sum"
-      - "services/notify/**"
-      - "!services/notify/go.sum"
+      - "services/web_push/**"
+      - "!services/web_push/go.sum"
       - "services/go.work"
 
 jobs:
@@ -32,16 +32,16 @@ jobs:
         run: |
           go mod download
           make download-libs
-          make workspace=services/notify download
+          make workspace=services/web_push download
           sudo make install-lint
       - name: Run unit tests
         run: |
           make test-libs
-          make workspace=services/notify test
+          make workspace=services/web_push test
       - name: Run lint
         run: |
           make lint-libs
-          make workspace=services/notify lint
+          make workspace=services/web_push lint
 
   e2e-local-sandbox:
     runs-on: ubuntu-latest
@@ -68,9 +68,9 @@ jobs:
         run: |
           go mod download
           make download-libs
-          make workspace=services/notify download
+          make workspace=services/web_push download
       - name: Build main.exe
-        run: make workspace=services/notify build
+        run: make workspace=services/web_push build
       - name: Install and start azurite
         id: azuright
         uses: potatoqualitee/azuright@v1.1
@@ -80,7 +80,7 @@ jobs:
           sudo dpkg -i packages-microsoft-prod.deb
           sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
-        run: make workspace=services/notify func-start &
+        run: make workspace=services/web_push func-start &
       - name: Start azure vault emulator
         run: docker run --rm -d -p 8443:8443 --name lowkey_vault nagyesta/lowkey-vault:1.8.14
       - name: Check that daemons are running
