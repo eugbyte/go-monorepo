@@ -59,6 +59,9 @@ func (wp *webPushService) SendNotification(message interface{}, endpoint string,
 	// https://web.dev/push-notifications-web-push-protocol/#response-from-push-service
 	formats.Trace(resp.Status, resp.StatusCode)
 	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
 	str := string(body)
 
 	if resp.StatusCode != 201 {

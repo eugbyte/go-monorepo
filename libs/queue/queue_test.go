@@ -8,10 +8,14 @@ import (
 )
 
 func TestQueue(t *testing.T) {
-	stage := config.Stage()
+	queueName := "my-queue"
+	var stage config.STAGE = config.Stage()
+	queueAccountName := "devstoreaccount1"
+
+	qBaseUrl := config.QueueBaseURL(stage, queueAccountName)
 	accountName := "my_acc"
-	url := config.QueueBaseURL(stage, accountName)
-	var qService QueueServicer = NewQueueService(context.Background(), "my_queue", url, accountName, "my_key")
+	key := "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+	var qService QueueServicer = NewQueueService(context.Background(), queueName, qBaseUrl, accountName, key)
 	t.Log(qService)
 	t.Log("test passed, qService initialised without panic")
 }
