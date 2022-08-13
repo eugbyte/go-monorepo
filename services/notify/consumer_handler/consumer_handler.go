@@ -9,8 +9,8 @@ import (
 	webpush "github.com/eugbyte/monorepo/libs/notification/web_push"
 	appconfig "github.com/eugbyte/monorepo/libs/store/app_config"
 	"github.com/eugbyte/monorepo/libs/store/vault"
-	"github.com/web-notify/api/monorepo/services/notify/config"
-	"github.com/web-notify/api/monorepo/services/notify/lib"
+	"github.com/eugbyte/monorepo/services/web-push/config"
+	"github.com/eugbyte/monorepo/services/web-push/lib"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

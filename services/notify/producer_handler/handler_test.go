@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-storage-queue-go/azqueue"
 	qlib "github.com/eugbyte/monorepo/libs/queue"
-	"github.com/web-notify/api/monorepo/services/notify/models"
+	"github.com/eugbyte/monorepo/services/web-push/models"
 )
 
 type MockQueueService struct{}

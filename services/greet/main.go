@@ -7,9 +7,9 @@ import (
 
 	"github.com/eugbyte/monorepo/libs/middleware"
 	loggerMW "github.com/eugbyte/monorepo/libs/middleware/logger"
+	"github.com/eugbyte/monorepo/services/greet/config"
+	"github.com/eugbyte/monorepo/services/greet/hello_handler"
 	"github.com/rs/cors"
-	"github.com/web-notify/api/monorepo/services/greet/config"
-	"github.com/web-notify/api/monorepo/services/greet/hello_handler"
 )
 
 func main() {

@@ -6,7 +6,7 @@ import (
 
 	"github.com/eugbyte/monorepo/libs/formats"
 	qlib "github.com/eugbyte/monorepo/libs/queue"
-	"github.com/web-notify/api/monorepo/services/notify/models"
+	"github.com/eugbyte/monorepo/services/web-push/models"
 )
 
 func handler(qService qlib.QueueServicer, rw http.ResponseWriter, request *http.Request) {

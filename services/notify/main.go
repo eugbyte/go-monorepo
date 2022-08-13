@@ -6,12 +6,12 @@ import (
 	"net/http"
 
 	"github.com/eugbyte/monorepo/libs/middleware"
+	"github.com/eugbyte/monorepo/services/web-push/config"
+	consumer "github.com/eugbyte/monorepo/services/web-push/consumer_handler"
+	producer "github.com/eugbyte/monorepo/services/web-push/producer_handler"
+	samplepush "github.com/eugbyte/monorepo/services/web-push/sample_push_handler"
+	subscribe "github.com/eugbyte/monorepo/services/web-push/subscribe_handler"
 	"github.com/rs/cors"
-	"github.com/web-notify/api/monorepo/services/notify/config"
-	consumer "github.com/web-notify/api/monorepo/services/notify/consumer_handler"
-	producer "github.com/web-notify/api/monorepo/services/notify/producer_handler"
-	samplepush "github.com/web-notify/api/monorepo/services/notify/sample_push_handler"
-	subscribe "github.com/web-notify/api/monorepo/services/notify/subscribe_handler"
 )
 
 func main() {

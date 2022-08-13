@@ -1,4 +1,4 @@
-module github.com/web-notify/api/monorepo/services/notify
+module github.com/eugbyte/monorepo/services/web-push
 
 go 1.18
 

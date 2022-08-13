@@ -7,7 +7,7 @@ import (
 
 	mongolib "github.com/eugbyte/monorepo/libs/db/mongo_lib"
 	"github.com/eugbyte/monorepo/libs/formats"
-	"github.com/web-notify/api/monorepo/services/notify/models"
+	"github.com/eugbyte/monorepo/services/web-push/models"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

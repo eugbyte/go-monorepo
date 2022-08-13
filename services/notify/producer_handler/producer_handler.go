@@ -9,7 +9,7 @@ import (
 	"github.com/eugbyte/monorepo/libs/middleware/auth"
 	qlib "github.com/eugbyte/monorepo/libs/queue"
 	"github.com/eugbyte/monorepo/libs/store/vault"
-	"github.com/web-notify/api/monorepo/services/notify/config"
+	"github.com/eugbyte/monorepo/services/web-push/config"
 )
 
 // Dependency injection
