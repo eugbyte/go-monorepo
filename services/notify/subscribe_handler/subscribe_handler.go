@@ -5,7 +5,7 @@ import (
 
 	mongolib "github.com/web-notify/api/monorepo/libs/db/mongo_lib"
 	"github.com/web-notify/api/monorepo/libs/middlewares"
-	"github.com/web-notify/api/monorepo/libs/utils/config"
+	"github.com/web-notify/api/monorepo/services/notify/config"
 )
 
 // Dependency injection

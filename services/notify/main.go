@@ -7,7 +7,7 @@ import (
 
 	"github.com/rs/cors"
 	"github.com/web-notify/api/monorepo/libs/middlewares"
-	"github.com/web-notify/api/monorepo/libs/utils/config"
+	"github.com/web-notify/api/monorepo/services/notify/config"
 	consumer "github.com/web-notify/api/monorepo/services/notify/consumer_handler"
 	producer "github.com/web-notify/api/monorepo/services/notify/producer_handler"
 	samplepush "github.com/web-notify/api/monorepo/services/notify/sample_push_handler"
