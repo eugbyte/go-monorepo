@@ -29,7 +29,7 @@ Basic cmd structure is `make workspace=<dir> <cmd>`
 
 `make workspace=services/notify func-start`
 
-## Gotchas
+## Development guide
 1. `function.json` cannot be in nested directories, see [here](https://github.com/Azure/azure-functions-host/issues/5373)
 2. When running `go mod tidy`, packages specified in `go.work` [will not be ignored](https://github.com/golang/go/issues/50750). So, do `go mod tidy -e` instead. The `-e` flag causes `go mod tidy` to attempt to proceed despite errors encountered while loading packages.
 3. To have your own customised routes, `enableForwardingHttpRequest` must to be set to true. Otherwise, the route to configure for the custom mux http server must be the name of the function. Azure func by default, will call the custom server via http with the name of the function as the route.
