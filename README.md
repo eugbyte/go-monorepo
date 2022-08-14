@@ -12,3 +12,13 @@ A library is shared code that you compile into your application. A service is a 
 
 ## Development guide
 - When creating a new module, remember to update the `go.work` file with the directory for the sym link to work
+- Run the services with `make workspace=<workspace> <cmd>`
+```
+// window
+winget install -e --id GnuWin32.Make
+
+// linux
+sudo apt-get install build-essential
+
+make workspace=services/web_push test
+```
