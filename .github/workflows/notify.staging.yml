@@ -1,6 +1,6 @@
-name: web_push-e2e
+name: web_notify-e2e
 concurrency:
-  group: web_push-tests
+  group: web_notify-tests
   cancel-in-progress: true
 
 on:
@@ -9,8 +9,8 @@ on:
       - ".github/**"
       - "libs/**"
       - "!libs/**/go.sum"
-      - "services/web_push/**"
-      - "!services/web_push/go.sum"
+      - "services/web_notify/**"
+      - "!services/web_notify/go.sum"
       - "services/go.work"
 
 jobs:
@@ -41,7 +41,7 @@ jobs:
       - name: Run lint
         run: |
           make lint-libs
-          make workspace=services/web_push lint
+          make workspace=services/web_notify lint
 
   e2e-local-sandbox:
     runs-on: ubuntu-latest
@@ -80,7 +80,7 @@ jobs:
           sudo dpkg -i packages-microsoft-prod.deb
           sudo apt-get install azure-functions-core-tools-4
       - name: Start azure func
-        run: make workspace=services/web_push func-start &
+        run: make workspace=services/web_notify func-start &
       - name: Start azure vault emulator
         run: docker run --rm -d -p 8443:8443 --name lowkey_vault nagyesta/lowkey-vault:1.8.14
       - name: Check that daemons are running
