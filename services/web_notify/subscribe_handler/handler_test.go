@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/eugbyte/monorepo/libs/formats"
-	"github.com/eugbyte/monorepo/services/web-push/models"
+	"github.com/eugbyte/monorepo/services/webnotify/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )

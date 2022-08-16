@@ -7,8 +7,8 @@ import (
 	"net/http"
 
 	"github.com/eugbyte/monorepo/libs/formats"
-	"github.com/eugbyte/monorepo/services/web-push/config"
-	"github.com/eugbyte/monorepo/services/web-push/models"
+	"github.com/eugbyte/monorepo/services/webnotify/config"
+	"github.com/eugbyte/monorepo/services/webnotify/models"
 )
 
 func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {

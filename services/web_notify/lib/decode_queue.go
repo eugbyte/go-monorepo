@@ -3,7 +3,7 @@ package lib
 import (
 	"encoding/json"
 
-	"github.com/eugbyte/monorepo/services/web-push/models"
+	"github.com/eugbyte/monorepo/services/webnotify/models"
 )
 
 func DecodeRawMassageToInfo(rawMassage json.RawMessage) (models.MessageInfo, error) {
