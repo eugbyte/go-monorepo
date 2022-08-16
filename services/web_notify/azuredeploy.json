@@ -20,13 +20,14 @@
             "type": "string"
         },
         "databaseAccounts_cosmos_web_notify_name": {
-            "defaultValue": "cosmos-web-notify-stg",
+            "defaultValue": "cosmos-web-notify",
             "type": "String"
         }
     },
     "variables": {
         "vaults_kv_notify_secrets_name": "[concat(parameters('vaults_kv_notify_secrets_name'), '-', parameters('stage'))]",
-        "configurationStores_appcs_webnotify_name": "[concat(parameters('configurationStores_appcs_webnotify_name'), '-', parameters('stage'))]"
+        "configurationStores_appcs_webnotify_name": "[concat(parameters('configurationStores_appcs_webnotify_name'), '-', parameters('stage'))]",
+        "databaseAccounts_cosmos_web_notify_name": "[concat(parameters('databaseAccounts_cosmos_web_notify_name'), '-', parameters('stage'))]"
     },
     "resources": [
         {
@@ -123,7 +124,7 @@
         {
             "type": "Microsoft.DocumentDB/databaseAccounts",
             "apiVersion": "2022-02-15-preview",
-            "name": "[parameters('databaseAccounts_cosmos_web_notify_name')]",
+            "name": "[variables('databaseAccounts_cosmos_web_notify_name')]",
             "location": "East Asia",
             "tags": {
                 "defaultExperience": "Azure Cosmos DB for MongoDB API",
