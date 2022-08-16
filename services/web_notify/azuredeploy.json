@@ -12,12 +12,16 @@
             "defaultValue": "stg"
         },
         "vaults_kv_notify_secrets_name": {
-            "defaultValue": "kv-notify-secrets",
+            "defaultValue": "kv-notify-secrets-experiment",
             "type": "string"
         },        
         "configurationStores_appcs_webnotify_name": {
             "defaultValue": "appcs-webnotify",
             "type": "string"
+        },
+        "databaseAccounts_cosmos_web_notify_name": {
+            "defaultValue": "cosmos-web-notify-stg",
+            "type": "String"
         }
     },
     "variables": {
@@ -100,7 +104,7 @@
         },
         {
             "type": "Microsoft.AppConfiguration/configurationStores",
-            "apiVersion": "2022-05-01",
+            "apiVersion": "2020-06-01",
             "name": "[variables('configurationStores_appcs_webnotify_name')]",
             "location": "southeastasia",
             "tags": {
@@ -114,6 +118,79 @@
                 "disableLocalAuth": false,
                 "softDeleteRetentionInDays": 7,
                 "enablePurgeProtection": false
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2022-02-15-preview",
+            "name": "[parameters('databaseAccounts_cosmos_web_notify_name')]",
+            "location": "East Asia",
+            "tags": {
+                "defaultExperience": "Azure Cosmos DB for MongoDB API",
+                "github": "https://github.com/eugbyte/go-monorepo/tree/master/services/web_push",
+                "hidden-cosmos-mmspecial": ""
+            },
+            "kind": "MongoDB",
+            "identity": {
+                "type": "None"
+            },
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "disableKeyBasedMetadataWriteAccess": false,
+                "enableFreeTier": true,
+                "enableAnalyticalStorage": false,
+                "analyticalStorageConfiguration": {
+                    "schemaType": "FullFidelity"
+                },
+                "databaseAccountOfferType": "Standard",
+                "defaultIdentity": "FirstPartyIdentity",
+                "networkAclBypass": "None",
+                "disableLocalAuth": false,
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
+                },
+                "apiProperties": {
+                    "serverVersion": "4.0"
+                },
+                "locations": [
+                    {
+                        "locationName": "East Asia",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "cors": [],
+                "capabilities": [
+                    {
+                        "name": "EnableMongo"
+                    },
+                    {
+                        "name": "DisableRateLimitingResponses"
+                    }
+                ],
+                "ipRules": [],
+                "backupPolicy": {
+                    "type": "Periodic",
+                    "periodicModeProperties": {
+                        "backupIntervalInMinutes": 240,
+                        "backupRetentionIntervalInHours": 8,
+                        "backupStorageRedundancy": "Geo"
+                    }
+                },
+                "networkAclBypassResourceIds": [],
+                "diagnosticLogSettings": {
+                    "enableFullTextQuery": "None"
+                },
+                "capacity": {
+                    "totalThroughputLimit": 1000
+                }
             }
         }
     ]
