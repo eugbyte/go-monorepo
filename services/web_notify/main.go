@@ -6,11 +6,11 @@ import (
 	"net/http"
 
 	"github.com/eugbyte/monorepo/libs/middleware"
-	"github.com/eugbyte/monorepo/services/web-push/config"
-	consumer "github.com/eugbyte/monorepo/services/web-push/consumer_handler"
-	producer "github.com/eugbyte/monorepo/services/web-push/producer_handler"
-	samplepush "github.com/eugbyte/monorepo/services/web-push/sample_push_handler"
-	subscribe "github.com/eugbyte/monorepo/services/web-push/subscribe_handler"
+	"github.com/eugbyte/monorepo/services/webnotify/config"
+	consumer "github.com/eugbyte/monorepo/services/webnotify/consumer_handler"
+	producer "github.com/eugbyte/monorepo/services/webnotify/producer_handler"
+	samplepush "github.com/eugbyte/monorepo/services/webnotify/sample_push_handler"
+	subscribe "github.com/eugbyte/monorepo/services/webnotify/subscribe_handler"
 	"github.com/rs/cors"
 )
 

@@ -13,7 +13,7 @@ import (
 	"github.com/eugbyte/monorepo/libs/formats"
 	webpush "github.com/eugbyte/monorepo/libs/notification/web_push"
 	qmodels "github.com/eugbyte/monorepo/libs/queue/models"
-	"github.com/eugbyte/monorepo/services/web-push/models"
+	"github.com/eugbyte/monorepo/services/webnotify/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )

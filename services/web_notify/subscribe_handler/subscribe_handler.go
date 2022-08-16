@@ -5,7 +5,7 @@ import (
 
 	mongolib "github.com/eugbyte/monorepo/libs/db/mongo_lib"
 	"github.com/eugbyte/monorepo/libs/middleware"
-	"github.com/eugbyte/monorepo/services/web-push/config"
+	"github.com/eugbyte/monorepo/services/webnotify/config"
 )
 
 // Dependency injection
