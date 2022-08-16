@@ -1,4 +1,4 @@
-# web_push/api
+# web_notify/api
 ## About
 API to trigger web push notifications
 

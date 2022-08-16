@@ -23,4 +23,8 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 )
 
-require github.com/Azure/azure-pipeline-go v0.1.8 // indirect
+require (
+	github.com/Azure/azure-pipeline-go v0.1.8 // indirect
+	github.com/jinzhu/copier v0.3.5 // indirect
+	github.com/joho/godotenv v1.4.0 // indirect
+)

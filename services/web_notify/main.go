@@ -11,10 +11,15 @@ import (
 	producer "github.com/eugbyte/monorepo/services/webnotify/producer_handler"
 	samplepush "github.com/eugbyte/monorepo/services/webnotify/sample_push_handler"
 	subscribe "github.com/eugbyte/monorepo/services/webnotify/subscribe_handler"
+	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	var stage config.STAGE = config.Stage()
 	var address string = config.ENV_VARS[stage].LOCAL_PORT
