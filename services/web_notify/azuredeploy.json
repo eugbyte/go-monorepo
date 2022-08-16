@@ -12,7 +12,7 @@
             "defaultValue": "stg"
         },
         "vaults_kv_notify_secrets_name": {
-            "defaultValue": "kv-notify-secrets-experiment",
+            "defaultValue": "kv-notify-secrets",
             "type": "string"
         },        
         "configurationStores_appcs_webnotify_name": {

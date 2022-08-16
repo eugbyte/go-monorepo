@@ -60,3 +60,10 @@ docker container stop lowkey_vault
 // kill the container
 docker kill lowkey_vault
 ```
+11. To deploy to azure
+```
+az deployment group create \
+  --name webnotify-deploy \
+  --resource-group rg-webnotify-stg \
+  --template-file services/web_notify/azuredeploy.json
+```
