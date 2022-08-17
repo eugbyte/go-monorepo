@@ -28,7 +28,7 @@ type mongoService struct {
 	Database *mongo.Database
 }
 
-func NewMongoService(dbName string, connectionString string) MonogoServicer {
+func New(dbName string, connectionString string) MonogoServicer {
 	ms := mongoService{}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()

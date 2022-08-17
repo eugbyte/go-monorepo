@@ -32,12 +32,12 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 		"vapidSenderEmail": vapidConf.Email,
 	})
 
-	webpushService := webpush.NewWebPush(
+	webpushService := webpush.New(
 		vapidConf.PrivateKey,
 		vapidConf.PublicKey,
 		vapidConf.Email,
 	)
-	mongoService := mongolib.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
+	mongoService := mongolib.New("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
 
 	handler(webpushService, mongoService, rw, req)
 })

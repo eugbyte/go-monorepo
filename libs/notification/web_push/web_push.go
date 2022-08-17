@@ -19,7 +19,7 @@ type webPushService struct {
 	SenderEmail     string
 }
 
-func NewWebPush(VAPIDPrivateKey string, VAPIDPublicKey string, senderEmail string) WebPushServicer {
+func New(VAPIDPrivateKey string, VAPIDPublicKey string, senderEmail string) WebPushServicer {
 	wp := webPushService{
 		vapidPrivateKey: VAPIDPrivateKey,
 		VapidPublicKey:  VAPIDPublicKey,

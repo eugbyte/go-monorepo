@@ -11,7 +11,7 @@ import (
 // Dependency injection
 var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	var stage config.STAGE = config.Stage()
-	var mongoService mongolib.MonogoServicer = mongolib.NewMongoService("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
+	var mongoService mongolib.MonogoServicer = mongolib.New("subscriberDB", config.ENV_VARS[stage].MONGO_DB_CONNECTION_STRING)
 	mongoService.CreatedShardedCollection(collectionName, "company", false)
 
 	handler(mongoService, rw, req)

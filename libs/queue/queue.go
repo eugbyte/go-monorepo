@@ -24,7 +24,7 @@ type queueService struct {
 }
 
 // Get the baseConnectionString from config.QueueBaseURL()
-func NewQueueService(cxt context.Context, queueName string, baseConnectionString string, accountName string, accountKey string) QueueServicer {
+func New(cxt context.Context, queueName string, baseConnectionString string, accountName string, accountKey string) QueueServicer {
 	qService := queueService{}
 	qService.cxt = cxt
 	// http://localhost/devstoreaccount1/my-queue
