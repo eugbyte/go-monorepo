@@ -15,7 +15,7 @@ type vars struct {
 	NOTIFY_PRODUCER_URL        string
 }
 
-// redeclare variables to avoid confusion between current config pkg and configLib pkg
+// redeclare variables to avoid confusion between current config pkg and configlib pkg
 type STAGE = configlib.STAGE
 type FetchVal = configlib.FetchVal
 

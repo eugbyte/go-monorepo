@@ -20,7 +20,7 @@ type vaultService struct {
 	client *azsecrets.Client
 }
 
-func NewVaultService(vaultURI string) VaultServicer {
+func New(vaultURI string) VaultServicer {
 	vs := vaultService{}
 
 	credential, err := azidentity.NewDefaultAzureCredential(nil)

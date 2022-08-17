@@ -23,7 +23,7 @@ type AppConfigService struct {
 
 // get the subId, resourceGroupName, configStoreName from the properties tab
 // for the subId, ignore the prefix '/subscriptions/'
-func NewAppConfig(subId string, resourceGroupName string, configStoreName string) AppConfigServicer {
+func New(subId string, resourceGroupName string, configStoreName string) AppConfigServicer {
 	var appConfig AppConfigService = AppConfigService{
 		resourceGroupName: resourceGroupName,
 		configStoreName:   configStoreName,
