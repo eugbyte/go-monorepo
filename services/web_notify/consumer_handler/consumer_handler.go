@@ -10,7 +10,6 @@ import (
 	appconfig "github.com/eugbyte/monorepo/libs/store/app_config"
 	"github.com/eugbyte/monorepo/libs/store/vault"
 	"github.com/eugbyte/monorepo/services/webnotify/config"
-	"github.com/eugbyte/monorepo/services/webnotify/lib"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -20,7 +19,7 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 	vaultService := vault.NewVaultService("https://kv-notify-secrets-stg.vault.azure.net")
 	appConfigService := appconfig.NewAppConfig("e53c986e-fa42-4065-bcef-9a5ae182d65a", "rg-webnotify-stg", "appcs-webnotify-stg")
 
-	vapidConf, err := lib.FetchVapidConfig(vaultService, appConfigService)
+	vapidConf, err := config.FetchVapidConfig(vaultService, appConfigService)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
