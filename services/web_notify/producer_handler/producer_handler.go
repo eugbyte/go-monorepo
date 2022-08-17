@@ -16,10 +16,10 @@ import (
 var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	queueName := "my-queue"
 	var stage config.STAGE = config.Stage()
-	queueAccountName := config.ENV_VARS[stage].QUEUE_ACCOUNT_NAME
+	queueAccountName := config.New().QUEUE_ACCOUNT_NAME
 
 	qBaseUrl := config.QueueBaseURL(stage, queueAccountName)
-	var qService qlib.QueueServicer = qlib.New(context.Background(), queueName, qBaseUrl, queueAccountName, config.ENV_VARS[stage].QUEUE_ACCOUNT_KEY)
+	var qService qlib.QueueServicer = qlib.New(context.Background(), queueName, qBaseUrl, queueAccountName, config.New().QUEUE_ACCOUNT_KEY)
 
 	handler(qService, rw, req)
 })

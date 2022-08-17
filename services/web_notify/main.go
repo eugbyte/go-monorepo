@@ -24,9 +24,8 @@ func main() {
 
 	var stage config.STAGE = config.Stage()
 	formats.Trace("STAGE:", stage.String())
-	formats.Trace("config", config.ENV_VARS[stage])
-	formats.Trace("QUEUE_ACCOUNT_NAME", config.EnvOrDefault("QUEUE_ACCOUNT_NAME", ""))
-	var address string = config.ENV_VARS[stage].LOCAL_PORT
+	formats.Trace("config", config.New())
+	var address string = config.New().LOCAL_PORT
 
 	mux := http.NewServeMux()
 	mux.Handle("/api/subscriptions", subscribe.HTTPHandler)
