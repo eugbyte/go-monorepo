@@ -13,6 +13,7 @@ import (
 )
 
 // Dependency injection
+
 var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	queueName := "my-queue"
 	var stage config.STAGE = config.Stage()
@@ -42,4 +43,5 @@ var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
 }
 
 // Wrap middlewares
+
 var HTTPHandler http.Handler = middleware.Middy(httpHandler, auth.AuthMiddleware(isAuth))

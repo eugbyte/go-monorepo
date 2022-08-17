@@ -17,13 +17,16 @@ type vars struct {
 
 // redeclare variables to avoid confusion between current config pkg and configLib pkg
 type STAGE = configlib.STAGE
+type FetchVal = configlib.FetchVal
 
 var DEV = configlib.DEV
 var STAGING = configlib.STAGING
 var PROD = configlib.PROD
+
 var Stage func() configlib.STAGE = configlib.Stage
 var EnvOrDefault func(key string, defaultValue string) string = configlib.EnvOrDefault
 var QueueBaseURL func(stage STAGE, accountName string) string = configlib.QueueBaseURL
+var FetchAll func(fetchVal FetchVal, secretNames ...string) ([]string, error) = configlib.FetchAll
 
 func New() vars {
 	var env_vars map[STAGE]vars = map[STAGE]vars{
