@@ -193,6 +193,130 @@
                     "totalThroughputLimit": 1000
                 }
             }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2022-02-15-preview",
+            "name": "[variables('databaseAccounts_cosmos_web_notify_name')]",
+            "location": "East Asia",
+            "tags": {
+                "defaultExperience": "Azure Cosmos DB for MongoDB API",
+                "github": "https://github.com/eugbyte/go-monorepo/tree/master/services/web_push",
+                "hidden-cosmos-mmspecial": ""
+            },
+            "kind": "MongoDB",
+            "identity": {
+                "type": "None"
+            },
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "disableKeyBasedMetadataWriteAccess": false,
+                "enableFreeTier": true,
+                "enableAnalyticalStorage": false,
+                "analyticalStorageConfiguration": {
+                    "schemaType": "FullFidelity"
+                },
+                "databaseAccountOfferType": "Standard",
+                "defaultIdentity": "FirstPartyIdentity",
+                "networkAclBypass": "None",
+                "disableLocalAuth": false,
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
+                },
+                "apiProperties": {
+                    "serverVersion": "4.0"
+                },
+                "locations": [
+                    {
+                        "locationName": "East Asia",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "cors": [],
+                "capabilities": [
+                    {
+                        "name": "EnableMongo"
+                    },
+                    {
+                        "name": "DisableRateLimitingResponses"
+                    }
+                ],
+                "ipRules": [],
+                "backupPolicy": {
+                    "type": "Periodic",
+                    "periodicModeProperties": {
+                        "backupIntervalInMinutes": 240,
+                        "backupRetentionIntervalInHours": 8,
+                        "backupStorageRedundancy": "Geo"
+                    }
+                },
+                "networkAclBypassResourceIds": [],
+                "diagnosticLogSettings": {
+                    "enableFullTextQuery": "None"
+                },
+                "capacity": {
+                    "totalThroughputLimit": 1000
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases",
+            "apiVersion": "2022-02-15-preview",
+            "name": "[concat(variables('databaseAccounts_cosmos_web_notify_name'), '/subscriberDB')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccounts_cosmos_web_notify_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "subscriberDB"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections",
+            "apiVersion": "2022-02-15-preview",
+            "name": "[concat(variables('databaseAccounts_cosmos_web_notify_name'), '/subscriberDB/subscribers')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/mongodbDatabases', variables('databaseAccounts_cosmos_web_notify_name'), 'subscriberDB')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccounts_cosmos_web_notify_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "subscribers",
+                    "indexes": [
+                        {
+                            "key": {
+                                "keys": [
+                                    "_id"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections/throughputSettings",
+            "apiVersion": "2022-02-15-preview",
+            "name": "[concat(variables('databaseAccounts_cosmos_web_notify_name'), '/subscriberDB/subscribers/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections', variables('databaseAccounts_cosmos_web_notify_name'), 'subscriberDB', 'subscribers')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/mongodbDatabases', variables('databaseAccounts_cosmos_web_notify_name'), 'subscriberDB')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccounts_cosmos_web_notify_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 400
+                }
+            }
         }
     ]
   }

@@ -15,8 +15,8 @@ import (
 // Dependency injection
 
 var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-	queueName := "my-queue"
 	var stage config.STAGE = config.Stage()
+	queueName := fmt.Sprintf("stq-webnotify-%s", stage.String())
 	queueAccountName := config.New().QUEUE_ACCOUNT_NAME
 
 	qBaseUrl := config.QueueBaseURL(stage, queueAccountName)
