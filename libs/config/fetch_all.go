@@ -6,16 +6,16 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-type secretConfig struct {
-	mu      sync.Mutex
-	secrets []string
+type muConfig struct {
+	mu     sync.Mutex
+	values []string
 }
 
 type FetchVal = func(name string) (string, error)
 
 func FetchAll(fetchVal FetchVal, secretNames ...string) ([]string, error) {
-	var conf secretConfig = secretConfig{}
-	conf.secrets = make([]string, 0, len(secretNames))
+	var conf muConfig = muConfig{}
+	conf.values = make([]string, 0, len(secretNames))
 
 	grp := new(errgroup.Group)
 
@@ -27,12 +27,12 @@ func FetchAll(fetchVal FetchVal, secretNames ...string) ([]string, error) {
 		grp.Go(func() error {
 			conf.mu.Lock()
 			defer conf.mu.Unlock()
-			key, err := fetchVal(secretNames[index])
-			conf.secrets[index] = key
+			value, err := fetchVal(secretNames[index])
+			conf.values[index] = value
 			return err
 		})
 	}
 
 	err := grp.Wait()
-	return conf.secrets, err
+	return conf.values, err
 }
