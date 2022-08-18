@@ -1,4 +1,4 @@
-package producer_handler
+package producerhandler
 
 import (
 	"context"

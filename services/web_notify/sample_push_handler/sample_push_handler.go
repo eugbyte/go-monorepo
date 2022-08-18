@@ -1,4 +1,4 @@
-package sample_push_handler
+package samplepushhandler
 
 import (
 	"net/http"

@@ -1,4 +1,4 @@
-package consumer_handler
+package consumerhandler
 
 import (
 	"net/http"

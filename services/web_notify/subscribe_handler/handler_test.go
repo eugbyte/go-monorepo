@@ -1,4 +1,4 @@
-package subscriber_handler
+package subscriberhandler
 
 import (
 	"bytes"
