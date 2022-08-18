@@ -49,6 +49,7 @@ func New(dbName string, connectionString string) MonogoServicer {
 		log.Fatalf("unable to connect %v", err)
 	}
 	ms.Database = client.Database(dbName)
+	formats.Trace("successfully created DB")
 	return &ms
 }
 
@@ -56,6 +57,7 @@ func (ms *mongoService) DB() *mongo.Database {
 	return ms.Database
 }
 
+// By default, azure cosmos db shards the collection by the _id field
 // Create sharded collection. If sharded collection already exists, operation is skipped
 // https://www.mongodb.com/community/forums/t/how-do-you-shard-a-collection-with-the-go-driver/4676
 func (ms *mongoService) CreatedShardedCollection(collectionName string, field string, unique bool) {
@@ -69,8 +71,8 @@ func (ms *mongoService) CreatedShardedCollection(collectionName string, field st
 		log.Fatal(err)
 	}
 
-	for _, coltnName := range existingCollectionNames {
-		if coltnName == collectionName {
+	for _, name := range existingCollectionNames {
+		if name == collectionName {
 			formats.Trace("collection already exists, skipping creating sharded collection ...")
 			return
 		}
@@ -88,6 +90,7 @@ func (ms *mongoService) CreatedShardedCollection(collectionName string, field st
 	}
 }
 
+// By default, azure cosmos db indexes the _id field
 // From https://christiangiacomi.com/posts/mongodb-index-using-go/
 func (ms *mongoService) CreateIndex(collectionName string, field string, unique bool) error {
 	indexModel := mongo.IndexModel{
