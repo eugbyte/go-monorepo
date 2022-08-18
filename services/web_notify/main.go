@@ -24,7 +24,6 @@ func main() {
 
 	var stage config.STAGE = config.Stage()
 	formats.Trace("STAGE:", stage.String())
-	formats.Trace("config", config.New())
 	var address string = config.New().LOCAL_PORT
 
 	mux := http.NewServeMux()

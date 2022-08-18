@@ -15,7 +15,7 @@ type FetchVal = func(name string) (string, error)
 
 func FetchAll(fetchVal FetchVal, secretNames ...string) ([]string, error) {
 	var conf muConfig = muConfig{}
-	conf.values = make([]string, 0, len(secretNames))
+	conf.values = make([]string, len(secretNames))
 
 	grp := new(errgroup.Group)
 
