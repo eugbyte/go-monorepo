@@ -15,7 +15,7 @@ clean:
 	rm -rf ./bin ./vendor go.sum
 deploy:
 	make build
-	func azure functionapp publish func-greet-stg
+	func azure functionapp publish func-webnotify-stg
 
 #----TESTING----
 test:
