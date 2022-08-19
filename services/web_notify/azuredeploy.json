@@ -22,12 +22,17 @@
         "databaseAccounts_cosmos_web_notify_name": {
             "defaultValue": "cosmos-web-notify",
             "type": "String"
+        },
+        "storageAccounts_stwebnotify_name": {
+            "defaultValue": "stwebnotify",
+            "type": "String"
         }
     },
     "variables": {
         "vaults_kv_notify_secrets_name": "[concat(parameters('vaults_kv_notify_secrets_name'), '-', parameters('stage'))]",
         "configurationStores_appcs_webnotify_name": "[concat(parameters('configurationStores_appcs_webnotify_name'), '-', parameters('stage'))]",
-        "databaseAccounts_cosmos_web_notify_name": "[concat(parameters('databaseAccounts_cosmos_web_notify_name'), '-', parameters('stage'))]"
+        "databaseAccounts_cosmos_web_notify_name": "[concat(parameters('databaseAccounts_cosmos_web_notify_name'), '-', parameters('stage'))]",
+        "storageAccounts_stwebnotify_name": "[concat(parameters('storageAccounts_stwebnotify_name'), parameters('stage'))]"
     },
     "resources": [
         {
@@ -242,6 +247,64 @@
             "properties": {
                 "resource": {
                     "throughput": 400
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-09-01",
+            "name": "[variables('storageAccounts_stwebnotify_name')]",
+            "location": "eastasia",
+            "tags": {
+                "github": "https://github.com/eugbyte/go-monorepo/tree/master/services/web_notify"
+            },
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "dnsEndpointType": "Standard",
+                "defaultToOAuthAuthentication": false,
+                "publicNetworkAccess": "Enabled",
+                "allowCrossTenantReplication": true,
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true,
+                "allowSharedKeyAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "requireInfrastructureEncryption": false,
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(variables('storageAccounts_stwebnotify_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_stwebnotify_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
                 }
             }
         }
