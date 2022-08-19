@@ -13,8 +13,7 @@ import (
 )
 
 func main() {
-	var stage config.STAGE = config.Stage()
-	var address string = config.ENV_VARS[stage].LOCAL_PORT
+	var address string = config.New().LOCAL_PORT
 	mux := http.NewServeMux()
 	mux.Handle("/api/hello", hello_handler.HTTPHandler)
 
