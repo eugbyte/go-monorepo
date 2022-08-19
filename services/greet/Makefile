@@ -9,7 +9,7 @@ tidy:
 build:
 	export GO111MODULE=on
 	chmod +x main.go
-	go build main.go
+	GOOS=linux GOARCH=amd64 go build main.go
 dev:
 	ls
 	go run main.go
@@ -17,6 +17,9 @@ func-start:
 	func start
 clean:
 	rm -rf ./bin ./vendor go.sum
+deploy:
+	make build
+	func azure functionapp publish func-greet-stg
 
 #----TESTING----
 test:
