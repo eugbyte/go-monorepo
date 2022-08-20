@@ -16,7 +16,7 @@ import (
 
 var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	var stage config.STAGE = config.Stage()
-	queueName := fmt.Sprintf("stq-webnotify-%s", stage.String())
+	queueName := fmt.Sprintf("stq-webnotify")
 	queueAccountName := config.New().QUEUE_ACCOUNT_NAME
 
 	qBaseUrl := config.QueueBaseURL(stage, queueAccountName)

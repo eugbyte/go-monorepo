@@ -17,8 +17,8 @@ import (
 
 var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	// Get the VAPID keys
-	vaultService := vault.New("https://kv-notify-secrets-stg.vault.azure.net")
-	appConfigService := appconfig.New("e53c986e-fa42-4065-bcef-9a5ae182d65a", "rg-webnotify-stg", "appcs-webnotify-stg")
+	vaultService := vault.New(config.New().VAULT_URI)
+	appConfigService := appconfig.New("e53c986e-fa42-4065-bcef-9a5ae182d65a", "rg-webnotify-stg", "appcs-web-notify-stg")
 
 	secrets, err := config.FetchAll(vaultService.GetSecret, "VAPID-PRIVATE-KEY")
 	if err != nil {

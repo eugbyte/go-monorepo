@@ -21,8 +21,8 @@ type AppConfigService struct {
 	ctx               context.Context
 }
 
-// get the subId, resourceGroupName, configStoreName from the properties tab
-// for the subId, ignore the prefix '/subscriptions/'
+// Get the subId, resourceGroupName, configStoreName from the properties tab.
+// For the subId, ignore the prefix '/subscriptions/'
 func New(subId string, resourceGroupName string, configStoreName string) AppConfigServicer {
 	var appConfig AppConfigService = AppConfigService{
 		resourceGroupName: resourceGroupName,
