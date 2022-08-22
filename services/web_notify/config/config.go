@@ -51,7 +51,7 @@ func New() vars {
 			VAPID_SENDER_EMAIL:         "eugenetham1994@gmail.com",
 			VAULT_URI:                  EnvOrDefault("VAULT_URI", ""),
 			VAULT_URI_COMPANY:          EnvOrDefault("VAULT_URI_COMPANY", ""),
-			NOTIFY_PRODUCER_URL:        "http://localhost:7071/api/notifications",
+			NOTIFY_PRODUCER_URL:        EnvOrDefault("NOTIFY_PRODUCER_URL", "http://localhost:7071/api/notifications"),
 		},
 	}
 	env_vars[PROD] = env_vars[STAGING]
