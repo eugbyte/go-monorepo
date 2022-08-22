@@ -1,4 +1,4 @@
-package lib
+package consumerhandler
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"github.com/eugbyte/monorepo/services/webnotify/models"
 )
 
-func DecodeRawMassageToInfo(rawMassage json.RawMessage) (models.MessageInfo, error) {
+func decodeRawMassageToInfo(rawMassage json.RawMessage) (models.MessageInfo, error) {
 
 	// the message is stringified twice, so need to unmarshall twice
 	var message string

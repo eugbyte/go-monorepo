@@ -11,13 +11,19 @@ import (
 	producer "github.com/eugbyte/monorepo/services/webnotify/producer_handler"
 	samplepush "github.com/eugbyte/monorepo/services/webnotify/sample_push_handler"
 	subscribe "github.com/eugbyte/monorepo/services/webnotify/subscribe_handler"
+	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 )
 
 func main() {
+	if config.Stage() == config.DEV {
+		err := godotenv.Load()
+		if err != nil {
+			log.Printf("Error loading .env file in dev")
+		}
+	}
 
-	var stage config.STAGE = config.Stage()
-	var address string = config.ENV_VARS[stage].LOCAL_PORT
+	var address string = config.New().LOCAL_PORT
 
 	mux := http.NewServeMux()
 	mux.Handle("/api/subscriptions", subscribe.HTTPHandler)
@@ -27,6 +33,7 @@ func main() {
 
 	wrappedMux := middleware.Middy(mux, cors.Default().Handler)
 
+	log.Printf("STAGE: %s", config.Stage().String())
 	log.Printf("About to listen on %s. Go to https://127.0.0.1:%s/", address, address)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("127.0.0.1:%s", address), wrappedMux))
 }

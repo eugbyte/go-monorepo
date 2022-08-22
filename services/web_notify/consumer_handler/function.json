@@ -4,7 +4,7 @@
         "name": "req",
         "type": "queueTrigger",
         "direction": "in",
-        "queueName": "my-queue",
+        "queueName": "stq-webnotify",
         "connection": "AzureWebJobsStorage"
       }
     ]

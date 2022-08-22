@@ -1,4 +1,4 @@
-package sample_push_handler
+package samplepushhandler
 
 import (
 	"bytes"
@@ -34,7 +34,7 @@ func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {
 	// make a request to the producer_handler
 	// only way to invoke one lambda from another, is through Durable Functions, which is not available in golang
 	// https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview?tabs=csharp#language-support
-	post, err := http.NewRequest("POST", config.ENV_VARS[config.DEV].NOTIFY_PRODUCER_URL, bytes.NewBuffer(objBytes))
+	post, err := http.NewRequest("POST", config.New().NOTIFY_BASE_URL+"/notifications", bytes.NewBuffer(objBytes))
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
@@ -57,6 +57,7 @@ func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	rw.Header().Set("Content-Type", "application/json")
 	_, err = rw.Write(body)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)

@@ -15,7 +15,7 @@ func TestQueue(t *testing.T) {
 	qBaseUrl := config.QueueBaseURL(stage, queueAccountName)
 	accountName := "my_acc"
 	key := "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
-	var qService QueueServicer = NewQueueService(context.Background(), queueName, qBaseUrl, accountName, key)
+	var qService QueueServicer = New(context.Background(), queueName, qBaseUrl, accountName, key)
 	t.Log(qService)
 	t.Log("test passed, qService initialised without panic")
 }

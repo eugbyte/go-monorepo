@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "stage": {
+            "type": "string",
+            "allowedValues": [
+                "dev",
+                "stg",
+                "prod"
+            ],
+            "defaultValue": "stg"
+        },
+        "region": {
+            "defaultValue": "ea",
+            "type": "string"
+        },
+        "vaults_kv_notify_secrets_name": {
+            "defaultValue": "kv-notify-secrets",
+            "type": "string"
+        },        
+        "configurationStores_appcs_webnotify_name": {
+            "defaultValue": "appcs-webnotify",
+            "type": "string"
+        },
+        "databaseAccounts_cosmos_web_notify_name": {
+            "defaultValue": "cosmos-web-notify",
+            "type": "String"
+        },
+        "storageAccounts_stwebnotify_name": {
+            "defaultValue": "stwebnotify",
+            "type": "String"
+        }
+    },
+    "variables": {
+        "vaults_kv_notify_secrets_name": "[concat(parameters('vaults_kv_notify_secrets_name'), '-', parameters('stage'), '-', parameters('region') )]",
+        "configurationStores_appcs_webnotify_name": "[concat(parameters('configurationStores_appcs_webnotify_name'), '-', parameters('stage'))]",
+        "databaseAccounts_cosmos_web_notify_name": "[concat(parameters('databaseAccounts_cosmos_web_notify_name'), '-', parameters('stage'))]",
+        "storageAccounts_stwebnotify_name": "[concat(parameters('storageAccounts_stwebnotify_name'), parameters('stage'))]"
+    },
+    "resources": []
+  }

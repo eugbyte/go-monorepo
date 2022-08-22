@@ -7,8 +7,6 @@ download:
 tidy:
 	go mod tidy -e
 build:
-	export GO111MODULE=on
-	chmod +x main.go
 	go build main.go
 dev:
 	ls
@@ -17,6 +15,12 @@ func-start:
 	func start
 clean:
 	rm -rf ./bin ./vendor go.sum
+deploy:
+	rm -f main.exe
+	export GO111MODULE=on
+	chmod +x main.go
+	GOOS=linux GOARCH=amd64 go build main.go
+	func azure functionapp publish func-greet-stg-ea --worker-runtime=custom
 
 #----TESTING----
 test:

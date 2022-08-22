@@ -11,18 +11,19 @@ import (
 )
 
 type AppConfigServicer interface {
-	GetConfig(ctx context.Context, keyName string, _label *string) (string, error)
+	GetConfig(keyName string, _label *string) (string, error)
 }
 
 type AppConfigService struct {
 	client            *appconfig.KeyValuesClient
 	resourceGroupName string
 	configStoreName   string
+	ctx               context.Context
 }
 
-// get the subId, resourceGroupName, configStoreName from the properties tab
-// for the subId, ignore the prefix '/subscriptions/'
-func NewAppConfig(subId string, resourceGroupName string, configStoreName string) AppConfigServicer {
+// Get the subId, resourceGroupName, configStoreName from the properties tab.
+// For the subId, ignore the prefix '/subscriptions/'
+func New(subId string, resourceGroupName string, configStoreName string) AppConfigServicer {
 	var appConfig AppConfigService = AppConfigService{
 		resourceGroupName: resourceGroupName,
 		configStoreName:   configStoreName,
@@ -36,10 +37,11 @@ func NewAppConfig(subId string, resourceGroupName string, configStoreName string
 		log.Fatal(errors.Wrap(err, "failed to create client"))
 	}
 	appConfig.client = client
+	appConfig.ctx = context.Background()
 	return appConfig
 }
 
-func (ac AppConfigService) GetConfig(ctx context.Context, keyName string, _label *string) (string, error) {
+func (ac AppConfigService) GetConfig(keyName string, _label *string) (string, error) {
 	label := ""
 	if _label != nil {
 		label = *_label
@@ -52,7 +54,7 @@ func (ac AppConfigService) GetConfig(ctx context.Context, keyName string, _label
 		keyLabel = fmt.Sprintf("%s$%s", keyName, label)
 	}
 
-	res, err := ac.client.Get(ctx,
+	res, err := ac.client.Get(ac.ctx,
 		ac.resourceGroupName,
 		ac.configStoreName,
 		keyLabel,
