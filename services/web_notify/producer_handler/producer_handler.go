@@ -29,7 +29,7 @@ var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
 	company := header.Get("Notify-Secret-Name")
 	key := header.Get("Notify-Secret-Value")
 
-	var vaultService = vault.New("https://kv-notify-secrets-stg.vault.azure.net")
+	var vaultService = vault.New(config.New().VAULT_URI_COMPANY)
 	checkVal, err := vaultService.GetSecret(company)
 
 	if err != nil {
