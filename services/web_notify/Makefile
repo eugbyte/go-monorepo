@@ -13,11 +13,26 @@ func-start:
 clean:
 	rm -rf ./bin ./vendor go.sum
 deploy:
+# in case dev env is windows, remove .exe file to prevent bugs
 	rm -f main.exe
+# build the linux binary
 	export GO111MODULE=on
 	chmod +x main.go
 	GOOS=linux GOARCH=amd64 go build main.go
-	func azure functionapp publish func-webnotify-stg-ea --worker-runtime=custom
+# publish functions to azure
+	func azure functionapp publish func-webnotify-stg-ea --worker-runtime=custom 
+# update the env variables in azure, 
+# except db connection string and queue key
+	echo "updating env variables in silent mode..."
+	az functionapp config appsettings set \
+	--name func-webnotify-stg-ea \
+	--resource-group rg-webnotify-stg \
+	--output none \
+	--settings STAGE=stg \
+	QUEUE_ACCOUNT_NAME=stwebnotifystgea	\
+	VAULT_URI=https://kv-notify-secrets-stg-ea.vault.azure.net	\
+	VAULT_URI_COMPANY=https://kv-notify-company-stg-ea.vault.azure.net	\
+	NOTIFY_BASE_URL=https://func-webnotify-stg-ea.azurewebsites.net/api	
 
 #----TESTING----
 test:
