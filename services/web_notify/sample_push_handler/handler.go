@@ -40,8 +40,6 @@ func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	post.Header.Set("API-Key", "sample-api-key")
-	post.Header.Set("Notify-Secret-Name", "demo-company")
-	post.Header.Set("Notify-Secret-Value", "YfZUV8HgaA4tMuH")
 
 	formats.Trace("sending request...")
 	resp, err := client.Do(post)

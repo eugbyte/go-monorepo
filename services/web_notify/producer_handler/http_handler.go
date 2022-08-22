@@ -2,14 +2,10 @@ package producerhandler
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
-	"github.com/eugbyte/monorepo/libs/formats"
 	"github.com/eugbyte/monorepo/libs/middleware"
-	"github.com/eugbyte/monorepo/libs/middleware/auth"
 	qlib "github.com/eugbyte/monorepo/libs/queue"
-	"github.com/eugbyte/monorepo/libs/store/vault"
 	"github.com/eugbyte/monorepo/services/webnotify/config"
 )
 
@@ -26,25 +22,6 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 	handler(qService, rw, req)
 })
 
-var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
-	company := header.Get("Notify-Secret-Name")
-	key := header.Get("Notify-Secret-Value")
-
-	var vaultService = vault.New(config.New().VAULT_URI_COMPANY)
-	checkVal, err := vaultService.GetSecret(company)
-
-	formats.Trace(company, key, checkVal)
-
-	if err != nil {
-		fmt.Println(err.Error())
-		return false, err
-	}
-	if key != checkVal {
-		return false, nil
-	}
-	return true, nil
-}
-
 // Wrap middlewares
 
-var HTTPHandler http.Handler = middleware.Middy(httpHandler, auth.AuthMiddleware(isAuth))
+var HTTPHandler http.Handler = middleware.Middy(httpHandler)
