@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/eugbyte/monorepo/libs/formats"
 	"github.com/eugbyte/monorepo/libs/middleware"
 	"github.com/eugbyte/monorepo/libs/middleware/auth"
 	qlib "github.com/eugbyte/monorepo/libs/queue"
@@ -31,6 +32,8 @@ var isAuth auth.IsAuth = func(header http.Header) (bool, error) {
 
 	var vaultService = vault.New(config.New().VAULT_URI_COMPANY)
 	checkVal, err := vaultService.GetSecret(company)
+
+	formats.Trace(company, key, checkVal)
 
 	if err != nil {
 		fmt.Println(err.Error())
