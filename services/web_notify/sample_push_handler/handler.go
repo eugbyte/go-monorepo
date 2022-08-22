@@ -40,7 +40,7 @@ func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	post.Header.Set("x-functions-key", os.Getenv("x-functions-key-demo-company"))
+	post.Header.Set("x-functions-key", os.Getenv("X_FUNCTIONS_KEY_SAMPLE_PUSH_DEMO_COMPANY"))
 
 	formats.Trace("sending request...")
 	resp, err := client.Do(post)
