@@ -4,6 +4,7 @@ download:
 tidy:
 	go mod tidy -e
 build:
+	chmod +x main.go
 	go build main.go
 dev:
 	go run main.go
@@ -16,7 +17,10 @@ deploy:
 	export GO111MODULE=on
 	chmod +x main.go
 	GOOS=linux GOARCH=amd64 go build main.go
-	func azure functionapp publish func-webnotify-stg-ea
+# unfortunately, cannot .funcignore files prefix with "."
+	# mv .env ../.backup_env
+	func azure functionapp publish func-webnotify-stg-ea --worker-runtime=custom
+	# mv ../.backup_env .env
 
 #----TESTING----
 test:
