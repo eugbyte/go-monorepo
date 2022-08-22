@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/eugbyte/monorepo/libs/formats"
 	"github.com/eugbyte/monorepo/services/webnotify/config"
@@ -39,7 +40,7 @@ func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	post.Header.Set("API-Key", "sample-api-key")
+	post.Header.Set("x-functions-key", os.Getenv("x-functions-key-demo-company"))
 
 	formats.Trace("sending request...")
 	resp, err := client.Do(post)
