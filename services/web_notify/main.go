@@ -16,9 +16,11 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	if config.Stage() == config.DEV {
+		err := godotenv.Load()
+		if err != nil {
+			log.Printf("Error loading .env file in dev")
+		}
 	}
 
 	var address string = config.New().LOCAL_PORT

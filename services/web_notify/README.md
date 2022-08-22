@@ -62,5 +62,4 @@ docker kill lowkey_vault
 ```
 - To deploy the build file to azure
   - need to make sure that the file type is similar to the deployment environment (linux binary for linux, .exe for windows)
-  - the specified language runtime flag is similar to the deployment environment (e.g. `--worker-runtime=custom`), 
-  - for the .funcignore file, if files specified therein are prefixed with . (dot). is specified, [there will be deployment bugs](https://github.com/Azure/functions-action/issues/62#issuecomment-763187445)
+  - the specified language runtime flag is similar to the deployment environment (e.g. `--worker-runtime=custom`)
