@@ -57,6 +57,7 @@ func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	rw.Header().Set("Content-Type", "application/json")
 	_, err = rw.Write(body)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
