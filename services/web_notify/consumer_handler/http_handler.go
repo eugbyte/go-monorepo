@@ -22,7 +22,7 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 	publicKey := config.New().VAPID_PUBLIC_KEY
 	email := config.New().VAPID_EMAIL
 
-	log.Printf(formats.Stringify(bson.M{
+	log.Println(formats.Stringify(bson.M{
 		"vapidPublicKey":   publicKey,
 		"vapidSenderEmail": email,
 	}))
