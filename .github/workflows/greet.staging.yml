@@ -1,7 +1,15 @@
 name: greet-staging
 
-on:
-  workflow_dispatch
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/**"
+      - "libs/**"
+      - "!libs/**/go.sum"
+      - "services/greet/**"
+      - "!services/greet/go.sum"
+      - "services/go.work"
   
 jobs:
   publish:
