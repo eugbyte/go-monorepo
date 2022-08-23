@@ -29,8 +29,7 @@ jobs:
       - name: Install docker-compose
         run: make install-docker-compose
       - name: Publish to azure staging
-        run: curl --location --request GET 'https://func-greet-stg-ea.azurewebsites.net/api/hello' \
-            --header 'x-functions-key: ${{ secrets.GREET_API_KEY }}' \
-            --data-raw ''
-      
-  
+        run: | 
+          curl --location --request GET 'https://func-greet-stg-ea.azurewebsites.net/api/hello' \
+          --header 'x-functions-key: ${{ secrets.GREET_API_KEY }}' \
+          --data-raw ''
