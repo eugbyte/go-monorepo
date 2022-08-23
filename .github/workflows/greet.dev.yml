@@ -1,6 +1,6 @@
 name: greet-dev
 concurrency:
-  group: greet
+  group: greet-dev
   cancel-in-progress: true
 
 on:

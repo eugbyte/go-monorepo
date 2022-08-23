@@ -1,5 +1,9 @@
 name: greet-staging
 
+concurrency:
+  group: greet-staging
+  cancel-in-progress: true
+
 on: 
   workflow_dispatch:
     inputs:
