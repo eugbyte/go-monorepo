@@ -1,20 +1,18 @@
-name: greet-e2e
+name: greet-staging
+
 concurrency:
-  group: greet
+  group: greet-staging
   cancel-in-progress: true
 
-on:
-  push:
-    paths:
-      - ".github/**"
-      - "libs/**"
-      - "!libs/**/go.sum"
-      - "services/greet/**"
-      - "!services/greet/go.sum"
-      - "services/go.work"
-
+on: 
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: reference to a commit to deploy
+        required: true
+  
 jobs:
-  unit-test:
+  publish:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -34,18 +32,12 @@ jobs:
           make download-libs
           make workspace=services/greet download
           sudo make install-lint
-      - name: Run unit tests
-        run: |
-          make test-libs
-          make workspace=services/greet test
-      - name: Run lint
-        run: |
-          make lint-libs
-          make workspace=services/greet lint
+      - name: Publish to azure staging
+        run:  make workspace=services/greet deploy
 
-  e2e-local-sandbox:
+  e2e-test:
     runs-on: ubuntu-latest
-    needs: unit-test
+    needs: [publish]
     defaults:
       run:
         shell: bash
@@ -54,37 +46,9 @@ jobs:
         uses: actions/checkout@v3
       - name: Print dir
         run: ls
-      - name: Update ubuntu
-        run: sudo apt-get -qq update
       - name: Install curl, jq, make, zip, ping, net-tools
         run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
-      - name: Install docker-compose
-        run: make install-docker-compose
-      - name: Install Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: '1.18'
-      - name: Download Go modules
+      - name: Publish to azure staging
         run: |
-          go mod download
-          make download-libs
-          make workspace=services/greet download
-          sudo make install-lint
-      - name: Build main.exe
-        run: make workspace=services/greet build
-      - name: Install and start azurite
-        id: azuright
-        uses: potatoqualitee/azuright@v1.1
-      - name: Install azure func
-        run: |
-          wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
-          sudo dpkg -i packages-microsoft-prod.deb
-          sudo apt-get install azure-functions-core-tools-4
-      - name: Start azure func
-        run: make workspace=services/greet func-start &
-      - name: Check that daemons are running
-        run: |
-         netstat -nat | grep '7071' | grep LISTEN
-         netstat -nat | grep '10000' | grep LISTEN
-      - name: GET request to fetch greetings
-        run: curl --max-time 10 --location --request GET 'http://localhost:7071/api/hello'
+          curl --location --request GET 'https://func-greet-stg-ea.azurewebsites.net/api/hello' \
+          --header 'x-functions-key: ${{ secrets.GREET_API_KEY }}'

@@ -14,7 +14,7 @@ clean:
 	rm -rf ./bin ./vendor go.sum
 deploy:
 # in case dev env is windows, remove .exe file to prevent bugs
-	rm -f main.exe
+# rm -f main.exe
 # build the linux binary
 	export GO111MODULE=on
 	chmod +x main.go
