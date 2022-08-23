@@ -1,7 +1,7 @@
 name: greet-staging
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
   
 jobs:
   publish:
