@@ -31,7 +31,6 @@ jobs:
           go mod download
           make download-libs
           make workspace=services/greet download
-          sudo make install-lint
       - name: Publish to azure staging
         run:  make workspace=services/greet deploy
 

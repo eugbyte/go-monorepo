@@ -31,7 +31,6 @@ jobs:
           go mod download
           make download-libs
           make workspace=services/web_notify download
-          sudo make install-lint
       - name: Publish to azure staging
         run: make workspace=services/web_notify deploy
 
