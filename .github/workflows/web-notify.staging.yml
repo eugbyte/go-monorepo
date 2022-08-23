@@ -55,7 +55,7 @@ jobs:
       - name: Test subscribe handler
         run: |
           curl --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/subscriptions' \
-          --header 'x-functions-key: ${{ WEB_NOTIFY_SUBSCRIBE_HANDLER_API_KEY_STAGING }}' \
+          --header 'x-functions-key: ${{ secrets.WEB_NOTIFY_SUBSCRIBE_HANDLER_API_KEY_STAGING }}' \
           --header 'Content-Type: application/json' \
           --data-raw '{
               "company": "fakepanda",
@@ -70,7 +70,7 @@ jobs:
       - name: Test queue producer handler
         run: |
           curl --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/notifications' \
-          --header 'x-functions-key: ${{ WEB_NOTIFY_PRODUCER_HANDLER_API_KEY_STAGING }}' \
+          --header 'x-functions-key: ${{ secrets.WEB_NOTIFY_PRODUCER_HANDLER_API_KEY_STAGING }}' \
           --header 'Content-Type: application/json' \
           --data-raw '{
               "userID": "abc@m.com",
