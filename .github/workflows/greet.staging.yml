@@ -32,8 +32,8 @@ jobs:
           make download-libs
           make workspace=services/greet download
           sudo make install-lint
-      - name: Deploy
-        run:  echo "Mock Deploy..."
+      - name: Publish to azure staging
+        run:  make workspace=services/greet deploy
 
   e2e-test:
     runs-on: ubuntu-latest
