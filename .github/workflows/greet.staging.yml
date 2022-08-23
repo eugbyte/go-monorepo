@@ -1,4 +1,4 @@
-name: greet-stg
+name: greet-staging
 
 on:
   workflow_dispatch:
