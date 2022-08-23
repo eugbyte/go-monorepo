@@ -33,7 +33,7 @@ func handler(qService qlib.QueueServicer, rw http.ResponseWriter, request *http.
 		formats.Trace("queue exist")
 	}
 
-	_, err = qService.Enqueue(message, 0, 0)
+	_, err = qService.Enqueue(formats.EncodeToBase64(message), 0, 0)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return

@@ -22,7 +22,7 @@ deploy:
 # publish functions to azure
 	func azure functionapp publish func-webnotify-stg-ea --worker-runtime=custom 
 # update the env variables in azure, 
-# except db connection string and queue key
+# except db connection string, queue key, and vapid credentials
 	echo "updating env variables in silent mode..."
 	az functionapp config appsettings set \
 	--name func-webnotify-stg-ea \

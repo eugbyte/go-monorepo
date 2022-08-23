@@ -39,9 +39,7 @@ func handler(client *http.Client, rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	post.Header.Set("API-Key", "sample-api-key")
-	post.Header.Set("Notify-Secret-Name", "demo-company")
-	post.Header.Set("Notify-Secret-Value", "YfZUV8HgaA4tMuH")
+	post.Header.Set("x-functions-key", config.EnvOrDefault("X_FUNCTIONS_KEY_SUBSCRIBE_HANDLER_DEMO_COMPANY", ""))
 
 	formats.Trace("sending request...")
 	resp, err := client.Do(post)

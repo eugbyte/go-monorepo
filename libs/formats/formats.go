@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strings"
 
+	b64 "encoding/base64"
+
 	colors "github.com/TwinProduction/go-color"
 )
 
@@ -53,4 +55,8 @@ func ValidateAzureParamString(secretName string) bool {
 		log.Fatalf("Could not compile regex expression: %v", err)
 	}
 	return re.MatchString(secretName)
+}
+
+func EncodeToBase64(str string) string {
+	return b64.StdEncoding.EncodeToString([]byte(str))
 }

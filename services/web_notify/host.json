@@ -6,6 +6,10 @@
         "isEnabled": true,
         "excludedTypes": "Request"
       }
+    },
+    "logLevel": {
+      "default": "Information",
+      "Host": "Warning"
     }
   },
   "extensionBundle": {
@@ -21,7 +25,7 @@
   "extensions": {
     "queues": {
       "maxDequeueCount": 2,
-      "messageEncoding": "none"
+      "messageEncoding": "base64"
     }
   }
 }
