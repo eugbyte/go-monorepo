@@ -31,7 +31,7 @@ jobs:
       - name: Deploy
         run:  echo "Mock Deploy..."
 
-  e2e:
+  e2e-test:
     runs-on: ubuntu-latest
     needs: [publish]
     defaults:
