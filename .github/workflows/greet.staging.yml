@@ -48,7 +48,7 @@ jobs:
         run: ls
       - name: Install curl, jq, make, zip, ping, net-tools
         run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
-      - name: Publish to azure staging
+      - name: Test api/greet
         run: |
           curl --location --request GET 'https://func-greet-stg-ea.azurewebsites.net/api/hello' \
-          --header 'x-functions-key: ${{ secrets.GREET_API_KEY }}'
+          --header 'x-functions-key: ${{ secrets.GREET_API_KEY_STAGING }}'
