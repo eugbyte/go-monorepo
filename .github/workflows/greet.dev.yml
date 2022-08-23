@@ -1,0 +1,44 @@
+name: greet-dev
+concurrency:
+  group: greet
+  cancel-in-progress: true
+
+on:
+  push:
+    paths:
+      - ".github/**"
+      - "libs/**"
+      - "!libs/**/go.sum"
+      - "services/greet/**"
+      - "!services/greet/go.sum"
+      - "services/go.work"
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout monorepo
+        uses: actions/checkout@v3
+      - name: Print dir
+        run: ls
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.18'
+      - name: Download Go modules
+        run: |
+          go mod download
+          make download-libs
+          make workspace=services/greet download
+          sudo make install-lint
+      - name: Run unit tests
+        run: |
+          make test-libs
+          make workspace=services/greet test
+      - name: Run lint
+        run: |
+          make lint-libs
+          make workspace=services/greet lint
