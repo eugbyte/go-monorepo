@@ -2,6 +2,10 @@ name: greet-staging
 
 on: 
   workflow_dispatch:
+    inputs:
+      ref:
+        description: reference to a commit to deploy
+        required: true
   
 jobs:
   publish:
