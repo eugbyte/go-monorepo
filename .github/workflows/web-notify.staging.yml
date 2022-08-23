@@ -48,7 +48,7 @@ jobs:
         run: ls
       - name: Install curl, jq, make, zip, ping, net-tools
         run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
-      - name: Test api/subscribe
+      - name: Test subscribe handler
         run: |
           curl --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/subscriptions' \
           --header 'x-functions-key: ${{ WEB_NOTIFY_SUBSCRIBE_HANDLER_API_KEY_STAGING }}' \
@@ -63,7 +63,7 @@ jobs:
                   "auth": "wquys90eGkBzfmTSyMT-PQ"
               }
           }'
-      - name: Test api/notifcations
+      - name: Test queue producer handler
         run: |
           curl --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/notifications' \
           --header 'x-functions-key: ${{ WEB_NOTIFY_PRODUCER_HANDLER_API_KEY_STAGING }}' \
