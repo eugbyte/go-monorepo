@@ -40,7 +40,7 @@ func handler(
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	log.Println("info:", info)
+	log.Println("info:", formats.Stringify(info))
 
 	id := fmt.Sprintf("%s__%s", info.Company, info.UserID)
 	var subscriber models.Subscription
