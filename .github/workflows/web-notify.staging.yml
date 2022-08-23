@@ -1,0 +1,87 @@
+name: web_notify-staging
+
+concurrency:
+  group: web_notify-staging
+  cancel-in-progress: true
+
+on: 
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: reference to a commit to deploy
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout monorepo
+        uses: actions/checkout@v3
+      - name: Print dir
+        run: ls
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.18'
+      - name: Download Go modules
+        run: |
+          go mod download
+          make download-libs
+          make workspace=services/web_notify download
+      - name: Install azure func
+        run: |
+          wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+          sudo dpkg -i packages-microsoft-prod.deb
+          sudo apt-get install azure-functions-core-tools-4
+      - name: Login to azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Publish to azure staging
+        run: make workspace=services/web_notify deploy
+
+  e2e-test:
+    runs-on: ubuntu-latest
+    needs: [publish]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout monorepo
+        uses: actions/checkout@v3
+      - name: Print dir
+        run: ls
+      - name: Install curl, jq, make, zip, ping, net-tools
+        run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
+      - name: Test subscribe handler
+        run: |
+          curl --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/subscriptions' \
+          --header 'x-functions-key: ${{ secrets.WEB_NOTIFY_SUBSCRIBE_HANDLER_API_KEY_STAGING }}' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+              "company": "fakepanda",
+              "userID": "abc@m.com",
+              "endpoint": "https://fcm.googleapis.com/fcm/send/ePpws-p5uBI:APA91bFm_zyeVqFGxiw5kWJJR9KLy9eFRRUKbc8_yebfBbsNBcX3iJmAUgl22uu_zpe2Hv0RSHpEThblr_Bz5AbbHQ7WXuUO2LkxmqJjTc6N1GURuZEOjtt2Y6_pr0org506K1ZMk6lK",
+              "expirationTime": null,
+              "keys": {
+                  "p256dh": "BKOynOSa_eUI1ZGhmWxsaA34lbfqtxGTXiZTFa24SpDjOQBHwwCfxLBuWRdO_92E5A3ia8VA3Q5774ECPK6-Khg",
+                  "auth": "wquys90eGkBzfmTSyMT-PQ"
+              }
+          }'
+      - name: Test queue producer handler
+        run: |
+          curl --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/notifications' \
+          --header 'x-functions-key: ${{ secrets.WEB_NOTIFY_PRODUCER_HANDLER_API_KEY_STAGING }}' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+              "userID": "abc@m.com",
+              "company": "fakepanda",
+              "notification": {
+                  "title": "My title",
+                  "body": "My message",
+                  "icon": "My icon"
+              }
+          }'

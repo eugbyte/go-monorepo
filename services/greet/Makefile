@@ -16,7 +16,6 @@ func-start:
 clean:
 	rm -rf ./bin ./vendor go.sum
 deploy:
-	rm -f main.exe
 	export GO111MODULE=on
 	chmod +x main.go
 	GOOS=linux GOARCH=amd64 go build main.go
