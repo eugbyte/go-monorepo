@@ -6,6 +6,13 @@
         "isEnabled": true,
         "excludedTypes": "Request"
       }
+    },
+    "logLevel": {
+      "default": "Warning",
+      "Function.subscribe_handler": "Information",
+      "Function.producer_handler": "Information",
+      "Function.sample_push_handler": "Information",
+      "Host": "Error"
     }
   },
   "extensionBundle": {

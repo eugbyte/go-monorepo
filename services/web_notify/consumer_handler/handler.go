@@ -3,6 +3,7 @@ package consumerhandler
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	mongolib "github.com/eugbyte/monorepo/libs/db/mongo_lib"
@@ -22,7 +23,7 @@ func handler(
 	rw http.ResponseWriter,
 	req *http.Request) {
 
-	formats.Trace("queue triggered")
+	log.Println("in handler.go")
 
 	var requestBody qmodels.RequestBody
 	err := json.NewDecoder(req.Body).Decode(&requestBody)
@@ -31,13 +32,15 @@ func handler(
 		return
 	}
 
+	log.Println("requestBody", formats.Stringify(requestBody))
+
 	var info models.MessageInfo
 	info, err = decodeRawMassageToInfo(requestBody.Data["req"])
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	formats.Trace("info:", info)
+	log.Println("info:", info)
 
 	id := fmt.Sprintf("%s__%s", info.Company, info.UserID)
 	var subscriber models.Subscription
@@ -47,10 +50,10 @@ func handler(
 		return
 	}
 
-	formats.Trace("sending notification...")
+	log.Println("sending notification...")
 	err = webpushService.SendNotification(info.Notification, subscriber.Endpoint, subscriber.Keys.Auth, subscriber.Keys.P256dh, subscriber.ExpirationTime)
 	if err != nil {
-		formats.Trace(err.Error())
+		log.Println(err.Error())
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -70,4 +73,5 @@ func handler(
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	log.Println("Message successfully dequeued...")
 }
