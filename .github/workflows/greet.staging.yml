@@ -28,6 +28,8 @@ jobs:
         run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
       - name: Install docker-compose
         run: make install-docker-compose
+      - name: exp
+        run: echo "Hello"
       - name: Publish to azure staging
         run: |
           curl --location --request GET 'https://func-greet-stg-ea.azurewebsites.net/api/hello' \
