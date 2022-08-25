@@ -4,6 +4,9 @@ API to trigger web push notifications
 
 Monorepo in go, using `go.work` workspaces
 
+## Demo
+[Try out the demo here](https://nice-ground-07440cd00.1.azurestaticapps.net/)
+
 ## Design
 https://drive.google.com/file/d/1iphcdtrMoDIungTmJRdoEseqfzLfNg_P/view?usp=sharing
 
