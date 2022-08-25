@@ -9,7 +9,7 @@ A library is shared code that you compile into your application. A service is a 
 ## List of services
 | Service                                          | Description                                                                                                              |
 | :----------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| [greet](services/greet/README.md)                | Sanity check api function to make sure go monorepo config, Github Action config and Azure config are working as expected |
+| [greet](services/greet/README.md)                | Sanity check API to make sure go monorepo config, Github Action config and Azure config are working as expected |
 | [web-notify-SaaS](services/web_notify/README.md) | Web Push SaaS allows you to easily send web push notifications to users with just a single API call.                     |
 
 ## Development guide
