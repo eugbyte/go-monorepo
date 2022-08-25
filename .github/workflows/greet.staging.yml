@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: reference to a commit to deploy
+        description: commit hash
         required: true
   push:
     branches:
