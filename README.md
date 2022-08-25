@@ -7,10 +7,10 @@ The crucial feature of go 1.18 that enables monorepo is the use of [go workspace
 A library is shared code that you compile into your application. A service is a shared capability that you access from your application (e.g. APIs) (https://blogs.gartner.com/eric-knipp/2013/03/20/libraries-vs-services/)
 
 ## List of services
-| Service                                          | Description                                                                                                              |
-| :----------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| [greet](services/greet/README.md)                | Sanity check API to make sure go monorepo config, Github Action config and Azure config are working as expected |
-| [web-notify-SaaS](services/web_notify/README.md) | Web Push SaaS allows you to easily send web push notifications to users with just a single API call.                     |
+| Service                                          | Description                                                                                                         |
+| :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| [greet](services/greet/README.md)                | Sanity check API to make sure golang monorepo config, Github Action config and Azure config are working as expected |
+| [web-notify-SaaS](services/web_notify/README.md) | Web Push SaaS allows you to easily send web push notifications to users with just a single API call.                |
 
 ## Development guide
 - When running go mod tidy, packages specified in the go.work will not be ignored. So, do `go mod tidy -e` instead. The `-e` flag causes go mod tidy to attempt to proceed despite errors encountered while loading packages.
