@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: commit hash
+        description: commit hash or branch name 
         required: true
   push:
     branches:
