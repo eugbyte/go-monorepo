@@ -10,6 +10,9 @@ on:
       ref:
         description: reference to a commit to deploy
         required: true
+  push:
+    branches:
+      - master
   
 jobs:
   publish:
