@@ -17,15 +17,21 @@ var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req
 	// Get the VAPID private key from azure key vault
 	log.Println("queue trigger detected")
 
-	vaultService := vault.New("https://kv-notify-secrets-stg-ea.vault.azure.net/")
-	var fetchVal config.FetchVal = vaultService.GetSecret
-	secrets, err := config.FetchAll(fetchVal, "vapid-private-key", "vapid-public-key", "vapid-email")
-	if err != nil {
-		http.Error(rw, err.Error(), http.StatusUnauthorized)
+	privateKey := config.New().VAPID_PRIVATE_KEY
+	publicKey := config.New().VAPID_PUBLIC_KEY
+	email := config.New().VAPID_EMAIL
+
+	if config.Stage() == config.STAGING || config.Stage() == config.PROD {
+		vaultService := vault.New(config.New().VAULT_URI)
+		var fetchVal config.FetchVal = vaultService.GetSecret
+		secrets, err := config.FetchAll(fetchVal, "vapid-private-key", "vapid-public-key", "vapid-email")
+		if err != nil {
+			http.Error(rw, err.Error(), http.StatusUnauthorized)
+		}
+		privateKey = secrets[0]
+		publicKey = secrets[1]
+		email = secrets[2]
 	}
-	privateKey := secrets[0]
-	publicKey := secrets[1]
-	email := secrets[2]
 
 	webpushService := webpush.New(
 		privateKey,

@@ -50,8 +50,8 @@ func New() vars {
 			VAULT_URI:                  EnvOrDefault("VAULT_URI", ""),
 			NOTIFY_BASE_URL:            EnvOrDefault("NOTIFY_BASE_URL", ""),
 			VAPID_PRIVATE_KEY:          EnvOrDefault("VAPID_PRIVATE_KEY", ""),
-			VAPID_PUBLIC_KEY:           EnvOrDefault("VAPID_PUBLIC_KEY", "BPlL5OTZwtW-0-4pQXmobTgX6URszc9-UKoTTvpvInhUlPHorlDM8y04J-rrErlQXMVH7_Us983mNmmwsb-z53U"),
-			VAPID_EMAIL:                EnvOrDefault("VAPID_EMAIL", "eugenetham1994@gmail.com"),
+			VAPID_PUBLIC_KEY:           EnvOrDefault("VAPID_PUBLIC_KEY", ""),
+			VAPID_EMAIL:                EnvOrDefault("VAPID_EMAIL", ""),
 		},
 	}
 	env_vars[PROD] = env_vars[STAGING]
