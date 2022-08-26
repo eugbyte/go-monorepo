@@ -60,7 +60,7 @@ jobs:
       - name: Install curl, jq, make, zip, ping, net-tools
         run:  |
           sudo apt-get update
-          sudo apt-get -qq -y install curl='7.76.0' jq build-essential zip iputils-ping net-tools
+          sudo apt-get -qq -y install curl='7.84.0' jq build-essential zip iputils-ping net-tools
       - name: Test subscribe handler
         run: |
           curl --fail-with-body --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/subscriptions' \
