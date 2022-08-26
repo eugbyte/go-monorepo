@@ -42,7 +42,7 @@ jobs:
       - name: Login to azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.WEB_NOTIFY_AZURE_CREDENTIALS }}
       - name: Publish to azure staging
         run: make workspace=services/web_notify deploy
 

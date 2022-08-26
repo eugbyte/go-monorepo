@@ -25,6 +25,10 @@ watch:
 	air --build.cmd "cd ${workspace} && make build" --build.bin "cd ${workspace} && ${exec}" --build.exclude_dir ".vscode,tmp"
 deploy:
 	cd ${workspace} && make deploy
+create-principal:
+	MSYS_NO_PATHCONV=1 az ad sp create-for-rbac --name "sp-${principal-name}-stg-ea" --role contributor \
+	--scopes /subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg \
+	--sdk-auth
 
 #----LIBS----
 test-libs:
