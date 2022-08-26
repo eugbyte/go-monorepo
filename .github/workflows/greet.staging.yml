@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: commit hash or branch name 
+        description: commit hash or branch name to default to latest commit
         required: true
   push:
     branches:

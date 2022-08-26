@@ -19,9 +19,10 @@ A library is shared code that you compile into your application. A service is a 
 - Run the services with `make workspace=<workspace> <cmd>`
 ```
 // 1. install Make
-winget install -e --id GnuWin32.Make    // window
+winget install -e --id GnuWin32.Make    // windows
 sudo apt-get install build-essential    // linux
 
 // 2. Run the command specific to the workspace
 make workspace=services/web_notify test
 ```
+- If generating new azure service principals using git bash cli, remember to set [MSYS_NO_PATHCONV=1](https://github.com/Azure/azure-cli/issues/16317#issuecomment-768755622)
