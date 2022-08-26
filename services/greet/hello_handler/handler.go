@@ -15,7 +15,9 @@ func handler(rw http.ResponseWriter, req *http.Request) {
 	}
 
 	vaultService := vault.New("https://kv-notify-secrets-stg-ea.vault.azure.net/")
-	privateKey, err := vaultService.GetSecret("vapid-private-key")
+	var fetchVal config.FetchVal = vaultService.GetSecret
+	secrets, err := config.FetchAll(fetchVal, "vapid-private-key")
+	var privateKey string = secrets[0]
 
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
