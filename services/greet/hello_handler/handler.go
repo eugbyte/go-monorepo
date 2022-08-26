@@ -16,8 +16,10 @@ func handler(rw http.ResponseWriter, req *http.Request) {
 
 	vaultService := vault.New("https://kv-notify-secrets-stg-ea.vault.azure.net/")
 	var fetchVal config.FetchVal = vaultService.GetSecret
-	secrets, err := config.FetchAll(fetchVal, "vapid-private-key")
-	var privateKey string = secrets[0]
+	secrets, err := config.FetchAll(fetchVal, "vapid-private-key", "vapid-public-key", "vapid-email")
+	privateKey := secrets[0]
+	publicKey := secrets[1]
+	email := secrets[2]
 
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
@@ -29,8 +31,10 @@ func handler(rw http.ResponseWriter, req *http.Request) {
 	}
 
 	responseBody := map[string]string{
-		"stage":   config.Stage().String(),
-		"message": "Hello World",
+		"stage":     config.Stage().String(),
+		"message":   "Hello World",
+		"publicKey": publicKey,
+		"email":     email,
 	}
 
 	rw.Header().Set("Content-Type", "application/json; charset=UTF-8")
