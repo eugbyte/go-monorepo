@@ -10,7 +10,7 @@ A library is shared code that you compile into your application. A service is a 
 | Service                                          | Description                                                                                                         |
 | :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
 | [greet](services/greet/README.md)                | Sanity check API to make sure golang monorepo config, Github Action config and Azure config are working as expected |
-| [web-notify-SaaS](services/web_notify/README.md) | Web Push SaaS allows you to easily send web push notifications to users with just a single API call.                |
+| [web-notify-SaaS](services/web_notify/README.md) | Web Notification SaaS allows you to easily push web notifications to users with just a single API call.             |
 
 ## Development guide
 - When running go mod tidy, packages specified in the go.work will not be ignored. So, do `go mod tidy -e` instead. The `-e` flag causes go mod tidy to attempt to proceed despite errors encountered while loading packages.
