@@ -39,8 +39,8 @@ func New() vars {
 			VAULT_URI:                  "https://kv-notify-secrets-stg-ea.vault.azure.net",
 			NOTIFY_BASE_URL:            "http://localhost:7071/api",
 			VAPID_PRIVATE_KEY:          EnvOrDefault("VAPID_PRIVATE_KEY", ""),
-			VAPID_PUBLIC_KEY:           EnvOrDefault("VAPID_PUBLIC_KEY", "BPlL5OTZwtW-0-4pQXmobTgX6URszc9-UKoTTvpvInhUlPHorlDM8y04J-rrErlQXMVH7_Us983mNmmwsb-z53U"),
-			VAPID_EMAIL:                EnvOrDefault("VAPID_EMAIL", "eugenetham1994@gmail.com"),
+			VAPID_PUBLIC_KEY:           EnvOrDefault("VAPID_PUBLIC_KEY", ""),
+			VAPID_EMAIL:                EnvOrDefault("VAPID_EMAIL", ""),
 		},
 		STAGING: {
 			LOCAL_PORT:                 EnvOrDefault("FUNCTIONS_CUSTOMHANDLER_PORT", ""),
