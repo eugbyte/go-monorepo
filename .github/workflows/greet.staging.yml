@@ -60,7 +60,7 @@ jobs:
       - name: Install curl, jq, make, zip, ping, net-tools
         run:  |
           sudo apt-get update    
-          sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
+          sudo apt-get -qq -y install curl='7.76.0' jq build-essential zip iputils-ping net-tools
       - name: Test hello handler
         run: |
           curl --fail-with-body --location --request GET 'https://func-greet-stg-ea.azurewebsites.net/api/hello' \
