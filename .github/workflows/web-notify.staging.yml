@@ -61,7 +61,7 @@ jobs:
         run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
       - name: Test subscribe handler
         run: |
-          curl --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/subscriptions' \
+          curl --fail-with-body --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/subscriptions' \
           --header 'x-functions-key: ${{ secrets.WEB_NOTIFY_SUBSCRIBE_HANDLER_API_KEY_STAGING }}' \
           --header 'Content-Type: application/json' \
           --data-raw '{
@@ -76,7 +76,7 @@ jobs:
           }'
       - name: Test queue producer handler
         run: |
-          curl --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/notifications' \
+          curl --fail-with-body --location --request POST 'https://func-webnotify-stg-ea.azurewebsites.net/api/notifications' \
           --header 'x-functions-key: ${{ secrets.WEB_NOTIFY_PRODUCER_HANDLER_API_KEY_STAGING }}' \
           --header 'Content-Type: application/json' \
           --data-raw '{

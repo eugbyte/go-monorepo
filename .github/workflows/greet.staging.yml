@@ -61,5 +61,5 @@ jobs:
         run:  sudo apt-get -qq -y install curl jq build-essential zip iputils-ping net-tools
       - name: Test hello handler
         run: |
-          curl --location --request GET 'https://func-greet-stg-ea.azurewebsites.net/api/hello' \
+          curl --fail-with-body --location --request GET 'https://func-greet-stg-ea.azurewebsites.net/api/hello' \
           --header 'x-functions-key: ${{ secrets.GREET_HELLO_HANDLER_API_KEY_STAGING }}'
