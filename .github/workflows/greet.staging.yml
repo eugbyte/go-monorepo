@@ -42,7 +42,7 @@ jobs:
       - name: Login to azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.GREET_AZURE_CREDENTIALS }}
       - name: Publish to azure staging
         run:  make workspace=services/greet deploy
 
