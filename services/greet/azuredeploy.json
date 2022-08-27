@@ -18,6 +18,10 @@
          "sites_func_greet_name": {
             "defaultValue": "func-greet",
             "type": "String"
+        },
+        "serverfarms_ASP_rgwebnotifystg_b16d_externalid": {
+            "defaultValue": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg/providers/Microsoft.Web/serverfarms/ASP-rgwebnotifystg-b16d",
+            "type": "String"
         }
     },
     "variables": {
@@ -44,7 +48,7 @@
                         "hostType": "Repository"
                     }
                 ],
-                "serverFarmId": "[variables('sites_func_greet_name')]",
+                "serverFarmId": "[parameters('serverfarms_ASP_rgwebnotifystg_b16d_externalid')]",
                 "reserved": true,
                 "isXenon": false,
                 "hyperV": false,
