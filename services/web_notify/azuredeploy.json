@@ -19,8 +19,8 @@
             "defaultValue": "kv-notify-secrets",
             "type": "string"
         },        
-        "databaseAccounts_cosmos_web_notify_name": {
-            "defaultValue": "cosmos-web-notify",
+        "databaseAccounts_cosmos_webnotify_name": {
+            "defaultValue": "cosmos-webnotify",
             "type": "String"
         },
         "storageAccounts_stwebnotify_name": {
@@ -42,7 +42,7 @@
     },
     "variables": {
         "vaults_kv_notify_secrets_name": "[concat(parameters('vaults_kv_notify_secrets_name'), '-', parameters('stage'), '-', parameters('region'))]",
-        "databaseAccounts_cosmos_web_notify_name": "[concat(parameters('databaseAccounts_cosmos_web_notify_name'), '-', parameters('stage'))]",
+        "databaseAccounts_cosmos_webnotify_name": "[concat(parameters('databaseAccounts_cosmos_webnotify_name'), '-', parameters('stage'), '-', parameters('region'))]",
         "storageAccounts_stwebnotify_name": "[concat(parameters('storageAccounts_stwebnotify_name'), parameters('stage'), parameters('region'))]",
         "staticSites_stapp_webnotify_ui_name": "[concat(parameters('staticSites_stapp_webnotify_ui_name'), '-', parameters('stage'), '-', parameters('region'))]",
         "sites_func_webnotify_name": "[concat(parameters('sites_func_webnotify_name'), '-', parameters('stage'), '-', parameters('region'))]"
@@ -409,6 +409,114 @@
             "properties": {
                 "siteName": "func-webnotify-stg-ea",
                 "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2022-02-15-preview",
+            "name": "[variables('databaseAccounts_cosmos_webnotify_name')]",
+            "location": "East Asia",
+            "tags": {
+                "defaultExperience": "Azure Cosmos DB for MongoDB API",
+                "hidden-cosmos-mmspecial": ""
+            },
+            "kind": "MongoDB",
+            "identity": {
+                "type": "None"
+            },
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "disableKeyBasedMetadataWriteAccess": false,
+                "enableFreeTier": false,
+                "enableAnalyticalStorage": false,
+                "analyticalStorageConfiguration": {
+                    "schemaType": "FullFidelity"
+                },
+                "databaseAccountOfferType": "Standard",
+                "defaultIdentity": "FirstPartyIdentity",
+                "networkAclBypass": "None",
+                "disableLocalAuth": false,
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
+                },
+                "apiProperties": {
+                    "serverVersion": "4.0"
+                },
+                "locations": [
+                    {
+                        "locationName": "East Asia",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "cors": [],
+                "capabilities": [
+                    {
+                        "name": "EnableMongo"
+                    },
+                    {
+                        "name": "DisableRateLimitingResponses"
+                    },
+                    {
+                        "name": "EnableServerless"
+                    }
+                ],
+                "ipRules": [],
+                "backupPolicy": {
+                    "type": "Periodic",
+                    "periodicModeProperties": {
+                        "backupIntervalInMinutes": 240,
+                        "backupRetentionIntervalInHours": 8,
+                        "backupStorageRedundancy": "Geo"
+                    }
+                },
+                "networkAclBypassResourceIds": [],
+                "diagnosticLogSettings": {
+                    "enableFullTextQuery": "None"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases",
+            "apiVersion": "2022-02-15-preview",
+            "name": "[concat(variables('databaseAccounts_cosmos_webnotify_name'), '/subscriberDB')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccounts_cosmos_webnotify_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "subscriberDB"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections",
+            "apiVersion": "2022-02-15-preview",
+            "name": "[concat(variables('databaseAccounts_cosmos_webnotify_name'), '/subscriberDB/subscribers')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/mongodbDatabases', variables('databaseAccounts_cosmos_webnotify_name'), 'subscriberDB')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccounts_cosmos_webnotify_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "subscribers",
+                    "indexes": [
+                        {
+                            "key": {
+                                "keys": [
+                                    "_id"
+                                ]
+                            }
+                        }
+                    ]
+                }
             }
         }
     ]
