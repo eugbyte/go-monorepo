@@ -37,8 +37,8 @@ Basic cmd structure is `make workspace=<dir> <cmd>`
 - To have your own customised routes, `enableForwardingHttpRequest` must to be set to true. Otherwise, the route to configure for the custom mux http server must be the name of the function. Azure func by default, will call the custom server via http with the name of the function as the route.
 - For non-http triggers, the route to configure for the mux http server must be the name of the function
 - When calling the apis from the browser, need to watch out for [CORS errors, and also handle the pre-flight requests](https://flaviocopes.com/golang-enable-cors/).
-- To starts the COSMOS DB emulator, run `make start-cosmosdb-mongo-emulator`. Stop the emulator and kill the ports by running `stop-cosmosdb-mongo-emulator`.
-- Alternatively, [refer here to start the emulator via the GUI](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21#azure-cosmos-dbs-api-for-mongodb). Remember to use the `EnableMongoDbEndpoint` flag. To check that the port is running, do `netstat -nat | grep '10255' | grep LISTEN`.
+- To starts the COSMOS DB emulator, run `make start-cosmosdb-mongo-emulator`. Stop the emulator and kill the ports by running `stop-cosmosdb-mongo-emulator`. Seems to be [buggy](https://github.com/MicrosoftDocs/azure-docs/issues/95755#issuecomment-1229125053)
+- Alternatively, [refer here to start the emulator via the executable](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21#azure-cosmos-dbs-api-for-mongodb). Remember to use the `EnableMongoDbEndpoint` flag. To check that the port is running, do `netstat -nat | grep '10255' | grep LISTEN`.
 ```
 ./Microsoft.Azure.Cosmos.Emulator.exe /EnableMongoDbEndpoint
 netstat -nat | grep '10255' | grep LISTEN
