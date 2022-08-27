@@ -72,11 +72,11 @@ install-watch:
 
 
 #----CONTAINERS----
-# export ipaddr := "172.29.240.50" 
-# --env AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=${ipaddr} \
-
 start-azurite:
 	azurite --silent --location c:\azurite --debug c:\azurite\debug.log
+
+# export ipaddr := "172.29.240.50" 
+# --env AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=${ipaddr}
 start-cosmosdb-mongo-emulator:
 	echo ${ipaddr}
 	docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
