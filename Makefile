@@ -70,6 +70,29 @@ download-libs:
 install-watch:
 	go install github.com/cosmtrek/air@v1.40.4
 
+export ipaddr := "172.29.240.50" 
+
 #----CONTAINERS----
+#	-env AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=${ipaddr} \
+
 start-azurite:
 	azurite --silent --location c:\azurite --debug c:\azurite\debug.log
+start-cosmosdb-mongo-emulator:
+	echo ${ipaddr}
+	docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+	docker run \
+    --publish 8081:8081 \
+    --publish 10251-10255:10251-10255 \
+    --name=cosmosdb-mongo-emulator \
+    --env AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10 \
+    --env AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true \
+    --env AZURE_COSMOS_EMULATOR_ENABLE_MONGODB_ENDPOINT=4.0 \
+	--detach \
+    mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:mongodb
+	docker ps | grep 'azure-cosmos-emulator'
+	echo "displaying emulator ports:"
+	netstat -nat | grep '1025'
+	echo "Go to https://localhost:8081/_explorer/index.html to view the GUI" 
+stop-cosmosdb-mongo-emulator:
+	docker kill cosmosdb-mongo-emulator
+	docker rm cosmosdb-mongo-emulator
