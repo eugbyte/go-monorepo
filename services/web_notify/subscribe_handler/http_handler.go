@@ -12,7 +12,7 @@ import (
 // Dependency injection
 
 var httpHandler http.Handler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-	formats.Trace("db:", config.New().MONGO_DB_CONNECTION_STRING)
+	formats.Trace("in http subscribe handler")
 	var mongoService mongolib.MonogoServicer = mongolib.New("subscriberDB", config.New().MONGO_DB_CONNECTION_STRING)
 	handler(mongoService, rw, req)
 })
