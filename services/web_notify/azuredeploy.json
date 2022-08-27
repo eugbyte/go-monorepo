@@ -19,10 +19,6 @@
             "defaultValue": "kv-notify-secrets",
             "type": "string"
         },        
-        "configurationStores_appcs_webnotify_name": {
-            "defaultValue": "appcs-webnotify",
-            "type": "string"
-        },
         "databaseAccounts_cosmos_web_notify_name": {
             "defaultValue": "cosmos-web-notify",
             "type": "String"
@@ -30,13 +26,390 @@
         "storageAccounts_stwebnotify_name": {
             "defaultValue": "stwebnotify",
             "type": "String"
+        },
+        "staticSites_stapp_webnotify_ui_name": {
+            "defaultValue": "stapp-webnotify-ui",
+            "type": "String"
+        },
+        "sites_func_webnotify_name": {
+            "defaultValue": "func-webnotify",
+            "type": "String"
+        },
+        "serverfarms_ASP_rgwebnotifystg_b270_externalid": {
+            "defaultValue": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg/providers/Microsoft.Web/serverfarms/ASP-rgwebnotifystg-b270",
+            "type": "String"
         }
     },
     "variables": {
-        "vaults_kv_notify_secrets_name": "[concat(parameters('vaults_kv_notify_secrets_name'), '-', parameters('stage'), '-', parameters('region') )]",
-        "configurationStores_appcs_webnotify_name": "[concat(parameters('configurationStores_appcs_webnotify_name'), '-', parameters('stage'))]",
+        "vaults_kv_notify_secrets_name": "[concat(parameters('vaults_kv_notify_secrets_name'), '-', parameters('stage'), '-', parameters('region'))]",
         "databaseAccounts_cosmos_web_notify_name": "[concat(parameters('databaseAccounts_cosmos_web_notify_name'), '-', parameters('stage'))]",
-        "storageAccounts_stwebnotify_name": "[concat(parameters('storageAccounts_stwebnotify_name'), parameters('stage'))]"
+        "storageAccounts_stwebnotify_name": "[concat(parameters('storageAccounts_stwebnotify_name'), parameters('stage'), parameters('region'))]",
+        "staticSites_stapp_webnotify_ui_name": "[concat(parameters('staticSites_stapp_webnotify_ui_name'), '-', parameters('stage'), '-', parameters('region'))]",
+        "sites_func_webnotify_name": "[concat(parameters('sites_func_webnotify_name'), '-', parameters('stage'), '-', parameters('region'))]"
     },
-    "resources": []
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-09-01",
+            "name": "[variables('storageAccounts_stwebnotify_name')]",
+            "location": "eastasia",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "properties": {
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(variables('storageAccounts_stwebnotify_name'), '/default/stq-webnotify')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/queueServices', variables('storageAccounts_stwebnotify_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_stwebnotify_name'))]"
+            ],
+            "properties": {
+                "metadata": {}
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(variables('storageAccounts_stwebnotify_name'), '/default/stq-webnotify-poison')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/queueServices', variables('storageAccounts_stwebnotify_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_stwebnotify_name'))]"
+            ],
+            "properties": {
+                "metadata": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/staticSites",
+            "apiVersion": "2021-03-01",
+            "name": "[variables('staticSites_stapp_webnotify_ui_name')]",
+            "location": "East Asia",
+            "sku": {
+                "name": "Free",
+                "tier": "Free"
+            },
+            "properties": {
+                "repositoryUrl": "https://github.com/eugbyte/ts-monorepo",
+                "branch": "master",
+                "stagingEnvironmentPolicy": "Enabled",
+                "allowConfigFileUpdates": true,
+                "provider": "GitHub",
+                "enterpriseGradeCdnStatus": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2021-11-01-preview",
+            "name": "[variables('vaults_kv_notify_secrets_name')]",
+            "location": "eastasia",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "Standard"
+                },
+                "tenantId": "887d6559-f1fa-4979-b575-9da55b62d41d",
+                "accessPolicies": [
+                    {
+                        "tenantId": "887d6559-f1fa-4979-b575-9da55b62d41d",
+                        "objectId": "40953081-46a3-4dd5-816e-afcc3d4917ba",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Delete",
+                                "GetRotationPolicy",
+                                "SetRotationPolicy",
+                                "Rotate"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete"
+                            ],
+                            "certificates": []
+                        }
+                    },
+                    {
+                        "tenantId": "887d6559-f1fa-4979-b575-9da55b62d41d",
+                        "objectId": "fc2a12b6-c2fa-4021-8778-93eb486c07a6",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "GetRotationPolicy",
+                                "SetRotationPolicy",
+                                "Rotate"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }
+                ],
+                "enabledForDeployment": true,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": true,
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "enableRbacAuthorization": false,
+                "vaultUri": "[concat('https://', variables('vaults_kv_notify_secrets_name'), '.vault.azure.net/')]",
+                "provisioningState": "Succeeded",
+                "publicNetworkAccess": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-03-01",
+            "name": "[variables('sites_func_webnotify_name')]",
+            "location": "East Asia",
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg/providers/microsoft.insights/components/appi-webnotify-stg-ea",
+                "hidden-link: /app-insights-instrumentation-key": "a1496162-1ce8-4f5a-a666-1712d3fe0957",
+                "hidden-link: /app-insights-conn-string": "InstrumentationKey=a1496162-1ce8-4f5a-a666-1712d3fe0957;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/"
+            },
+            "kind": "functionapp,linux",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(variables('sites_func_webnotify_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(variables('sites_func_webnotify_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[parameters('serverfarms_ASP_rgwebnotifystg_b270_externalid')]",
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "vnetRouteAllEnabled": false,
+                "vnetImagePullEnabled": false,
+                "vnetContentShareEnabled": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 200,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "06A5A09F2ADC94B697E6C00EFFBE3E6442FC4F635E46A81D8959188CDEF1D030",
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(variables('sites_func_webnotify_name'), '/ftp')]",
+            "location": "East Asia",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('sites_func_webnotify_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg/providers/microsoft.insights/components/appi-webnotify-stg-ea",
+                "hidden-link: /app-insights-instrumentation-key": "a1496162-1ce8-4f5a-a666-1712d3fe0957",
+                "hidden-link: /app-insights-conn-string": "InstrumentationKey=a1496162-1ce8-4f5a-a666-1712d3fe0957;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(variables('sites_func_webnotify_name'), '/scm')]",
+            "location": "East Asia",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('sites_func_webnotify_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg/providers/microsoft.insights/components/appi-webnotify-stg-ea",
+                "hidden-link: /app-insights-instrumentation-key": "a1496162-1ce8-4f5a-a666-1712d3fe0957",
+                "hidden-link: /app-insights-conn-string": "InstrumentationKey=a1496162-1ce8-4f5a-a666-1712d3fe0957;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(variables('sites_func_webnotify_name'), '/web')]",
+            "location": "East Asia",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('sites_func_webnotify_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg/providers/microsoft.insights/components/appi-webnotify-stg-ea",
+                "hidden-link: /app-insights-instrumentation-key": "a1496162-1ce8-4f5a-a666-1712d3fe0957",
+                "hidden-link: /app-insights-conn-string": "InstrumentationKey=a1496162-1ce8-4f5a-a666-1712d3fe0957;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/"
+            },
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$func-webnotify-stg-ea",
+                "scmType": "None",
+                "use32BitWorkerProcess": false,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "cors": {
+                    "allowedOrigins": [
+                        "https://portal.azure.com",
+                        "http://localhost:3000",
+                        "https://nice-ground-07440cd00.1.azurestaticapps.net"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.2",
+                "ftpsState": "FtpsOnly",
+                "preWarmedInstanceCount": 0,
+                "functionAppScaleLimit": 200,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(variables('sites_func_webnotify_name'), '/', variables('sites_func_webnotify_name'), '.azurewebsites.net')]",
+            "location": "East Asia",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('sites_func_webnotify_name'))]"
+            ],
+            "properties": {
+                "siteName": "func-webnotify-stg-ea",
+                "hostNameType": "Verified"
+            }
+        }
+    ]
   }
