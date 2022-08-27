@@ -43,6 +43,12 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.GREET_AZURE_CREDENTIALS }}
+      - name: Set up azure resources
+        run: |
+          az deployment group create \
+          --name webnotify-deploy  \
+          --resource-group rg-webnotify-stg  \
+          --template-file services/greet/azuredeploy.json
       - name: Publish to azure staging
         run:  make workspace=services/greet deploy
 
