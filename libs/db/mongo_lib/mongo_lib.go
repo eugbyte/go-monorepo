@@ -41,12 +41,12 @@ func New(dbName string, connectionString string) MonogoServicer {
 	}
 	err = client.Connect(ctx)
 	if err != nil {
-		log.Fatalf("unable to initialize connection %v", err)
+		log.Fatalf("unable to initialize connection. %v", err)
 	}
 
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatalf("unable to connect %v", err)
+		log.Fatalf("unable to connect. %v", err)
 	}
 	ms.Database = client.Database(dbName)
 	formats.Trace("successfully created DB")
