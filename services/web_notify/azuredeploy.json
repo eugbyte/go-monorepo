@@ -38,6 +38,15 @@
         "serverfarms_ASP_rgwebnotifystg_b270_externalid": {
             "defaultValue": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg/providers/Microsoft.Web/serverfarms/ASP-rgwebnotifystg-b270",
             "type": "String"
+        },
+        
+        "components_appi_webnotify_name": {
+            "defaultValue": "appi-webnotify",
+            "type": "String"
+        },
+        "appi_workspaces_DefaultWorkspace": {
+            "defaultValue": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/DefaultResourceGroup-EA/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-e53c986e-fa42-4065-bcef-9a5ae182d65a-EA",
+            "type": "String"
         }
     },
     "variables": {
@@ -45,7 +54,8 @@
         "databaseAccounts_cosmos_webnotify_name": "[concat(parameters('databaseAccounts_cosmos_webnotify_name'), '-', parameters('stage'), '-', parameters('region'))]",
         "storageAccounts_stwebnotify_name": "[concat(parameters('storageAccounts_stwebnotify_name'), parameters('stage'), parameters('region'))]",
         "staticSites_stapp_webnotify_ui_name": "[concat(parameters('staticSites_stapp_webnotify_ui_name'), '-', parameters('stage'), '-', parameters('region'))]",
-        "sites_func_webnotify_name": "[concat(parameters('sites_func_webnotify_name'), '-', parameters('stage'), '-', parameters('region'))]"
+        "sites_func_webnotify_name": "[concat(parameters('sites_func_webnotify_name'), '-', parameters('stage'), '-', parameters('region'))]",
+        "components_appi_webnotify_name": "[concat(parameters('components_appi_webnotify_name'), '-', parameters('stage'), '-', parameters('region'))]"
     },
     "resources": [
         {
@@ -220,7 +230,7 @@
         },
         {
             "type": "Microsoft.Web/sites",
-            "apiVersion": "2022-03-01",
+            "apiVersion": "2021-03-01",
             "name": "[variables('sites_func_webnotify_name')]",
             "location": "East Asia",
             "tags": {
@@ -270,40 +280,6 @@
                 "redundancyMode": "None",
                 "storageAccountRequired": false,
                 "keyVaultReferenceIdentity": "SystemAssigned"
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
-            "apiVersion": "2022-03-01",
-            "name": "[concat(variables('sites_func_webnotify_name'), '/ftp')]",
-            "location": "East Asia",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', variables('sites_func_webnotify_name'))]"
-            ],
-            "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg/providers/microsoft.insights/components/appi-webnotify-stg-ea",
-                "hidden-link: /app-insights-instrumentation-key": "a1496162-1ce8-4f5a-a666-1712d3fe0957",
-                "hidden-link: /app-insights-conn-string": "InstrumentationKey=a1496162-1ce8-4f5a-a666-1712d3fe0957;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/"
-            },
-            "properties": {
-                "allow": true
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
-            "apiVersion": "2022-03-01",
-            "name": "[concat(variables('sites_func_webnotify_name'), '/scm')]",
-            "location": "East Asia",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', variables('sites_func_webnotify_name'))]"
-            ],
-            "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/e53c986e-fa42-4065-bcef-9a5ae182d65a/resourceGroups/rg-webnotify-stg/providers/microsoft.insights/components/appi-webnotify-stg-ea",
-                "hidden-link: /app-insights-instrumentation-key": "a1496162-1ce8-4f5a-a666-1712d3fe0957",
-                "hidden-link: /app-insights-conn-string": "InstrumentationKey=a1496162-1ce8-4f5a-a666-1712d3fe0957;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/"
-            },
-            "properties": {
-                "allow": true
             }
         },
         {
@@ -517,6 +493,23 @@
                         }
                     ]
                 }
+            }
+        },
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2020-02-02",
+            "name": "[variables('components_appi_webnotify_name')]",
+            "location": "eastasia",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Flow_Type": "Redfield",
+                "Request_Source": "IbizaAIExtensionEnablementBlade",
+                "RetentionInDays": 90,
+                "WorkspaceResourceId": "[parameters('appi_workspaces_DefaultWorkspace')]",
+                "IngestionMode": "LogAnalytics",
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled"
             }
         }
     ]
