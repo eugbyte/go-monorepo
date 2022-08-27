@@ -82,7 +82,7 @@ start-cosmosdb-mongo-emulator:
 	docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
 	docker run \
     --publish 8081:8081 \
-    --publish 10251-10255:10251-10255 \
+    --publish 10251-10254:10251-10254 \
     --name=cosmosdb-mongo-emulator \
     --env AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10 \
     --env AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true \
