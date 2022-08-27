@@ -70,10 +70,10 @@ download-libs:
 install-watch:
 	go install github.com/cosmtrek/air@v1.40.4
 
-export ipaddr := "172.29.240.50" 
 
 #----CONTAINERS----
-#	-env AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=${ipaddr} \
+# export ipaddr := "172.29.240.50" 
+# --env AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=${ipaddr} \
 
 start-azurite:
 	azurite --silent --location c:\azurite --debug c:\azurite\debug.log
