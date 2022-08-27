@@ -94,6 +94,19 @@
             }
         },
         {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(variables('storageAccounts_stwebnotify_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_stwebnotify_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
             "apiVersion": "2021-09-01",
             "name": "[concat(variables('storageAccounts_stwebnotify_name'), '/default/stq-webnotify')]",
