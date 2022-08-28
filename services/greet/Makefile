@@ -19,7 +19,7 @@ deploy:
 	export GO111MODULE=on
 	chmod +x main.go
 	GOOS=linux GOARCH=amd64 go build main.go
-	func azure functionapp publish func-greet-stg-ea --worker-runtime=custom
+	CLI_DEBUG=1 func azure functionapp publish func-greet-stg-ea --worker-runtime=custom
 
 #----TESTING----
 test:

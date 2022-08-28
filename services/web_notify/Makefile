@@ -17,7 +17,7 @@ deploy:
 	chmod +x main.go
 	GOOS=linux GOARCH=amd64 go build main.go
 # publish functions to azure
-	func azure functionapp publish func-webnotify-stg-ea --worker-runtime=custom 
+	CLI_DEBUG=1 func azure functionapp publish func-webnotify-stg-ea --worker-runtime=custom 
 # update the env variables in azure, 
 # except db connection string, queue key, and vapid credentials
 	echo "updating env variables in silent mode..."
