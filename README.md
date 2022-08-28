@@ -1,5 +1,5 @@
 # GO monorepo
-Monorepo in golang. 
+Monorepo in GO. 
 
 The crucial feature of go 1.18 that enables monorepo is the use of [go workspaces](https://go.dev/doc/tutorial/workspaces), or `go.work`
 
